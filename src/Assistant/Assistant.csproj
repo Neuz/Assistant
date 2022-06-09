@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.1.0.59" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.1.0.59" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.1.0.59" />
+    <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="20.1.0.59" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.1.0.59" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
+</Project>
