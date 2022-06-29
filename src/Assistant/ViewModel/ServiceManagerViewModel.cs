@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Assistant.Model.ServiceManager;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+
 // ReSharper disable InconsistentNaming
 
 namespace Assistant.ViewModel;
@@ -19,10 +20,9 @@ public class ServiceManagerViewModel : ObservableObject
         _mysql       = MySQLServiceModel.GetDefaultProfile();
     }
 
-    public string Title => "服务管理";
-
-
     #region 属性
+
+    public string Title => "服务管理";
 
     #region MySQL
 
@@ -32,6 +32,12 @@ public class ServiceManagerViewModel : ObservableObject
     {
         get => _mysql.Installed;
         set => SetProperty(_mysql.Installed, value, _mysql, (model, b) => model.Installed = b);
+    }
+
+    public RunningStatus MySqlRunningStatus
+    {
+        get => _mysql.RunningStatus;
+        set => SetProperty(_mysql.RunningStatus, value, _mysql, (model, status) => model.RunningStatus = status);
     }
 
     private readonly MySQLServiceModel _mysql;
@@ -44,9 +50,13 @@ public class ServiceManagerViewModel : ObservableObject
 
     public ICommand FlushCommand { get; }
 
+    /// <summary>
+    /// 刷新
+    /// </summary>
     private void FlushCommandHandler()
     {
-        MySQLInstalled = !MySQLInstalled;
+        MySQLInstalled     = !MySQLInstalled;
+        MySqlRunningStatus = RunningStatus.Stopping;
     }
 
     #endregion

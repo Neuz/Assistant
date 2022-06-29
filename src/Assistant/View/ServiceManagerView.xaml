@@ -7,13 +7,16 @@
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:Assistant.ViewModel"
              xmlns:cvt="clr-namespace:Assistant.Utils.Converters"
+             xmlns:st="clr-namespace:Assistant.Model.ServiceManager"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <vm:ServiceManagerViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <cvt:BoolColorConverter x:Key="BoolColorConverter" />
-        <cvt:BoolStringConverter x:Key="BoolStringConverter" />
+        <cvt:BoolColorConverter x:Key="BoolColorCvt" />
+        <cvt:BoolStringConverter x:Key="BoolStringCvt" />
+        <cvt:EnumStringConverter x:Key="EnumStringCvt" />
+        <cvt:EnumColorConverter x:Key="EnumColorCvt" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -46,12 +49,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12" Foreground="{Binding MySQLInstalled ,Converter={StaticResource BoolColorConverter}}"
-                                   Text="{Binding MySQLInstalled, Converter={StaticResource BoolStringConverter}, ConverterParameter='已安装|未安装'}" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12" Foreground="{Binding MySQLInstalled ,Converter={StaticResource BoolColorCvt}}"
+                                   Text="{Binding MySQLInstalled, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
                         
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12" Foreground="Green"
-                                   Text="运行中" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12" Foreground="{Binding MySqlRunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type st:RunningStatus}}"
+                                   Text="{Binding MySqlRunningStatus, Converter={StaticResource EnumStringCvt}}" />
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
