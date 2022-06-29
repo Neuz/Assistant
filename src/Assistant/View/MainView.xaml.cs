@@ -1,5 +1,5 @@
 ﻿using Syncfusion.SfSkinManager;
-using Syncfusion.Themes.FluentLight.WPF;
+using Syncfusion.Themes.FluentDark.WPF;
 using Syncfusion.Windows.Shared;
 
 namespace Assistant.View;

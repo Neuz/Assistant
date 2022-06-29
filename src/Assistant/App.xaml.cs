@@ -11,7 +11,7 @@ public partial class App : Application
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjUyNzUxQDMyMzAyZTMxMmUzMEJzM1pmcDZvUSsyTXRGb0dnVzFSb2J5K0lEQmRpb1VSMVNQUU5ZK1dkR1k9");
         base.OnStartup(e);
         var main = new MainView();
-        SfSkinManager.SetTheme(main, new Theme("FluentLight"));
+        SfSkinManager.SetTheme(main, new Theme("FluentDark"));
         main.Show();
     }
 }

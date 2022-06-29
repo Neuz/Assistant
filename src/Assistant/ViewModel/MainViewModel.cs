@@ -22,7 +22,6 @@ public class MainViewModel : ObservableObject
     public MainViewModel()
     {
         ClickCommand = new RelayCommand<object?>(ClickHandler);
-        _contentView = new SystemInfoView();
     }
 
     private void ClickHandler(object? obj)
