@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Assistant.Model.ServiceManager;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Serilog;
 
 // ReSharper disable InconsistentNaming
 
@@ -57,6 +58,7 @@ public class ServiceManagerViewModel : ObservableObject
     {
         MySQLInstalled     = !MySQLInstalled;
         MySqlRunningStatus = RunningStatus.Stopping;
+        Log.Error("mysql");
     }
 
     #endregion

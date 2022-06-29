@@ -5,23 +5,37 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Syncfusion.UI.Xaml.NavigationDrawer;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Serilog;
 
 namespace Assistant.ViewModel;
 
 public class MainViewModel : ObservableObject
 {
-    private UserControl _contentView;
+    private UserControl? _currentView;
     public string Title => "Neuz 助手";
 
-    public UserControl ContentView
+    private ServiceManagerView? _serviceManagerView;
+    private SystemInfoView?     _systemInfoView;
+    private LogView?            _logView;
+
+    public UserControl? CurrentView
     {
-        get => _contentView;
-        set => SetProperty(ref _contentView, value);
+        get => _currentView;
+        set => SetProperty(ref _currentView, value);
     }
 
+    public static readonly object LogSyncLock = new();
     public MainViewModel()
     {
         ClickCommand = new RelayCommand<object?>(ClickHandler);
+
+        // 日志配置
+        _logView = new LogView();
+        const string outputTemplate = "[{Level:u3}] [{Timestamp:HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
+        Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.RichTextBox(_logView.RichTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
+                    .CreateLogger();
     }
 
     private void ClickHandler(object? obj)
@@ -30,10 +44,15 @@ public class MainViewModel : ObservableObject
         switch (aa?.Header.ToString())
         {
             case "系统环境检测":
-                ContentView = new SystemInfoView();
+                _systemInfoView ??= new SystemInfoView();
+                CurrentView     =   _systemInfoView;
                 break;
             case "服务管理":
-                ContentView = new ServiceManagerView();
+                _serviceManagerView ??= new ServiceManagerView();
+                CurrentView         =   _serviceManagerView;
+                break;
+            case "日志":
+                CurrentView =   _logView;
                 break;
             default:
                 MessageBox.Show("error");

@@ -1,5 +1,6 @@
 ﻿using Assistant.View;
 using System.Windows;
+using Serilog;
 using Syncfusion.SfSkinManager;
 
 namespace Assistant;

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Serilog.Sinks.RichTextBox.Wpf" Version="1.1.0" />
     <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.1.0.61" />
     <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.1.0.61" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="20.1.0.61" />

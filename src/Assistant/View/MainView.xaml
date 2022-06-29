@@ -22,7 +22,7 @@
             ExpandedModeWidth="200"
             Background="White">
             <sf:SfNavigationDrawer.ContentView>
-                <ContentControl  Content="{Binding ContentView}" />
+                <ContentControl Content="{Binding CurrentView}" />
             </sf:SfNavigationDrawer.ContentView>
             <sf:NavigationItem
                 Header="服务管理"
@@ -55,6 +55,20 @@
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
             <sf:SfNavigationDrawer.FooterItems>
+                <sf:NavigationItem Header="日志"
+                                   Command="{Binding ClickCommand}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                    <sf:NavigationItem.Icon>
+                        <Path
+                            Width="16"
+                            Height="16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="White"
+                            Stretch="Fill"
+                            Data="{StaticResource Icon.Settings}" />
+                    </sf:NavigationItem.Icon>
+                </sf:NavigationItem>
                 <sf:NavigationItem Header="设置">
                     <sf:NavigationItem.Icon>
                         <Path

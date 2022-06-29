@@ -11,8 +11,6 @@ public partial class MainView : ChromelessWindow
 {
     public MainView()
     {
-
-
         InitializeComponent();
     }
 }
