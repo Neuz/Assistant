@@ -13,36 +13,34 @@ using CliWrap.Buffered;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 
-namespace Assistant.ViewModel
-{
-    public class ToolsViewModel: ObservableObject
-    {
-        public ToolsViewModel()
-        {
-            RunCommand  = new AsyncRelayCommand<object>(RunHandler);
-            HelpCommand = new AsyncRelayCommand<object>(HelpHandler);
-        }
+namespace Assistant.ViewModel;
 
-        private async Task HelpHandler(object? arg)
-        {
+public class ToolsViewModel : ObservableObject
+{
+    public ToolsViewModel()
+    {
+        RunCommand  = new AsyncRelayCommand<object>(RunHandler);
+        HelpCommand = new AsyncRelayCommand<object>(HelpHandler);
+    }
+
+    private async Task HelpHandler(object? arg)
+    {
+        if (arg?.ToString() == "BeekeeperStudio")
             await Cli.Wrap("cmd.exe")
-                     .WithArguments(new[]{ "/c", "start","https://www.beekeeperstudio.io/" })
+                     .WithArguments(new[] {"/c", "start", "https://www.beekeeperstudio.io/"})
                      .WithValidation(CommandResultValidation.None)
                      .ExecuteBufferedAsync();
-        }
-
-        private async Task RunHandler(object? param)
-        {
-            if (param?.ToString() == "BeekeeperStudio")
-            {
-                var path = Path.Combine(Global.CurrentDir, "Tools", "BeekeeperStudio", "BeekeeperStudio.exe");
-                await Cli.Wrap(path).ExecuteAsync();
-
-            }
-            
-        }
-
-        public ICommand RunCommand { get; set;}
-        public ICommand HelpCommand { get; set;}
     }
+
+    private async Task RunHandler(object? arg)
+    {
+        if (arg?.ToString() == "BeekeeperStudio")
+        {
+            var path = Path.Combine(Global.CurrentDir, "Tools", "BeekeeperStudio", "BeekeeperStudio.exe");
+            await Cli.Wrap(path).ExecuteAsync();
+        }
+    }
+
+    public ICommand RunCommand { get; set; }
+    public ICommand HelpCommand { get; set; }
 }

@@ -36,10 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assert\BeekeeperStudio.png">
+    <None Update="Asserts\BeekeeperStudio.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assert\BeekeeperStudio.svg">
+    <None Update="Asserts\BeekeeperStudio.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

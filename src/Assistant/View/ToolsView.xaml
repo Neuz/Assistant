@@ -34,7 +34,7 @@
                 Orientation="Horizontal">
                 <sf:CardViewItem Header="Beekeeper Studio" Width="300">
                     <StackPanel Orientation="Horizontal">
-                        <svgc:SvgViewbox Source="/Assert/BeekeeperStudio.svg" Width="50" Margin="10" />
+                        <svgc:SvgViewbox Source="/Asserts/BeekeeperStudio.svg" Width="50" Margin="10" />
                         <StackPanel>
                             <TextBlock MaxWidth="220" TextWrapping="Wrap"
                                        Text="Open Source SQL Editor and Database Manager A modern, easy to use, and good looking SQL client for MySQL, Postgres, SQLite, SQL Server, and more." />
