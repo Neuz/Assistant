@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace Assistant.View
 {
@@ -10,6 +11,12 @@ namespace Assistant.View
         public ServiceManagerView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            BtnFlush.Command.Execute(null);
         }
     }
 }

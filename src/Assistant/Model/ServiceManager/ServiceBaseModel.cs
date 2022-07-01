@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.IO;
+using System.Text.Json.Serialization;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Assistant.Model.ServiceManager;
@@ -8,7 +10,7 @@ public enum RunningStatus
     [Description("运行中")]
     Running,
     [Description("停止")]
-    Stopping,
+    Stopped,
     [Description("未知")]
     UnKnown
 }
@@ -16,6 +18,8 @@ public enum RunningStatus
 public class ServiceBaseModel
 {
     public string? DisplayName { get; set; }
+
+    public string? Version { get; set; }
 
     /// <summary>
     /// Windows服务名
@@ -25,7 +29,7 @@ public class ServiceBaseModel
     /// <summary>
     /// Windows服务 exe path
     /// </summary>
-    public string? ServicePath { get; set; }
+    public string? BinPath { get; set; }
 
     /// <summary>
     /// Windows服务描述
@@ -43,12 +47,22 @@ public class ServiceBaseModel
     public string? LogDirectory { get; set; }
 
     /// <summary>
+    /// 配置文件路径
+    /// </summary>
+    public string? ConfigFilePath { get; set; }
+
+    /// <summary>
     /// 安装状态
     /// </summary>
+    [JsonIgnore]
     public bool Installed { get; set; }
 
     /// <summary>
     /// 运行状态
     /// </summary>
+    [JsonIgnore]
     public RunningStatus RunningStatus { get; set; }
+
+    [JsonIgnore]
+    public string InsConfFilePath => ServiceDirectory == null ? string.Empty : Path.Combine(ServiceDirectory, Global.InstallConfFileName);
 }

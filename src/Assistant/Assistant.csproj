@@ -5,16 +5,58 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.4.4" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Serilog.Sinks.RichTextBox.Wpf" Version="1.1.0" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.1.0.61" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.1.0.61" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.1.0.61" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.1.0.61" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.1.0.61" />
+    <PackageReference Include="SharpVectors" Version="1.7.7" />
+    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\ToolsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\SystemInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WizardControl\MySQLWizardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assert\BeekeeperStudio.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assert\BeekeeperStudio.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\ToolsView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\SystemInfoView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WizardControl\MySQLWizardView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

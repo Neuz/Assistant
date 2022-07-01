@@ -18,7 +18,8 @@ public partial class LogView : UserControl
     {
         lock (MainViewModel.LogSyncLock)
         {
-            RichTextBox.Document.Blocks.Clear();
+            LogTextBox.Document.Blocks.Clear();
         }
     }
+    
 }

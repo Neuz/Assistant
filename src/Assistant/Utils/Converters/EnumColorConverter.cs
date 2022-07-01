@@ -19,8 +19,8 @@ public class EnumColorConverter : IValueConverter
             return (RunningStatus)value switch
             {
                 RunningStatus.Running => new SolidColorBrush(Colors.Green),
-                RunningStatus.Stopping => new SolidColorBrush(Colors.Red),
-                RunningStatus.UnKnown => new SolidColorBrush(Colors.DarkGray),
+                RunningStatus.Stopped => new SolidColorBrush(Colors.Red),
+                RunningStatus.UnKnown => new SolidColorBrush(Colors.Orange),
                 _ => new SolidColorBrush(Colors.White)
             };
         }

@@ -20,12 +20,14 @@
         <Separator Margin="10,0,10,0" Grid.Row="1" Height="2" HorizontalAlignment="Stretch" />
         <RichTextBox
             Grid.Row="2"
-            x:Name="RichTextBox"
+            x:Name="LogTextBox"
             FontSize="14"
             IsReadOnly="True"
             VerticalScrollBarVisibility="Auto"
             HorizontalScrollBarVisibility="Auto"
             Margin="10,10,10,5"
-        />
+
+        >
+        </RichTextBox>
     </Grid>
 </UserControl>

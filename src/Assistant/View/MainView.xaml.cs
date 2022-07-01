@@ -12,5 +12,6 @@ public partial class MainView : ChromelessWindow
     public MainView()
     {
         InitializeComponent();
+        SfSkinManager.SetTheme(this,new Theme("FluentDark"));
     }
 }

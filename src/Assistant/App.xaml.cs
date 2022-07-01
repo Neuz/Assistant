@@ -9,10 +9,10 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjUyNzUxQDMyMzAyZTMxMmUzMEJzM1pmcDZvUSsyTXRGb0dnVzFSb2J5K0lEQmRpb1VSMVNQUU5ZK1dkR1k9");
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjY0NTUzQDMyMzAyZTMyMmUzMERWMkNqUDM3VFh0T1hmNlduNHZiTFVEMlZTL01CUlZYV3NyeHBPalc0eGM9");
+        // SfSkinManager.ApplyStylesOnApplication = true;
         base.OnStartup(e);
         var main = new MainView();
-        SfSkinManager.SetTheme(main, new Theme("FluentDark"));
         main.Show();
     }
 }

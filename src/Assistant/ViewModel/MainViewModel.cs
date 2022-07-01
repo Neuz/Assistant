@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Assistant.View;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -16,6 +17,7 @@ public class MainViewModel : ObservableObject
 
     private ServiceManagerView? _serviceManagerView;
     private SystemInfoView?     _systemInfoView;
+    private ToolsView?          _toolsView;
     private LogView?            _logView;
 
     public UserControl? CurrentView
@@ -25,39 +27,44 @@ public class MainViewModel : ObservableObject
     }
 
     public static readonly object LogSyncLock = new();
+
     public MainViewModel()
     {
         ClickCommand = new RelayCommand<object?>(ClickHandler);
 
         // 日志配置
         _logView = new LogView();
-        const string outputTemplate = "[{Level:u3}] [{Timestamp:HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
+        const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
                     .MinimumLevel.Verbose()
-                    .WriteTo.RichTextBox(_logView.RichTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
+                    .WriteTo.RichTextBox(_logView.LogTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
                     .CreateLogger();
     }
 
     private void ClickHandler(object? obj)
     {
-        var aa = obj as NavigationItem;
-        switch (aa?.Header.ToString())
+
+        var t = obj as Type;
+
+        if (t == typeof(ServiceManagerView))
         {
-            case "系统环境检测":
-                _systemInfoView ??= new SystemInfoView();
-                CurrentView     =   _systemInfoView;
-                break;
-            case "服务管理":
-                _serviceManagerView ??= new ServiceManagerView();
-                CurrentView         =   _serviceManagerView;
-                break;
-            case "日志":
-                CurrentView =   _logView;
-                break;
-            default:
-                MessageBox.Show("error");
-                break;
+            _serviceManagerView ??= new ServiceManagerView();
+            CurrentView         =   _serviceManagerView;
         }
+
+        if (t == typeof(SystemInfoView))
+        {
+            _systemInfoView ??= new SystemInfoView();
+            CurrentView     =   _systemInfoView;
+        }
+
+        if (t == typeof(ToolsView))
+        {
+            _toolsView  ??= new ToolsView();
+            CurrentView =   _toolsView;
+        }
+
+        if (t == typeof(LogView)) CurrentView = _logView;
     }
 
 

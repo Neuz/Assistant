@@ -7,8 +7,7 @@
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:Assistant.ViewModel"
              xmlns:cvt="clr-namespace:Assistant.Utils.Converters"
-             xmlns:st="clr-namespace:Assistant.Model.ServiceManager"
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:svcMgr="clr-namespace:Assistant.Model.ServiceManager">
     <UserControl.DataContext>
         <vm:ServiceManagerViewModel />
     </UserControl.DataContext>
@@ -25,60 +24,225 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
-        <Button Grid.Row="0" Content="刷新" Width="40" Height="30" HorizontalAlignment="Right" Margin="10,5,10,0"
+        <Button Grid.Row="0" x:Name="BtnFlush" Content="刷新" Width="40" Height="30" HorizontalAlignment="Right"
+                Margin="10,5,10,0"
                 Command="{Binding FlushCommand}" />
-        <Separator Margin="10,0,10,0" Grid.Row="1" Height="2" HorizontalAlignment="Stretch" />
-        <sf:CardView Grid.Row="2"
-                     CanGroup="False"
-                     ShowHeader="False"
-                     Orientation="Horizontal">
-            <sf:CardViewItem Header="{Binding MySQLDisplay}">
-                <StackPanel>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12" Foreground="{Binding MySQLInstalled ,Converter={StaticResource BoolColorCvt}}"
-                                   Text="{Binding MySQLInstalled, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                        
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12" Foreground="{Binding MySqlRunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type st:RunningStatus}}"
-                                   Text="{Binding MySqlRunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                    </Grid>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装" />
-                        <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载" />
-                        <Button Grid.Column="2" MinWidth="50" Margin="5" Content="日志" />
-                    </Grid>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动" />
-                        <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止" />
-                        <Button Grid.Column="2" MinWidth="50" Margin="5" Content="重启" />
-                    </Grid>
-                </StackPanel>
-            </sf:CardViewItem>
-        </sf:CardView>
+        <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
+        <sf:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <sf:CardView
+                    CanGroup="False"
+                    ShowHeader="False"
+                    Orientation="Horizontal">
+                    <sf:CardViewItem Header="{Binding MySQL.DisplayName}">
+                        <StackPanel>
+                            <Grid Margin="15,0,10,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White"
+                                           Text="{Binding MySQL.Version}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding MySQL.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding MySQL.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding MySQL.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding MySQL.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                            </Grid>
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
+                                        Command="{Binding OpenDirectoryCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5"
+                                        Content="配置"
+                                        Command="{Binding OpenConfigCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
+                                        Command="{Binding InstallWinServiceCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
+                                        Command="{Binding UnInstallWinServiceCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
+                                        Command="{Binding StartWinServiceCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
+                                        Command="{Binding StopWinServiceCommand}"
+                                        CommandParameter="{Binding MySQL}" />
+                            </Grid>
+                        </StackPanel>
+                    </sf:CardViewItem>
+                    <sf:CardViewItem Header="{Binding Nginx.DisplayName}">
+                        <StackPanel>
+                            <Grid Margin="15,0,10,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White"
+                                           Text="{Binding Nginx.Version}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding Nginx.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding Nginx.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding Nginx.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding Nginx.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+
+                            </Grid>
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
+                                        Command="{Binding OpenDirectoryCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5"
+                                        Content="配置"
+                                        Command="{Binding OpenConfigCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
+                                        Command="{Binding InstallWinServiceCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
+                                        Command="{Binding UnInstallWinServiceCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
+                                        Command="{Binding StartWinServiceCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
+                                        Command="{Binding StopWinServiceCommand}"
+                                        CommandParameter="{Binding Nginx}" />
+                            </Grid>
+                        </StackPanel>
+                    </sf:CardViewItem>
+                    <sf:CardViewItem Header="{Binding Redis.DisplayName}">
+                        <StackPanel>
+                            <Grid Margin="15,0,10,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White"
+                                           Text="{Binding Redis.Version}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+
+                            </Grid>
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
+                                        Command="{Binding OpenDirectoryCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5"
+                                        Content="配置"
+                                        Command="{Binding OpenConfigCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
+                                        Command="{Binding InstallWinServiceCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
+                                        Command="{Binding UnInstallWinServiceCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                            </Grid>
+                            <Grid Margin="10,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
+                                        Command="{Binding StartWinServiceCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
+                                        Command="{Binding StopWinServiceCommand}"
+                                        CommandParameter="{Binding Redis}" />
+                            </Grid>
+                        </StackPanel>
+                    </sf:CardViewItem>
+                </sf:CardView>
+            </Grid>
+        </sf:SfBusyIndicator>
+
     </Grid>
-
-
 </UserControl>

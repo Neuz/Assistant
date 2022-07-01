@@ -6,20 +6,23 @@
                      xmlns:sf="http://schemas.syncfusion.com/wpf"
                      mc:Ignorable="d"
                      Title="{Binding Title}"
+                     CornerRadius="8"
                      TitleTextAlignment="Center"
                      UseNativeChrome="True"
                      WindowState="Normal"
-                     Height="450"
-                     Width="800"
-                     xmlns:v="clr-namespace:Assistant.ViewModel">
+                     WindowStartupLocation="CenterScreen"
+                     Height="500"
+                     Width="820"
+                     xmlns:vm="clr-namespace:Assistant.ViewModel"
+                     xmlns:view="clr-namespace:Assistant.View">
     <sf:ChromelessWindow.DataContext>
-        <v:MainViewModel />
+        <vm:MainViewModel />
     </sf:ChromelessWindow.DataContext>
     <Grid>
         <sf:SfNavigationDrawer
             Grid.Column="0"
             DisplayMode="Expanded"
-            ExpandedModeWidth="200"
+            ExpandedModeWidth="160"
             Background="White">
             <sf:SfNavigationDrawer.ContentView>
                 <ContentControl Content="{Binding CurrentView}" />
@@ -27,7 +30,7 @@
             <sf:NavigationItem
                 Header="服务管理"
                 Command="{Binding ClickCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                CommandParameter="{x:Type view:ServiceManagerView}">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"
@@ -42,7 +45,22 @@
             <sf:NavigationItem
                 Header="系统环境检测"
                 Command="{Binding ClickCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                CommandParameter="{x:Type view:SystemInfoView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="White"
+                        Stretch="Fill"
+                        Data="{StaticResource Icon.Drafts}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+            <sf:NavigationItem
+                Header="常用工具"
+                Command="{Binding ClickCommand}"
+                CommandParameter="{x:Type view:ToolsView}">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"
@@ -57,7 +75,7 @@
             <sf:SfNavigationDrawer.FooterItems>
                 <sf:NavigationItem Header="日志"
                                    Command="{Binding ClickCommand}"
-                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                                   CommandParameter="{x:Type view:LogView}">
                     <sf:NavigationItem.Icon>
                         <Path
                             Width="16"
