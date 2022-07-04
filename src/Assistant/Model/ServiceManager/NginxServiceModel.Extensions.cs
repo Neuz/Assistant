@@ -63,7 +63,7 @@ public static class NginxServiceModelExtensions
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
-        await FileUtils.WriteToConf(model, insConfPath);
+        await FileUtils.WriteToFile(model, insConfPath);
 
         if (!Directory.Exists(model.TempDirectory)) Directory.CreateDirectory(model.TempDirectory);
         if (!Directory.Exists(model.LogDirectory)) Directory.CreateDirectory(model.LogDirectory);

@@ -41,8 +41,7 @@
                     <TextBox Text="{Binding ServiceDescription}" />
                 </sf:SfTextInputLayout>
                 <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
-                    <sf:IntegerTextBox x:Name="WebPortTextBox"
-                                       GroupSeperatorEnabled="False"
+                    <sf:IntegerTextBox GroupSeperatorEnabled="False"
                                        MinValue="0"
                                        MaxValue="65535"
                                        MinValueOnExceedMinDigit="True"

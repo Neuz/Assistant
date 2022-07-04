@@ -7,6 +7,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CliWrap;
+using CliWrap.Buffered;
+using Serilog;
 
 // ReSharper disable InconsistentNaming
 
@@ -16,18 +19,20 @@ public class ServiceManagerViewModel : ObservableObject
 {
     public ServiceManagerViewModel()
     {
-        FlushCommand               = new AsyncRelayCommand(FlushCommandHandler);
-        OpenDirectoryCommand       = new AsyncRelayCommand<object>(OpenDirectoryCommandHandler);
-        OpenConfigCommand          = new AsyncRelayCommand<object>(OpenConfigCommandHandler);
-        InstallWinServiceCommand   = new AsyncRelayCommand<object>(InstallWinServiceCommandHandler);
-        UnInstallWinServiceCommand = new AsyncRelayCommand<object>(UnInstallWinServiceCommandHandler);
-        StartWinServiceCommand     = new AsyncRelayCommand<object>(StartWinServiceCommandHandler);
-        StopWinServiceCommand      = new AsyncRelayCommand<object>(StopWinServiceCommandHandler);
+        FlushCommand      = new AsyncRelayCommand(FlushHandler);
+        OpenDirCommand    = new AsyncRelayCommand<object>(OpenDirHandler);
+        OpenConfigCommand = new AsyncRelayCommand<object>(OpenConfigHandler);
+        InstallCommand    = new AsyncRelayCommand<object>(InstallHandler);
+        UnInstallCommand  = new AsyncRelayCommand<object>(UnInstallHandler);
+        StartCommand      = new AsyncRelayCommand<object>(StartHandler);
+        StopCommand       = new AsyncRelayCommand<object>(StopHandler);
+        OpenUrl           = new AsyncRelayCommand<object>(OpenUrlHandler);
 
 
-        _mysql = new MySQLServiceModel();
-        _nginx = new NginxServiceModel();
-        _redis = new RedisServiceModel();
+        _mysql   = new MySQLServiceModel();
+        _nginx   = new NginxServiceModel();
+        _redis   = new RedisServiceModel();
+        _neuzApi = new NeuzApiServiceModel();
     }
 
 
@@ -43,7 +48,13 @@ public class ServiceManagerViewModel : ObservableObject
         set => SetProperty(ref _isBusy, value);
     }
 
-    #region Redis
+    private string _indicatorText = "";
+
+    public string IndicatorText
+    {
+        get => _indicatorText;
+        set => SetProperty(ref _indicatorText, value);
+    }
 
     private RedisServiceModel _redis;
 
@@ -53,10 +64,6 @@ public class ServiceManagerViewModel : ObservableObject
         set => SetProperty(ref _redis, value);
     }
 
-    #endregion
-
-    #region Nginx
-
     private NginxServiceModel _nginx;
 
     public NginxServiceModel Nginx
@@ -64,10 +71,6 @@ public class ServiceManagerViewModel : ObservableObject
         get => _nginx;
         set => SetProperty(ref _nginx, value);
     }
-
-    #endregion
-
-    #region MySQL
 
     private MySQLServiceModel _mysql;
 
@@ -77,7 +80,13 @@ public class ServiceManagerViewModel : ObservableObject
         set => SetProperty(ref _mysql, value);
     }
 
-    #endregion
+    private NeuzApiServiceModel _neuzApi;
+
+    public NeuzApiServiceModel NeuzApi
+    {
+        get => _neuzApi;
+        set => SetProperty(ref _neuzApi, value);
+    }
 
     #endregion
 
@@ -89,21 +98,22 @@ public class ServiceManagerViewModel : ObservableObject
     public ICommand FlushCommand { get; }
 
 
-    private async Task FlushCommandHandler()
+    private async Task FlushHandler()
     {
-        IsBusy = true;
-        Nginx  = await Nginx.Flush();
-        MySQL  = await MySQL.Flush();
-        Redis  = await Redis.Flush();
-        IsBusy = false;
+        IsBusy  = true;
+        Nginx   = await Nginx.Flush();
+        MySQL   = await MySQL.Flush();
+        Redis   = await Redis.Flush();
+        NeuzApi = await NeuzApi.Flush();
+        IsBusy  = false;
     }
 
     /// <summary>
     /// 打开目录
     /// </summary>
-    public ICommand OpenDirectoryCommand { get; }
+    public ICommand OpenDirCommand { get; }
 
-    private async Task OpenDirectoryCommandHandler(object? param)
+    private async Task OpenDirHandler(object? param)
     {
         if (param is ServiceBaseModel model)
         {
@@ -122,7 +132,7 @@ public class ServiceManagerViewModel : ObservableObject
     /// </summary>
     public ICommand OpenConfigCommand { get; }
 
-    private async Task OpenConfigCommandHandler(object? param)
+    private async Task OpenConfigHandler(object? param)
     {
         if (param is ServiceBaseModel model)
         {
@@ -139,11 +149,11 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 安装服务
     /// </summary>
-    public ICommand InstallWinServiceCommand { get; }
+    public ICommand InstallCommand { get; }
 
-    private async Task InstallWinServiceCommandHandler(object? param)
+    private async Task InstallHandler(object? param)
     {
-        await FlushCommandHandler();
+        await FlushHandler();
 
         IsBusy = true;
 
@@ -213,19 +223,48 @@ public class ServiceManagerViewModel : ObservableObject
             MessageBox.Show(rs ? $"[{Redis.ServiceName}]安装成功" : $"[{Redis.ServiceName}]安装失败");
         }
 
+        if (param is NeuzApiServiceModel)
+        {
+            if (NeuzApi.Installed)
+            {
+                MessageBox.Show($"[{NeuzApi.ServiceName}]已安装");
+                IsBusy = false;
+                return;
+            }
+
+            var wizard = new NeuzApiWizardView()
+            {
+                DataContext = new NeuzApiWizardViewModel(NeuzApi)
+            };
+            if (!(wizard.ShowDialog() ?? false))
+            {
+                IsBusy = false;
+                return;
+            }
+
+            var packFilePath = wizard.TextBoxPackPath.Text;
+
+            var rs = await NeuzApi.Install(packFilePath, i =>
+            {
+                IndicatorText = $"{i}%";
+            });
+            MessageBox.Show(rs ? $"[{NeuzApi.ServiceName}]安装成功" : $"[{NeuzApi.ServiceName}]安装失败");
+            IndicatorText = "";
+        }
+
         IsBusy = false;
 
-        await FlushCommandHandler();
+        await FlushHandler();
     }
 
     /// <summary>
     /// 卸载服务
     /// </summary>
-    public ICommand UnInstallWinServiceCommand { get; }
+    public ICommand UnInstallCommand { get; }
 
-    private async Task UnInstallWinServiceCommandHandler(object? param)
+    private async Task UnInstallHandler(object? param)
     {
-        await FlushCommandHandler();
+        await FlushHandler();
         IsBusy = true;
 
         if (param is NginxServiceModel)
@@ -267,18 +306,31 @@ public class ServiceManagerViewModel : ObservableObject
             MessageBox.Show(rs ? $"[{Redis.ServiceName}]卸载成功" : $"[{Redis.ServiceName}]卸载失败");
         }
 
+        if (param is NeuzApiServiceModel)
+        {
+            if (NeuzApi.RunningStatus == RunningStatus.Running)
+            {
+                MessageBox.Show($"[{Redis.ServiceName}]运行中");
+                IsBusy = false;
+                return;
+            }
+
+            var rs = await NeuzApi.UnInstall();
+            MessageBox.Show(rs ? $"[{NeuzApi.ServiceName}]卸载成功" : $"[{NeuzApi.ServiceName}]卸载失败");
+        }
+
         IsBusy = false;
-        await FlushCommandHandler();
+        await FlushHandler();
     }
 
     /// <summary>
     /// 启动服务
     /// </summary>
-    public ICommand StartWinServiceCommand { get; }
+    public ICommand StartCommand { get; }
 
-    private async Task StartWinServiceCommandHandler(object? param)
+    private async Task StartHandler(object? param)
     {
-        await FlushCommandHandler();
+        await FlushHandler();
         IsBusy = true;
 
         if (param is ServiceBaseModel model)
@@ -293,17 +345,31 @@ public class ServiceManagerViewModel : ObservableObject
         }
 
         IsBusy = false;
-        await FlushCommandHandler();
+        await FlushHandler();
+    }
+
+    public ICommand OpenUrl { get; }
+
+    public async Task OpenUrlHandler(object? param)
+    {
+        if (param is NeuzApiServiceModel)
+        {
+            var cli = Cli.Wrap("cmd.exe")
+                         .WithArguments(new[] {"/c", "start", $"http://localhost:{NeuzApi.Port}"})
+                         .WithValidation(CommandResultValidation.None);
+            Log.Information(cli.ToString());
+            await cli.ExecuteBufferedAsync();
+        }
     }
 
     /// <summary>
     /// 停止服务
     /// </summary>
-    public ICommand StopWinServiceCommand { get; }
+    public ICommand StopCommand { get; }
 
-    private async Task StopWinServiceCommandHandler(object? param)
+    private async Task StopHandler(object? param)
     {
-        await FlushCommandHandler();
+        await FlushHandler();
         IsBusy = true;
 
         if (param is ServiceBaseModel model)
@@ -318,7 +384,7 @@ public class ServiceManagerViewModel : ObservableObject
         }
 
         IsBusy = false;
-        await FlushCommandHandler();
+        await FlushHandler();
     }
 
     #endregion

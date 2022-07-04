@@ -119,7 +119,7 @@ public static class MySQLServiceModelExtensions
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
-        await FileUtils.WriteToConf(model, insConfPath);
+        await FileUtils.WriteToFile(model, insConfPath);
 
         return true;
     }

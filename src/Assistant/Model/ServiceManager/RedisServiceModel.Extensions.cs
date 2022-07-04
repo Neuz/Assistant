@@ -62,7 +62,7 @@ public static class RedisServiceModelExtensions
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
-        await FileUtils.WriteToConf(model, insConfPath);
+        await FileUtils.WriteToFile(model, insConfPath);
 
         // 创建Windows服务
         var binPath = @$"""{model.BinPath}"" --service-run ""{model.ConfigFilePath}""";

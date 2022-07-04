@@ -11,7 +11,7 @@ using CliWrap.Exceptions;
 
 namespace Assistant.Utils;
 
-internal class WinServiceUtils
+public class WinServiceUtils
 {
     public static async Task<bool> StopService(string serviceName)
     {

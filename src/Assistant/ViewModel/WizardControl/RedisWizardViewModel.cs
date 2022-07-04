@@ -35,7 +35,7 @@ public class RedisWizardViewModel : ObservableObject
         set
         {
             SetProperty(_redis.RedisConfig.Port, value, _redis, (model, i) => model.RedisConfig.Port = i);
-            ConfigText = _redis.GetConfigText();
+            ConfigText = _redis.GetConfigText()!;
         }
     }
 

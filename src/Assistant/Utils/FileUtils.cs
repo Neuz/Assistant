@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Assistant.Utils;
 
-internal class FileUtils
+public class FileUtils
 {
     public static T? DeepClone<T>(T obj)
     {
@@ -32,7 +32,7 @@ internal class FileUtils
         return await File.ReadAllTextAsync(filePath);
     }
 
-    public static async Task WriteToConf(object? obj, string filePath)
+    public static async Task WriteToFile<T>(T? obj, string filePath)
     {
         ArgumentNullException.ThrowIfNull(obj, nameof(obj));
         var text = JsonSerializer.Serialize(obj, new JsonSerializerOptions
@@ -40,10 +40,10 @@ internal class FileUtils
             WriteIndented = true,
             Encoder       = JavaScriptEncoder.Create(UnicodeRanges.All)
         });
-        await WriteToConf(text, filePath);
+        await WriteToFile(text, filePath);
     }
 
-    public static async Task WriteToConf(string? text, string filePath)
+    public static async Task WriteToFile(string? text, string filePath)
     {
         if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException(nameof(filePath), "文件路径为空");
         if (string.IsNullOrEmpty(text)) throw new ArgumentNullException(nameof(text), "字符串为空");
