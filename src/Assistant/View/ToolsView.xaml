@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:sf="http://schemas.syncfusion.com/wpf"
              xmlns:vm="clr-namespace:Assistant.ViewModel"
              mc:Ignorable="d">
@@ -34,7 +33,7 @@
                 Orientation="Horizontal">
                 <sf:CardViewItem Header="Beekeeper Studio" Width="300">
                     <StackPanel Orientation="Horizontal">
-                        <svgc:SvgViewbox Source="/Asserts/BeekeeperStudio.svg" Width="50" Margin="10" />
+                        <Image Source="/Resources/Img/BeekeeperStudio.png" Width="50" Margin="10"></Image>
                         <StackPanel>
                             <TextBlock MaxWidth="220" TextWrapping="Wrap"
                                        Text="Open Source SQL Editor and Database Manager A modern, easy to use, and good looking SQL client for MySQL, Postgres, SQLite, SQL Server, and more." />

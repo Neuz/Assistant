@@ -199,6 +199,16 @@ public class ServiceManagerViewModel : ObservableObject
                 return;
             }
 
+            var wizard = new RedisWizardView()
+            {
+                DataContext = new RedisWizardViewModel(Redis)
+            };
+            if (!(wizard.ShowDialog() ?? false))
+            {
+                IsBusy = false;
+                return;
+            }
+
             var rs = await Redis.Install();
             MessageBox.Show(rs ? $"[{Redis.ServiceName}]安装成功" : $"[{Redis.ServiceName}]安装失败");
         }

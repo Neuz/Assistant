@@ -50,6 +50,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -67,6 +68,10 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
                                            Foreground="{Binding MySQL.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding MySQL.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White"
+                                           Text="{Binding MySQL.MySQLConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
@@ -115,6 +120,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -132,7 +138,17 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
                                            Foreground="{Binding Nginx.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Nginx.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}|{1}">
+                                            <Binding Path="Nginx.NginxConfig.WebPort" />
+                                            <Binding Path="Nginx.NginxConfig.PdaPort" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
 
+                                </TextBlock>
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
@@ -181,6 +197,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -198,7 +215,10 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
                                            Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-
+                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
+                                           Foreground="White"
+                                           Text="{Binding Redis.RedisConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">

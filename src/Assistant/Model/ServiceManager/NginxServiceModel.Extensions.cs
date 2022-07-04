@@ -51,8 +51,11 @@ public static class NginxServiceModelExtensions
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
 
         // 备份配置文件
-        var rs = await FileUtils.BackupFile(model.ConfigFilePath);
-        if (!rs) return rs;
+        if (File.Exists(model.ConfigFilePath))
+        {
+            var rs = await FileUtils.BackupFile(model.ConfigFilePath);
+            if (!rs) return rs;
+        }
 
         // 写入配置文件
         var a = model.NginxConfig.ToString();

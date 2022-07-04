@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\BeekeeperStudio.png" />
+    <None Remove="Resources\BeekeeperStudio.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.4.4" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Serilog.Sinks.RichTextBox.Wpf" Version="1.1.0" />
-    <PackageReference Include="SharpVectors" Version="1.7.7" />
     <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.36" />
     <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.36" />
     <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.36" />
@@ -21,6 +25,15 @@
     <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.36" />
     <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.36" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Img\BeekeeperStudio.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Img\BeekeeperStudio.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,15 +46,9 @@
     <Compile Update="View\WizardControl\MySQLWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Asserts\BeekeeperStudio.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Asserts\BeekeeperStudio.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Compile Update="View\WizardControl\RedisWizardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +61,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\WizardControl\MySQLWizardView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WizardControl\RedisWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -51,6 +51,7 @@ public static class MySQLServiceModelExtensions
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
         ArgumentNullException.ThrowIfNull(model.ConfigFilePath, nameof(model.ConfigFilePath));
         ArgumentNullException.ThrowIfNull(model.ServiceDirectory, nameof(model.ServiceDirectory));
+        ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
 
         // 创建目录
         if (!Directory.Exists(model.TempDirectory)) Directory.CreateDirectory(model.TempDirectory);
