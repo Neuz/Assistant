@@ -47,7 +47,13 @@
     <Compile Update="View\WizardControl\MySQLWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\NeuzApiWizardView.xaml.cs">
+    <Compile Update="View\WizardControl\NeuzAdapterK3WiseWizardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WizardControl\NeuzAppWizardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WizardControl\NeuzAdapterKisWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\WizardControl\RedisWizardView.xaml.cs">
@@ -68,7 +74,15 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\NeuzApiWizardView.xaml">
+    <Page Update="View\WizardControl\NeuzAdapterK3WiseWizardView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WizardControl\NeuzAppWizardView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WizardControl\NeuzAdapterKisWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

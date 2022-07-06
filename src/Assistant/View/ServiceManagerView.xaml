@@ -27,9 +27,15 @@
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
-        <Button Grid.Row="0" x:Name="BtnFlush" Content="刷新" Width="40" Height="30" HorizontalAlignment="Right"
-                Margin="10,5,10,0"
-                Command="{Binding FlushCommand}" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
+            <TextBlock Margin="5,20,15,0">
+                <Hyperlink Command="{Binding OpenWinSvcCommand}">
+                    <Run Text="打开服务" />
+                </Hyperlink>
+            </TextBlock>
+            <Button Name="BtnFlush" Content="刷新" Width="40" Height="30" Command="{Binding FlushCommand}" />
+        </StackPanel>
+
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
         <sf:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}" Header="{Binding IndicatorText}">
             <Grid>
@@ -45,32 +51,32 @@
                     Orientation="Horizontal">
                     <sf:CardViewItem Header="{Binding MySQL.DisplayName}">
                         <StackPanel>
+                            <TextBlock Margin="10,0,10,0" Text="{Binding MySQL.Version}" />
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding MySQL.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding MySQL.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding MySQL.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding MySQL.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding MySQL.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Text="{Binding MySQL.MySQLConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
@@ -81,11 +87,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
                                         Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding MySQL}" />
+                                        CommandParameter="{Binding MySQL.ServiceDirectory}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5"
                                         Content="配置"
                                         Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding MySQL}" />
+                                        CommandParameter="{Binding MySQL.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -115,34 +121,36 @@
                     </sf:CardViewItem>
                     <sf:CardViewItem Header="{Binding Nginx.DisplayName}">
                         <StackPanel>
+                            <TextBlock Margin="10,0,10,0" Text="{Binding Nginx.Version}" />
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Nginx.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding Nginx.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Nginx.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding Nginx.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Nginx.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White">
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold">
                                     <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}|{1}">
+                                        <MultiBinding StringFormat="{}{0} | {1}">
                                             <Binding Path="Nginx.NginxConfig.WebPort" />
                                             <Binding Path="Nginx.NginxConfig.PdaPort" />
                                         </MultiBinding>
@@ -158,11 +166,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
                                         Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Nginx}" />
+                                        CommandParameter="{Binding Nginx.ServiceDirectory}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5"
                                         Content="配置"
                                         Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Nginx}" />
+                                        CommandParameter="{Binding Nginx.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -192,32 +200,34 @@
                     </sf:CardViewItem>
                     <sf:CardViewItem Header="{Binding Redis.DisplayName}">
                         <StackPanel>
+                            <TextBlock Margin="10,0,10,0" Text="{Binding Redis.Version}" />
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
                                            Text="{Binding Redis.RedisConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
@@ -228,11 +238,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
                                         Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Redis.ServiceDirectory}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5"
                                         Content="配置"
                                         Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Redis.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -260,81 +270,10 @@
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
-                    <sf:CardViewItem Header="{Binding NeuzApi.DisplayName}">
+                    <sf:CardViewItem Header="{Binding Kis.DisplayName}" Width="300">
                         <StackPanel>
-                            <Grid Margin="15,0,10,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding NeuzApi.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding NeuzApi.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding NeuzApi.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding NeuzApi.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding NeuzApi.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding NeuzApi.Port}" />
-                            </Grid>
+                            <TextBlock Margin="10,0,10,0" Text="{Binding Kis.Version}" />
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="30" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                                <Button Grid.Column="1" MinWidth="30" Margin="5" Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                                <Button Grid.Column="2" MinWidth="30" Margin="5" Content="打开"
-                                        Command="{Binding OpenUrl}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding NeuzApi}" />
-                            </Grid>
-                        </StackPanel>
-                    </sf:CardViewItem>
-                    <sf:CardViewItem Header="Neuz.Adapter.K3Kis">
-                        <StackPanel>
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -343,25 +282,39 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.RedisConfig.Port}" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Foreground="{Binding Kis.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding Kis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Foreground="{Binding Kis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding Kis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="{Binding Kis.Port}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
+                                    <Hyperlink Command="{Binding OpenUrlCommand}"
+                                               CommandParameter="{Binding ElementName=KisApiDocsUrl,Path=Text}">
+                                        <Run Name="KisApiDocsUrl">
+                                            <Run.Text>
+                                                <MultiBinding StringFormat="http://localhost:{0}/swagger">
+                                                    <Binding Path="Kis.Port" />
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </Hyperlink>
+                                </TextBlock>
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
@@ -371,11 +324,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
                                         Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis.ServiceDirectory}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5"
                                         Content="配置"
                                         Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -384,10 +337,10 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
                                         Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
                                         Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -396,15 +349,17 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
                                         Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
                                         Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Kis}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
-                    <sf:CardViewItem Header="Neuz.Adapter.K3Wise">
+                    <sf:CardViewItem Header="{Binding Wise.DisplayName}" Width="300">
                         <StackPanel>
+                            <TextBlock Margin="10,0,10,0" Text="{Binding Wise.Version}" />
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -413,25 +368,39 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.RedisConfig.Port}" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Foreground="{Binding Wise.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding Wise.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Foreground="{Binding Wise.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding Wise.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="{Binding Wise.Port}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
+                                    <Hyperlink Command="{Binding OpenUrlCommand}"
+                                               CommandParameter="{Binding ElementName=WiseApiDocsUrl,Path=Text}">
+                                        <Run Name="WiseApiDocsUrl">
+                                            <Run.Text>
+                                                <MultiBinding StringFormat="http://localhost:{0}/swagger">
+                                                    <Binding Path="Wise.Port" />
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </Hyperlink>
+                                </TextBlock>
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
@@ -441,11 +410,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
                                         Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise.ServiceDirectory}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5"
                                         Content="配置"
                                         Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -454,10 +423,10 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
                                         Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
                                         Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -466,16 +435,117 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
                                         Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise}" />
                                 <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
                                         Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                        CommandParameter="{Binding Wise}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
-                    <sf:CardViewItem Header="Neuz.Web">
+                    <sf:CardViewItem Header="{Binding NeuzApp.DisplayName}" Width="410">
                         <StackPanel>
-                            <Grid Margin="15,0,10,0">
+                            <TextBlock Margin="10,0,10,0" Text="{Binding NeuzApp.Version}" />
+                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Margin="10,0,10,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                               Margin="5"
+                                               FontSize="16" FontWeight="Bold"
+                                               Text="{Binding NeuzApp.Api.DisplayName}" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
+                                               Margin="5"
+                                               FontSize="12"
+                                               Text="安装状态" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                               Margin="5"
+                                               FontSize="12" FontWeight="Bold"
+                                               Foreground="{Binding NeuzApp.Api.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                               Text="{Binding NeuzApp.Api.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                               Margin="5"
+                                               FontSize="12" FontWeight="Bold"
+                                               Foreground="{Binding NeuzApp.Api.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                               Text="{Binding NeuzApp.Api.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1"
+                                               Margin="5"
+                                               FontSize="12" FontWeight="Bold"
+                                               Text="{Binding NeuzApp.Api.Port}" />
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                                               Margin="5"
+                                               FontSize="12">
+                                        <Hyperlink Command="{Binding OpenUrlCommand}"
+                                                   CommandParameter="{Binding ElementName=ApiUrl,Path=Text}">
+                                            <Run Name="ApiUrl">
+                                                <Run.Text>
+                                                    <MultiBinding StringFormat="http://localhost:{0}">
+                                                        <Binding Path="NeuzApp.Api.Port" />
+                                                    </MultiBinding>
+                                                </Run.Text>
+                                            </Run>
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </Grid>
+                                <Separator Grid.Column="1" Margin="10,5,10,5" VerticalAlignment="Stretch" />
+                                <Grid Grid.Column="2" Margin="0,0,10,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Column="0" Grid.Row="0"
+                                            MinWidth="50" Margin="5"
+                                            Content="目录"
+                                            Command="{Binding OpenDirCommand}"
+                                            CommandParameter="{Binding NeuzApp.Directory}" />
+                                    <Button Grid.Column="0" Grid.Row="1"
+                                            MinWidth="50" Margin="5"
+                                            Content="安装"
+                                            Command="{Binding InstallCommand}"
+                                            CommandParameter="{Binding NeuzApp}" />
+                                    <Button Grid.Column="1" Grid.Row="1"
+                                            MinWidth="50" Margin="5"
+                                            Content="卸载"
+                                            Command="{Binding UnInstallCommand}"
+                                            CommandParameter="{Binding NeuzApp}" />
+                                    <Button Grid.Column="0" Grid.Row="2"
+                                            MinWidth="50" Margin="5"
+                                            Content="启动"
+                                            Command="{Binding StartCommand}"
+                                            CommandParameter="{Binding NeuzApp.Api}" />
+                                    <Button Grid.Column="1" Grid.Row="2"
+                                            MinWidth="50" Margin="5"
+                                            Content="停止"
+                                            Command="{Binding StopCommand}"
+                                            CommandParameter="{Binding NeuzApp.Api}" />
+                                </Grid>
+                            </Grid>
+                            <Separator Margin="10,5,10,5" Height="1" HorizontalAlignment="Stretch" />
+                            <Grid Margin="10,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
@@ -483,69 +553,30 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.RedisConfig.Port}" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                           Margin="5"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Text="Neuz.Web.Client" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="访问地址" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
+                                    <Hyperlink Command="{Binding OpenUrlCommand}"
+                                               CommandParameter="{Binding ElementName=WebClientUrl,Path=Text}">
+                                        <Run Name="WebClientUrl">
+                                            <Run.Text>
+                                                <MultiBinding StringFormat="http://localhost:{0}">
+                                                    <Binding Path="Nginx.NginxConfig.WebPort" />
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </Hyperlink>
+                                </TextBlock>
                             </Grid>
-                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
+                            <Separator Margin="10,5,10,5" Height="1" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                            </Grid>
-                        </StackPanel>
-                    </sf:CardViewItem>
-                    <sf:CardViewItem Header="Neuz.Pda">
-                        <StackPanel>
-                            <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
@@ -553,63 +584,27 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="版本" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.Version}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" FontSize="12"
-                                           Foreground="White"
-                                           Text="{Binding Redis.RedisConfig.Port}" />
-                            </Grid>
-                            <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                            </Grid>
-                            <Grid Margin="10,0,10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+                                           Margin="5"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Text="Neuz.Web.Pda" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="访问地址" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
+                                    <Hyperlink Command="{Binding OpenUrlCommand}"
+                                               CommandParameter="{Binding ElementName=PdaClientUrl,Path=Text}">
+                                        <Run Name="PdaClientUrl">
+                                            <Run.Text>
+                                                <MultiBinding StringFormat="http://localhost:{0}">
+                                                    <Binding Path="Nginx.NginxConfig.PdaPort" />
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </Hyperlink>
+                                </TextBlock>
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>

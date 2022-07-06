@@ -3,6 +3,7 @@ using CliWrap.Buffered;
 using Serilog;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -53,7 +54,7 @@ public class FileUtils
 
     public static async Task<bool> BackupFile(string? filePath)
     {
-        try
+        return await Task.Run(() =>
         {
             if (!File.Exists(filePath)) throw new FileNotFoundException($"文件不存在 [{filePath}]");
             var dir = Path.GetDirectoryName(filePath);
@@ -64,12 +65,7 @@ public class FileUtils
             File.Copy(filePath, newFilePath, true);
             Log.Information($"create file: {newFilePath}");
             return true;
-        }
-        catch (Exception e)
-        {
-            Log.Error(e.Message);
-            return false;
-        }
+        });
     }
 
     /// <summary>
@@ -82,7 +78,7 @@ public class FileUtils
         try
         {
             var cli = Cli.Wrap("explorer.exe")
-                         .WithArguments(dirPath)
+                         .WithArguments(new []{"/e,", dirPath })
                          .WithValidation(CommandResultValidation.None);
             Log.Information(cli.ToString());
             await cli.ExecuteBufferedAsync();
@@ -113,5 +109,23 @@ public class FileUtils
         {
             Log.Error(e.Message);
         }
+    }
+
+    public static async Task ZipFromDirectory(string directory, string destFilePath)
+    {
+        await Task.Run(() => { ZipFile.CreateFromDirectory(directory, destFilePath); });
+    }
+
+    public static async Task ZipExtractToDirectory(string zipFilePath, string destDir, bool overwrite = true)
+    {
+        await Task.Run(() => { ZipFile.ExtractToDirectory(zipFilePath, destDir, overwrite); });
+    }
+
+    public static async Task OpenUrl(string url)
+    {
+        var cli = Cli.Wrap("cmd.exe")
+                     .WithArguments(new[] { "/c", "start", url })
+                     .WithValidation(CommandResultValidation.None);
+        await cli.ExecuteAsync();
     }
 }

@@ -82,30 +82,22 @@ public class WinServiceUtils
     /// <returns></returns>
     public static async Task<bool> CreateService(string binPath, string serviceName, string displayName = "", string description = "")
     {
-        try
-        {
-            var args = string.IsNullOrEmpty(displayName)
-                           ? new[] {"create", serviceName, "binpath=", $"{binPath}", "start= auto"}
-                           : new[] {"create", serviceName, "binpath=", $"{binPath}", "displayname=", $"{displayName}", "start=", "auto"};
-            var cli = Cli.Wrap($"sc.exe")
-                         .WithArguments(args)
-                         .WithValidation(CommandResultValidation.ZeroExitCode);
-            Log.Information(cli.ToString());
-            await cli.ExecuteBufferedAsync();
-
-
-            cli = Cli.Wrap($"sc.exe")
-                     .WithArguments(new[] {"description", serviceName, description})
+        var args = string.IsNullOrEmpty(displayName)
+                       ? new[] { "create", serviceName, "binpath=", $"{binPath}", "start= auto" }
+                       : new[] { "create", serviceName, "binpath=", $"{binPath}", "displayname=", $"{displayName}", "start=", "auto" };
+        var cli = Cli.Wrap($"sc.exe")
+                     .WithArguments(args)
                      .WithValidation(CommandResultValidation.ZeroExitCode);
-            Log.Information(cli.ToString());
-            await cli.ExecuteBufferedAsync();
-            return true;
-        }
-        catch (Exception e)
-        {
-            Log.Error(e.Message);
-            return false;
-        }
+        Log.Information(cli.ToString());
+        await cli.ExecuteBufferedAsync();
+
+
+        cli = Cli.Wrap($"sc.exe")
+                 .WithArguments(new[] { "description", serviceName, description })
+                 .WithValidation(CommandResultValidation.ZeroExitCode);
+        Log.Information(cli.ToString());
+        await cli.ExecuteBufferedAsync();
+        return true;
     }
 
     /// <summary>

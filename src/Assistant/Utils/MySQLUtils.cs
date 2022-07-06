@@ -1,9 +1,7 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Data;
-using System.Threading;
 using System.Threading.Tasks;
-using MySqlConnector;
-using Serilog;
 
 // ReSharper disable InconsistentNaming
 
@@ -20,7 +18,7 @@ public class MySQLUtils
     /// <param name="pwd"></param>
     /// <param name="timeout">秒</param>
     /// <returns></returns>
-    public static bool TestConnect(string host, string port, string user, string pwd, int timeout = 10)
+    public static async Task<bool> TestConnect(string host, string port, string user, string pwd, int timeout = 10)
     {
         var builder = new MySqlConnectionStringBuilder
         {
@@ -30,38 +28,24 @@ public class MySQLUtils
             Password          = pwd,
             ConnectionTimeout = Convert.ToUInt32(timeout)
         };
-        return TestConnect(builder.ToString());
+        return await TestConnect(builder.ToString());
     }
 
-    public static bool TestConnect(string connStr)
+    public static async Task<bool> TestConnect(string connStr)
     {
-        using var conn = new MySqlConnection(connStr);
-        conn.Open();
-        return conn.State == ConnectionState.Open;
+        return await Task.Run(() =>
+        {
+            using var conn = new MySqlConnection(connStr);
+            conn.Open();
+            return conn.State == ConnectionState.Open;
+        });
     }
 
-    public static void ImportSQL(string connStr, string filePath, string? errorFilePath = null, Action<object, ImportProgressArgs>? action = null)
-    {
-        ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
-        ArgumentNullException.ThrowIfNull(connStr, nameof(connStr));
-
-        using var conn = new MySqlConnection(connStr);
-        using var cmd  = new MySqlCommand();
-        using var mb   = new MySqlBackup(cmd);
-        cmd.Connection = conn;
-        conn.Open();
-        if (!string.IsNullOrEmpty(errorFilePath)) mb.ImportInfo.ErrorLogFile = errorFilePath;
-
-        if (action != null) mb.ImportProgressChanged += action.Invoke;
-
-        mb.ImportFromFile(filePath);
-
-        conn.Close();
-    }
-
-    public static Task ImportSQL(string connStr, string[] filePaths, string? errorFilePath = null, 
+    public static Task ImportSQL(string connStr,
+        string? errorFilePath = null,
         Action<string>? currentFileHandler = null,
-        Action<object, ImportProgressArgs>? importProgressChangedHandler = null)
+        Action<object, ImportProgressArgs>? importProgressChangedHandler = null,
+        params string[] filePaths)
     {
         ArgumentNullException.ThrowIfNull(connStr, nameof(connStr));
 
@@ -72,6 +56,7 @@ public class MySQLUtils
             using var mb   = new MySqlBackup(cmd);
             cmd.Connection = conn;
             conn.Open();
+            mb.ImportInfo.IntervalForProgressReport = 2000; // 引发 ImportProgressChanged 事件的时间间隔（以毫秒为单位）
             if (!string.IsNullOrEmpty(errorFilePath)) mb.ImportInfo.ErrorLogFile = errorFilePath;
 
             if (importProgressChangedHandler != null) mb.ImportProgressChanged += importProgressChangedHandler.Invoke;

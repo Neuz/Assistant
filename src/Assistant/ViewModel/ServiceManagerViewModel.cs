@@ -1,15 +1,16 @@
 ﻿using Assistant.Model.ServiceManager;
+using Assistant.Utils;
 using Assistant.View.WizardControl;
 using Assistant.ViewModel.WizardControl;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Serilog;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CliWrap;
-using CliWrap.Buffered;
-using Serilog;
 
 // ReSharper disable InconsistentNaming
 
@@ -26,13 +27,16 @@ public class ServiceManagerViewModel : ObservableObject
         UnInstallCommand  = new AsyncRelayCommand<object>(UnInstallHandler);
         StartCommand      = new AsyncRelayCommand<object>(StartHandler);
         StopCommand       = new AsyncRelayCommand<object>(StopHandler);
-        OpenUrl           = new AsyncRelayCommand<object>(OpenUrlHandler);
+        OpenUrlCommand    = new AsyncRelayCommand<object>(OpenUrlHandler);
+        OpenWinSvcCommand = new AsyncRelayCommand<object>(OpenWinSvcHandler);
 
 
         _mysql   = new MySQLServiceModel();
         _nginx   = new NginxServiceModel();
         _redis   = new RedisServiceModel();
-        _neuzApi = new NeuzApiServiceModel();
+        _neuzApp = new NeuzAppServiceModel();
+        _kis     = new NeuzAdapterKisServiceModel();
+        _wise    = new NeuzAdapterK3WiseServiceModel();
     }
 
 
@@ -80,12 +84,28 @@ public class ServiceManagerViewModel : ObservableObject
         set => SetProperty(ref _mysql, value);
     }
 
-    private NeuzApiServiceModel _neuzApi;
+    private NeuzAppServiceModel _neuzApp;
 
-    public NeuzApiServiceModel NeuzApi
+    public NeuzAppServiceModel NeuzApp
     {
-        get => _neuzApi;
-        set => SetProperty(ref _neuzApi, value);
+        get => _neuzApp;
+        set => SetProperty(ref _neuzApp, value);
+    }
+
+    private NeuzAdapterKisServiceModel _kis;
+
+    public NeuzAdapterKisServiceModel Kis
+    {
+        get => _kis;
+        set => SetProperty(ref _kis, value);
+    }
+
+    private NeuzAdapterK3WiseServiceModel _wise;
+
+    public NeuzAdapterK3WiseServiceModel Wise
+    {
+        get => _wise;
+        set => SetProperty(ref _wise, value);
     }
 
     #endregion
@@ -104,7 +124,9 @@ public class ServiceManagerViewModel : ObservableObject
         Nginx   = await Nginx.Flush();
         MySQL   = await MySQL.Flush();
         Redis   = await Redis.Flush();
-        NeuzApi = await NeuzApi.Flush();
+        NeuzApp = await NeuzApp.Flush();
+        Kis     = await Kis.Flush();
+        Wise    = await Wise.Flush();
         IsBusy  = false;
     }
 
@@ -115,16 +137,11 @@ public class ServiceManagerViewModel : ObservableObject
 
     private async Task OpenDirHandler(object? param)
     {
-        if (param is ServiceBaseModel model)
-        {
-            if (!Directory.Exists(model.ServiceDirectory))
-            {
-                MessageBox.Show("找不到目录");
-                return;
-            }
-
-            await model.OpenDirectory();
-        }
+        var dir = param?.ToString();
+        if (Directory.Exists(dir))
+            await FileUtils.OpenDirectory(dir);
+        else
+            MessageBox.Show($"找不到目录\r\n{dir}");
     }
 
     /// <summary>
@@ -134,16 +151,11 @@ public class ServiceManagerViewModel : ObservableObject
 
     private async Task OpenConfigHandler(object? param)
     {
-        if (param is ServiceBaseModel model)
-        {
-            if (!File.Exists(model.ConfigFilePath))
-            {
-                MessageBox.Show("找不到目录");
-                return;
-            }
-
-            await model.OpenConfigFile();
-        }
+        var filePath = param?.ToString();
+        if (File.Exists(filePath))
+            await FileUtils.OpenFileWithNotepad(filePath);
+        else
+            MessageBox.Show($"找不到文件\r\n{filePath}]");
     }
 
     /// <summary>
@@ -157,100 +169,86 @@ public class ServiceManagerViewModel : ObservableObject
 
         IsBusy = true;
 
-        if (param is NginxServiceModel)
+        try
         {
-            if (Nginx.Installed)
+            switch (param)
             {
-                MessageBox.Show($"[{Nginx.ServiceName}]已安装");
-                IsBusy = false;
-                return;
-            }
+                case NginxServiceModel:
+                {
+                    if (Nginx.Installed) throw new ApplicationException($"[{Nginx.ServiceName}]已安装");
 
-            var wizard = new NginxWizardView {DataContext = new NginxWizardViewModel(Nginx)};
-            if (!(wizard.ShowDialog() ?? false))
-            {
-                IsBusy = false;
-                return;
-            }
+                    var wizard = new NginxWizardView {DataContext = new NginxWizardViewModel(Nginx)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+                    var rs = await Nginx.Install();
+                    MessageBox.Show(rs ? $"[{Nginx.ServiceName}]安装成功" : $"[{Nginx.ServiceName}]安装失败");
+                    break;
+                }
+                case MySQLServiceModel:
+                {
+                    if (MySQL.Installed) throw new ApplicationException($"[{MySQL.ServiceName}]已安装");
 
-            var rs = await Nginx.Install();
-            MessageBox.Show(rs ? $"[{Nginx.ServiceName}]安装成功" : $"[{Nginx.ServiceName}]安装失败");
+                    var wizard = new MySQLWizardView {DataContext = new MySQLWizardViewModel(MySQL)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+                    var rs = await MySQL.Install();
+                    MessageBox.Show(rs ? $"[{MySQL.ServiceName}]安装成功" : $"[{MySQL.ServiceName}]安装失败");
+                    break;
+                }
+                case RedisServiceModel:
+                {
+                    if (Redis.Installed) throw new ApplicationException($"[{Redis.ServiceName}]已安装");
+
+                    var wizard = new RedisWizardView {DataContext = new RedisWizardViewModel(Redis)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+
+                    var rs = await Redis.Install();
+                    MessageBox.Show(rs ? $"[{Redis.ServiceName}]安装成功" : $"[{Redis.ServiceName}]安装失败");
+                    break;
+                }
+                case NeuzAppServiceModel:
+                {
+                    if (NeuzApp.Api.Installed) throw new ApplicationException($"[{NeuzApp.Api.ServiceName}]已安装");
+
+                    var wizard = new NeuzAppWizardView {DataContext = new NeuzAppWizardViewModel(NeuzApp)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+
+
+                    var rs = await NeuzApp.Install(wizard.TbZipFilePath.Text);
+                    MessageBox.Show(rs ? $"[{NeuzApp.DisplayName}]安装成功" : $"[{NeuzApp.DisplayName}]安装失败");
+                    break;
+                }
+                case NeuzAdapterKisServiceModel:
+                {
+                    if (Kis.Installed) throw new ApplicationException($"[{Kis.ServiceName}]已安装");
+
+                    var wizard = new NeuzAdapterKisWizardView() {DataContext = new NeuzAdapterKisWizardViewModel(Kis)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+
+                    var rs = await Kis.Install(wizard.TbZipFilePath.Text);
+                    MessageBox.Show(rs ? $"[{Kis.DisplayName}]安装成功" : $"[{Kis.DisplayName}]安装失败");
+                    break;
+                }
+                case NeuzAdapterK3WiseServiceModel:
+                {
+                    if (Wise.Installed) throw new ApplicationException($"[{Wise.ServiceName}]已安装");
+
+                    var wizard = new NeuzAdapterK3WiseWizardView() {DataContext = new NeuzAdapterK3WiseWizardViewModel(Wise)};
+                    if (!(wizard.ShowDialog() ?? false)) break;
+
+                    var rs = await Wise.Install(wizard.TbZipFilePath.Text);
+                    MessageBox.Show(rs ? $"[{Wise.DisplayName}]安装成功" : $"[{Wise.DisplayName}]安装失败");
+                    break;
+                }
+            }
+        }
+        catch (ApplicationException aex)
+        {
+            MessageBox.Show(aex.Message);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
         }
 
-        if (param is MySQLServiceModel)
-        {
-            if (MySQL.Installed)
-            {
-                MessageBox.Show($"[{MySQL.ServiceName}]已安装");
-                IsBusy = false;
-                return;
-            }
-
-            var wizard = new MySQLWizardView()
-            {
-                DataContext = new MySQLWizardViewModel(MySQL)
-            };
-            if (!(wizard.ShowDialog() ?? false))
-            {
-                IsBusy = false;
-                return;
-            }
-
-            var rs = await MySQL.Install();
-            MessageBox.Show(rs ? $"[{MySQL.ServiceName}]安装成功" : $"[{MySQL.ServiceName}]安装失败");
-        }
-
-        if (param is RedisServiceModel)
-        {
-            if (Redis.Installed)
-            {
-                MessageBox.Show($"[{Redis.ServiceName}]已安装");
-                IsBusy = false;
-                return;
-            }
-
-            var wizard = new RedisWizardView()
-            {
-                DataContext = new RedisWizardViewModel(Redis)
-            };
-            if (!(wizard.ShowDialog() ?? false))
-            {
-                IsBusy = false;
-                return;
-            }
-
-            var rs = await Redis.Install();
-            MessageBox.Show(rs ? $"[{Redis.ServiceName}]安装成功" : $"[{Redis.ServiceName}]安装失败");
-        }
-
-        if (param is NeuzApiServiceModel)
-        {
-            if (NeuzApi.Installed)
-            {
-                MessageBox.Show($"[{NeuzApi.ServiceName}]已安装");
-                IsBusy = false;
-                return;
-            }
-
-            var wizard = new NeuzApiWizardView()
-            {
-                DataContext = new NeuzApiWizardViewModel(NeuzApi)
-            };
-            if (!(wizard.ShowDialog() ?? false))
-            {
-                IsBusy = false;
-                return;
-            }
-
-            var packFilePath = wizard.TextBoxPackPath.Text;
-
-            var rs = await NeuzApi.Install(packFilePath, i =>
-            {
-                IndicatorText = $"{i}%";
-            });
-            MessageBox.Show(rs ? $"[{NeuzApi.ServiceName}]安装成功" : $"[{NeuzApi.ServiceName}]安装失败");
-            IndicatorText = "";
-        }
 
         IsBusy = false;
 
@@ -267,57 +265,69 @@ public class ServiceManagerViewModel : ObservableObject
         await FlushHandler();
         IsBusy = true;
 
-        if (param is NginxServiceModel)
+        try
         {
-            if (Nginx.RunningStatus == RunningStatus.Running)
+            switch (param)
             {
-                MessageBox.Show($"[{Nginx.ServiceName}]运行中");
-                IsBusy = false;
-                return;
-            }
+                case NginxServiceModel:
+                {
+                    if (Nginx.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{Nginx.ServiceName}]运行中");
 
-            var rs = await Nginx.UnInstall();
-            MessageBox.Show(rs ? $"[{Nginx.ServiceName}]卸载成功" : $"[{Nginx.ServiceName}]卸载失败");
+                    var rs = await Nginx.UnInstall();
+                    MessageBox.Show(rs ? $"[{Nginx.ServiceName}]卸载成功" : $"[{Nginx.ServiceName}]卸载失败");
+                    break;
+                }
+                case MySQLServiceModel:
+                {
+                    if (MySQL.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{MySQL.ServiceName}]运行中");
+
+                    var rs = await MySQL.UnInstall();
+                    MessageBox.Show(rs ? $"[{MySQL.ServiceName}]卸载成功" : $"[{MySQL.ServiceName}]卸载失败");
+                    break;
+                }
+                case RedisServiceModel:
+                {
+                    if (Redis.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{Redis.ServiceName}]运行中");
+
+                    var rs = await Redis.UnInstall();
+                    MessageBox.Show(rs ? $"[{Redis.ServiceName}]卸载成功" : $"[{Redis.ServiceName}]卸载失败");
+                    break;
+                }
+                case NeuzAppServiceModel:
+                {
+                    if (NeuzApp.Api.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{NeuzApp.Api.ServiceName}]运行中");
+
+                    var rs = await NeuzApp.UnInstall();
+                    MessageBox.Show(rs ? $"[{NeuzApp.DisplayName}]卸载成功" : $"[{NeuzApp.DisplayName}]卸载失败");
+                    break;
+                }
+                case NeuzAdapterKisServiceModel:
+                {
+                    if (Kis.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{Kis.ServiceName}]运行中");
+
+                    var rs = await Kis.UnInstall();
+                    MessageBox.Show(rs ? $"[{Kis.DisplayName}]卸载成功" : $"[{Kis.DisplayName}]卸载失败");
+                    break;
+                }
+                case NeuzAdapterK3WiseServiceModel:
+                {
+                    if (Wise.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{Wise.ServiceName}]运行中");
+
+                    var rs = await Wise.UnInstall();
+                    MessageBox.Show(rs ? $"[{Wise.DisplayName}]卸载成功" : $"[{Wise.DisplayName}]卸载失败");
+                    break;
+                }
+            }
+        }
+        catch (ApplicationException aex)
+        {
+            MessageBox.Show(aex.Message);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
         }
 
-        if (param is MySQLServiceModel)
-        {
-            if (MySQL.RunningStatus == RunningStatus.Running)
-            {
-                MessageBox.Show($"[{MySQL.ServiceName}]运行中");
-                IsBusy = false;
-                return;
-            }
-
-            var rs = await MySQL.UnInstall();
-            MessageBox.Show(rs ? $"[{MySQL.ServiceName}]卸载成功" : $"[{MySQL.ServiceName}]卸载失败");
-        }
-
-        if (param is RedisServiceModel)
-        {
-            if (Redis.RunningStatus == RunningStatus.Running)
-            {
-                MessageBox.Show($"[{Redis.ServiceName}]运行中");
-                IsBusy = false;
-                return;
-            }
-
-            var rs = await Redis.UnInstall();
-            MessageBox.Show(rs ? $"[{Redis.ServiceName}]卸载成功" : $"[{Redis.ServiceName}]卸载失败");
-        }
-
-        if (param is NeuzApiServiceModel)
-        {
-            if (NeuzApi.RunningStatus == RunningStatus.Running)
-            {
-                MessageBox.Show($"[{Redis.ServiceName}]运行中");
-                IsBusy = false;
-                return;
-            }
-
-            var rs = await NeuzApi.UnInstall();
-            MessageBox.Show(rs ? $"[{NeuzApi.ServiceName}]卸载成功" : $"[{NeuzApi.ServiceName}]卸载失败");
-        }
 
         IsBusy = false;
         await FlushHandler();
@@ -333,32 +343,36 @@ public class ServiceManagerViewModel : ObservableObject
         await FlushHandler();
         IsBusy = true;
 
-        if (param is ServiceBaseModel model)
-        {
-            if (!Directory.Exists(model.ServiceDirectory))
-            {
-                MessageBox.Show("找不到目录");
-                return;
-            }
-
-            await model.Start();
-        }
+        if (param is ServiceBaseModel model) await model.Start();
 
         IsBusy = false;
         await FlushHandler();
     }
 
-    public ICommand OpenUrl { get; }
+    public ICommand OpenUrlCommand { get; }
 
     public async Task OpenUrlHandler(object? param)
     {
-        if (param is NeuzApiServiceModel)
+        switch (param)
         {
-            var cli = Cli.Wrap("cmd.exe")
-                         .WithArguments(new[] {"/c", "start", $"http://localhost:{NeuzApi.Port}"})
-                         .WithValidation(CommandResultValidation.None);
-            Log.Information(cli.ToString());
-            await cli.ExecuteBufferedAsync();
+            case NeuzAdapterKisServiceModel kis:
+            {
+                var kisUrl = $"http://localhost:{kis.Port}/swagger";
+                Log.Information($"open url: {kisUrl}");
+                await FileUtils.OpenUrl(kisUrl);
+                break;
+            }
+            case NeuzAdapterK3WiseServiceModel wise:
+            {
+                var wiseUrl = $"http://localhost:{wise.Port}/swagger";
+                Log.Information($"open url: {wiseUrl}");
+                await FileUtils.OpenUrl(wiseUrl);
+                break;
+                }
+            case string url:
+                Log.Information($"open url: {url}");
+                await FileUtils.OpenUrl(url);
+                break;
         }
     }
 
@@ -372,19 +386,20 @@ public class ServiceManagerViewModel : ObservableObject
         await FlushHandler();
         IsBusy = true;
 
-        if (param is ServiceBaseModel model)
-        {
-            if (!Directory.Exists(model.ServiceDirectory))
-            {
-                MessageBox.Show("找不到目录");
-                return;
-            }
-
-            await model.Stop();
-        }
+        if (param is ServiceBaseModel model) await model.Stop();
 
         IsBusy = false;
         await FlushHandler();
+    }
+
+
+    public ICommand OpenWinSvcCommand { get; }
+
+    private async Task OpenWinSvcHandler(object? param)
+    {
+        await Cli.Wrap("cmd.exe")
+                 .WithArguments(new []{"/c", "services.msc" })
+                 .ExecuteAsync();
     }
 
     #endregion

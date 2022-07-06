@@ -1,12 +1,11 @@
-﻿<!-- ReSharper disable InconsistentNaming -->
-<sf:ChromelessWindow x:Class="Assistant.View.WizardControl.NeuzApiWizardView"
+﻿<sf:ChromelessWindow x:Class="Assistant.View.WizardControl.NeuzAppWizardView"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:sf="http://schemas.syncfusion.com/wpf"
                      mc:Ignorable="d"
-                     Title="Neuz.API 服务安装向导"
+                     Title="Neuz.App 服务安装向导"
                      CornerRadius="8"
                      TitleTextAlignment="Center"
                      UseNativeChrome="True"
@@ -18,7 +17,7 @@
                      WindowStartupLocation="CenterScreen"
                      xmlns:vm="clr-namespace:Assistant.ViewModel.WizardControl">
     <sf:ChromelessWindow.DataContext>
-        <vm:NeuzApiWizardViewModel />
+        <vm:NeuzAppWizardViewModel />
     </sf:ChromelessWindow.DataContext>
     <sf:WizardControl HelpVisible="False"
                       FinishButtonClosesWindow="True"
@@ -27,9 +26,9 @@
                       BackText="上一步"
                       NextText="下一步"
                       Next="WizardControl_OnNext">
-        <sf:WizardPage Name="ServiceConfigPage"
-                       Title="服务设置"
-                       Description="Neuz.Api服务的安装参数设置"
+        <sf:WizardPage Name="ApiConfigPage"
+                       Title="Neuz.Api 服务设置"
+                       Description="Neuz.Api 服务的安装参数设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="False"
@@ -37,10 +36,10 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
                     <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
-                        <TextBox Text="{Binding ServiceName}" />
+                        <TextBox Text="{Binding ApiServiceName}" />
                     </sf:SfTextInputLayout>
                     <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
-                        <TextBox Text="{Binding ServiceDescription}" />
+                        <TextBox Text="{Binding ApiServiceDescription}" />
                     </sf:SfTextInputLayout>
                     <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
                         <sf:IntegerTextBox
@@ -51,48 +50,54 @@
                             MaxValueOnExceedMaxDigit="True"
                             MinValidation="OnKeyPress"
                             MaxValidation="OnKeyPress"
-                            Value="{Binding Port}" />
+                            Value="{Binding ApiPort}" />
                     </sf:SfTextInputLayout>
-
-
                 </StackPanel>
             </ScrollViewer>
         </sf:WizardPage>
-
-        <sf:WizardPage Name="MySQLConfigPage"
-                       Title="数据库连接设置"
+        <sf:WizardPage Name="DatabaseConfigPage1"
+                       Title="数据库连接设置 ( 1/2 )"
                        Description="MySQL 数据库连接设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="True"
                        FinishVisible="False">
-            <StackPanel>
-                <sf:SfTextInputLayout Hint="MySQL 服务器地址" Margin="10,10,10,0">
-                    <TextBox Name="TbMySQLHost" Text="{Binding MySQLHost}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="MySQL 端口" Margin="10,0,10,0">
-                    <sf:IntegerTextBox GroupSeperatorEnabled="False"
-                                       MinValue="0"
-                                       MaxValue="65535"
-                                       MinValueOnExceedMinDigit="True"
-                                       MaxValueOnExceedMaxDigit="True"
-                                       MinValidation="OnKeyPress"
-                                       MaxValidation="OnKeyPress"
-                                       Name="TbMySQLPort"
-                                       Value="{Binding MySQLPort}" />
-                </sf:SfTextInputLayout>
+            <sf:SfBusyIndicator Name="BusyIndicator" IsBusy="False">
+                <StackPanel>
+                    <sf:SfTextInputLayout Hint="MySQL 服务器地址" Margin="10,10,10,0">
+                        <TextBox Name="TbHost" Text="{Binding DatabaseHost}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="MySQL 端口" Margin="10,0,10,0">
+                        <sf:IntegerTextBox GroupSeperatorEnabled="False"
+                                           MinValue="0"
+                                           MaxValue="65535"
+                                           MinValueOnExceedMinDigit="True"
+                                           MaxValueOnExceedMaxDigit="True"
+                                           MinValidation="OnKeyPress"
+                                           MaxValidation="OnKeyPress"
+                                           Name="TbPort"
+                                           Value="{Binding DatabasePort}" />
+                    </sf:SfTextInputLayout>
 
-                <sf:SfTextInputLayout Hint="MySQL 用户名" Margin="10,10,10,0">
-                    <TextBox Name="TbMySQLUser" Text="{Binding MySQLUser}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="MySQL 密码" Margin="10,10,10,0">
-                    <TextBox Name="TbMySQLPwd" Text="{Binding MySQLPassword}" />
-                </sf:SfTextInputLayout>
-                <Button Name="BtnTest" Content="测试" Click="BtnTest_OnClick" />
-            </StackPanel>
+                    <sf:SfTextInputLayout Hint="MySQL 用户名" Margin="10,10,10,0">
+                        <TextBox Name="TbUser" Text="{Binding DatabaseUser}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="MySQL 密码" Margin="10,10,10,0">
+                        <TextBox Name="TbPassword" Text="{Binding DatabasePassword}" />
+                    </sf:SfTextInputLayout>
+                    <DockPanel LastChildFill="False">
+                        <Button Name="BtnTest"
+                                Width="100" Height="30" DockPanel.Dock="Right"
+                                Content="测试"
+                                Click="BtnTest_OnClick" />
+                        <TextBlock Name="TbTestResult"
+                                   Margin="10,10,10,0" HorizontalAlignment="Left" />
+                    </DockPanel>
+                </StackPanel>
+            </sf:SfBusyIndicator>
         </sf:WizardPage>
-        <sf:WizardPage Name="OtherConfigPage"
-                       Title="其他设置"
+        <sf:WizardPage Name="DatabaseConfigPage2"
+                       Title="数据库连接设置 ( 2/2 )"
                        Description=""
                        PageType="Exterior"
                        CancelVisible="False"
@@ -102,7 +107,7 @@
 
                 <TextBlock Text="设置数据库前缀" />
                 <sf:SfTextInputLayout Hint="数据库前缀" Margin="10,10,10,0">
-                    <TextBox Name="TbDbPrefix" Text="{Binding Prefix ,UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Name="TbDbPrefix" Text="{Binding DatabaseDbPrefix ,UpdateSourceTrigger=PropertyChanged}" />
                 </sf:SfTextInputLayout>
                 <TextBlock Text="程序将创建以下数据库" />
                 <sf:EditControl BorderThickness="1"
@@ -114,7 +119,7 @@
                                 ShowDefaultContextMenu="False"
                                 DocumentLanguage="Text"
                                 Height="100"
-                                Text="{Binding PreviewSQL}" />
+                                Text="{Binding PreviewSql}" />
                 <TextBlock Text="dbsettings.json 预览" />
                 <sf:EditControl BorderThickness="1"
                                 IsReadOnly="True"
@@ -125,17 +130,18 @@
                                 ShowDefaultContextMenu="False"
                                 DocumentLanguage="Text"
                                 Height="150"
-                                Text="{Binding ConfigText}" />
+                                Text="{Binding PreviewDbSettings}" />
             </StackPanel>
         </sf:WizardPage>
-        <sf:WizardPage Name="PreviewPage"
-                       Title="设置预览"
+
+        <sf:WizardPage Name="UpdateConfigPage"
+                       Title="安装或更新"
                        PageType="Exterior"
                        CancelVisible="False"
                        NextVisible="False"
                        FinishVisible="True">
             <StackPanel>
-                <TextBlock Text="选择更新包" />
+                <TextBlock Text="选择软件包路径，不需更新可为空。" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -144,8 +150,8 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <sf:SfTextInputLayout Hint="文件路径" HelperText="不更新可为空" Margin="10,10,10,0">
-                        <TextBox Name="TextBoxPackPath" IsReadOnly="True" />
+                    <sf:SfTextInputLayout Hint="软件包路径" HelperText="不更新可为空" Margin="10,10,10,0">
+                        <TextBox Name="TbZipFilePath" IsReadOnly="True" />
                     </sf:SfTextInputLayout>
                     <Button
                         Name="BtnOfd"
