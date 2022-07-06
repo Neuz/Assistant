@@ -27,10 +27,9 @@
             <sf:SfNavigationDrawer.ContentView>
                 <ContentControl Content="{Binding CurrentView}" />
             </sf:SfNavigationDrawer.ContentView>
-            <sf:NavigationItem
-                Header="服务管理"
-                Command="{Binding ClickCommand}"
-                CommandParameter="{x:Type view:ServiceManagerView}">
+            <sf:NavigationItem Header="系统环境"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type view:SystemInfoView}">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"
@@ -39,13 +38,12 @@
                         VerticalAlignment="Center"
                         Fill="White"
                         Stretch="Fill"
-                        Data="{StaticResource Icon.Drafts}" />
+                        Data="{StaticResource Svg.Desktop}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
-            <sf:NavigationItem
-                Header="系统环境检测"
-                Command="{Binding ClickCommand}"
-                CommandParameter="{x:Type view:SystemInfoView}">
+            <sf:NavigationItem Header="服务管理"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type view:ServiceManagerView}">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"
@@ -54,13 +52,11 @@
                         VerticalAlignment="Center"
                         Fill="White"
                         Stretch="Fill"
-                        Data="{StaticResource Icon.Drafts}" />
+                        Data="{StaticResource Svg.Control}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
-            <sf:NavigationItem
-                Header="常用工具"
-                Command="{Binding ClickCommand}"
-                CommandParameter="{x:Type view:ToolsView}">
+            
+            <sf:NavigationItem Header="工具箱">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"
@@ -69,8 +65,22 @@
                         VerticalAlignment="Center"
                         Fill="White"
                         Stretch="Fill"
-                        Data="{StaticResource Icon.Drafts}" />
+                        Data="{StaticResource Svg.Code}" />
                 </sf:NavigationItem.Icon>
+                <sf:NavigationItem Header="常用工具"
+                                   Command="{Binding ClickCommand}"
+                                   CommandParameter="{x:Type view:ToolsView}">
+                    <sf:NavigationItem.Icon>
+                        <Path
+                            Width="16"
+                            Height="16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="White"
+                            Stretch="Fill"
+                            Data="{StaticResource Svg.Tool}" />
+                    </sf:NavigationItem.Icon>
+                </sf:NavigationItem>
             </sf:NavigationItem>
             <sf:SfNavigationDrawer.FooterItems>
                 <sf:NavigationItem Header="日志"
@@ -84,7 +94,7 @@
                             VerticalAlignment="Center"
                             Fill="White"
                             Stretch="Fill"
-                            Data="{StaticResource Icon.Settings}" />
+                            Data="{StaticResource Svg.FileException}" />
                     </sf:NavigationItem.Icon>
                 </sf:NavigationItem>
                 <sf:NavigationItem Header="设置">

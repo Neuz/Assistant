@@ -9,7 +9,7 @@ public partial class NeuzAdapterK3WiseServiceModel : ServiceBaseModel
 {
     public NeuzAdapterK3WiseServiceModel()
     {
-        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "K3Wise");
+        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "k3wise");
         DisplayName        = "Neuz 适配器 for K3Wise";
         Version            = "";
         ServiceName        = "Neuz.Adapter.K3Wise";
@@ -26,8 +26,8 @@ public partial class NeuzAdapterK3WiseServiceModel : ServiceBaseModel
 public partial class NeuzAdapterK3WiseServiceModel
 {
     public int Port { get; set; } = 10006;
-    public string BackupDirectory { get; set; } = Path.Combine(Global.BackupsDir, "Adapters_K3Wise");
-    public string PackHistoryDirectory { get; set; } = Path.Combine(Global.PackHistoryDir, "Adapters_K3Wise");
+    public string BackupDirectory { get; set; } = Path.Combine(Global.BackupsDir, "Adapters_k3wise");
+    public string PackHistoryDirectory { get; set; } = Path.Combine(Global.PackHistoryDir, "Adapters_k3wise");
 
 
     public string ToConfigString()

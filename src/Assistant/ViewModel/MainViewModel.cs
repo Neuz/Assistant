@@ -14,11 +14,8 @@ public class MainViewModel : ObservableObject
 {
     private UserControl? _currentView;
     public string Title => "Neuz 助手";
-
-    private ServiceManagerView? _serviceManagerView;
-    private SystemInfoView?     _systemInfoView;
-    private ToolsView?          _toolsView;
-    private LogView?            _logView;
+    
+    private readonly LogView _logView;
 
     public UserControl? CurrentView
     {
@@ -31,9 +28,8 @@ public class MainViewModel : ObservableObject
     public MainViewModel()
     {
         ClickCommand = new RelayCommand<object?>(ClickHandler);
-
+        _logView     = new LogView();
         // 日志配置
-        _logView = new LogView();
         const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
                     .MinimumLevel.Verbose()
@@ -41,32 +37,19 @@ public class MainViewModel : ObservableObject
                     .CreateLogger();
     }
 
+
+    public ICommand ClickCommand { get; }
+
     private void ClickHandler(object? obj)
     {
-
         var t = obj as Type;
 
-        if (t == typeof(ServiceManagerView))
-        {
-            _serviceManagerView ??= new ServiceManagerView();
-            CurrentView         =   _serviceManagerView;
-        }
+        if (t == typeof(ServiceManagerView)) CurrentView = new ServiceManagerView();
 
-        if (t == typeof(SystemInfoView))
-        {
-            _systemInfoView ??= new SystemInfoView();
-            CurrentView     =   _systemInfoView;
-        }
+        if (t == typeof(SystemInfoView)) CurrentView = new SystemInfoView();
 
-        if (t == typeof(ToolsView))
-        {
-            _toolsView  ??= new ToolsView();
-            CurrentView =   _toolsView;
-        }
+        if (t == typeof(ToolsView)) CurrentView = new ToolsView();
 
         if (t == typeof(LogView)) CurrentView = _logView;
     }
-
-
-    public ICommand ClickCommand { get; }
 }

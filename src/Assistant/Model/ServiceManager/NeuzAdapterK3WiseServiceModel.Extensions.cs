@@ -89,7 +89,7 @@ public static class NeuzAdapterK3WiseServiceModelExtensions
 
                 if (Directory.Exists(model.ServiceDirectory) && Directory.EnumerateFileSystemEntries(model.ServiceDirectory).Any())
                 {
-                    var appBkFileName = $"Adapter.K3Wise.{DateTime.Now:yyyyMMddhhmmss}.zip";
+                    var appBkFileName = $"Adapter.k3wise.{DateTime.Now:yyyyMMddhhmmss}.zip";
                     var appBkFilePath = Path.Combine(model.BackupDirectory, appBkFileName);
                     await FileUtils.ZipFromDirectory(model.ServiceDirectory, appBkFilePath);
                 }

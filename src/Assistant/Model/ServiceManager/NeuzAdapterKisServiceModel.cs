@@ -10,7 +10,7 @@ public partial class NeuzAdapterKisServiceModel : ServiceBaseModel
 {
     public NeuzAdapterKisServiceModel()
     {
-        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "KisU");
+        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "kisu");
         DisplayName        = "Neuz 适配器 for Kis Ultimate";
         Version            = "";
         ServiceName        = "Neuz.Adapter.KisUltimate";
@@ -27,8 +27,8 @@ public partial class NeuzAdapterKisServiceModel : ServiceBaseModel
 public partial class NeuzAdapterKisServiceModel
 {
     public int Port { get; set; } = 10005;
-    public string BackupDirectory { get; set; } = Path.Combine(Global.BackupsDir, "Adapters_KisU");
-    public string PackHistoryDirectory { get; set; } = Path.Combine(Global.PackHistoryDir, "Adapters_KisU");
+    public string BackupDirectory { get; set; } = Path.Combine(Global.BackupsDir, "Adapters_kisu");
+    public string PackHistoryDirectory { get; set; } = Path.Combine(Global.PackHistoryDir, "Adapters_kisu");
 
     public KingdeeAccountModel KingdeeAccount { get; set; } = new();
 

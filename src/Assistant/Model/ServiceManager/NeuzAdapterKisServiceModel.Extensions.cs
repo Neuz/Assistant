@@ -92,7 +92,7 @@ public static class NeuzAdapterKisServiceModelExtensions
 
                 if (Directory.Exists(model.ServiceDirectory) && Directory.EnumerateFileSystemEntries(model.ServiceDirectory).Any())
                 {
-                    var appBkFileName = $"Adapter.KisU.{DateTime.Now:yyyyMMddhhmmss}.zip";
+                    var appBkFileName = $"Adapter.kisu.{DateTime.Now:yyyyMMddhhmmss}.zip";
                     var appBkFilePath = Path.Combine(model.BackupDirectory, appBkFileName);
                     await FileUtils.ZipFromDirectory(model.ServiceDirectory, appBkFilePath);
                 }
