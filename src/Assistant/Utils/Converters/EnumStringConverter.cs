@@ -10,9 +10,9 @@ public class EnumStringConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value == null 
-                   ? DependencyProperty.UnsetValue 
-                   : GetDescription((Enum)value);
+        return value == null
+                   ? DependencyProperty.UnsetValue
+                   : GetDescription((Enum) value);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

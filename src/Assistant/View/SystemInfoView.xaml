@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converters:MacAddressConverter x:Key="MacAddressCvt" />
         <converters:DiskInfoUsedRateConverter x:Key="UsedRateCvt" />
+        <converters:NetworkTypeConverter x:Key="NetworkTypeCvt" />
         <converters:LongSizeConverter x:Key="LongSizeCvt" />
     </UserControl.Resources>
     <Grid>
@@ -175,10 +176,17 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0"
-                                           Margin="10,15,10,0"
-                                           FontSize="18" FontWeight="Bold"
-                                           Text="{Binding Name}" />
+                                <StackPanel Grid.Row="0" Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="10,15,10,0">
+                                    <Path Width="25" Height="20"
+                                          Margin="0,0,10,0"
+                                          Stretch="Fill" Fill="CornflowerBlue"
+                                          Data="{Binding NetworkType, Converter={StaticResource NetworkTypeCvt}}" />
+                                    <TextBlock
+                                        FontSize="18" FontWeight="Bold"
+                                        Text="{Binding Name}" />
+                                </StackPanel>
                                 <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                       Margin="0,10,0,0">
                                     <Grid.ColumnDefinitions>

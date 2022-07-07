@@ -12,7 +12,7 @@ public class DiskInfoUsedRateConverter : IValueConverter
         if (value is DiskInfo diskInfo)
         {
             var rate = System.Convert.ToDouble(diskInfo.UsedSize) / System.Convert.ToDouble(diskInfo.TotalSize) * 100;
-            return Math.Round(rate,2);
+            return Math.Round(rate, 2);
         }
 
         return 0d;

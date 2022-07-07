@@ -21,5 +21,4 @@ public partial class LogView : UserControl
             LogTextBox.Document.Blocks.Clear();
         }
     }
-    
 }

@@ -16,6 +16,41 @@
         <cvt:BoolStringConverter x:Key="BoolStringCvt" />
         <cvt:EnumStringConverter x:Key="EnumStringCvt" />
         <cvt:EnumColorConverter x:Key="EnumColorCvt" />
+        <DataTemplate x:Key="IconFlush">
+            <Grid>
+                <Path Stretch="Fill" Fill="White" Data="{StaticResource Svg.Reload}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconFolder">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.FolderOpen}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconFileText">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.FileText}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconAppAdd">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.AppAdd}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconDelete">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.Delete}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconPlayCircle">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.PlayCircle}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconStopCircle">
+            <Grid>
+                <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.StopCircle}" />
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,7 +68,12 @@
                     <Run Text="打开服务" />
                 </Hyperlink>
             </TextBlock>
-            <Button Name="BtnFlush" Content="刷新" Width="40" Height="30" Command="{Binding FlushCommand}" />
+            <sf:ButtonAdv Name="BtnFlush"
+                          Width="30" Height="30"
+                          SizeMode="Small"
+                          ToolTip="刷新"
+                          IconTemplate="{StaticResource IconFlush}"
+                          Command="{Binding FlushCommand}" />
         </StackPanel>
 
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
@@ -94,37 +134,54 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding MySQL.ServiceDirectory}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding MySQL.ConfigFilePath}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                              IconTemplate="{StaticResource IconFolder}"
+                                              Command="{Binding OpenDirCommand}"
+                                              CommandParameter="{Binding MySQL.ServiceDirectory}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
+                                              IconTemplate="{StaticResource IconFileText}"
+                                              Command="{Binding OpenConfigCommand}"
+                                              CommandParameter="{Binding MySQL.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding MySQL}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding MySQL}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                              IconTemplate="{StaticResource IconAppAdd}"
+                                              Command="{Binding InstallCommand}"
+                                              CommandParameter="{Binding MySQL}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                              IconTemplate="{StaticResource IconDelete}"
+                                              Command="{Binding UnInstallCommand}"
+                                              CommandParameter="{Binding MySQL}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding MySQL}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding MySQL}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                              IconTemplate="{StaticResource IconPlayCircle}"
+                                              Command="{Binding StartCommand}"
+                                              CommandParameter="{Binding MySQL}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                              IconTemplate="{StaticResource IconStopCircle}"
+                                              Command="{Binding StopCommand}"
+                                              CommandParameter="{Binding MySQL}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -182,37 +239,54 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Nginx.ServiceDirectory}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Nginx.ConfigFilePath}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                              IconTemplate="{StaticResource IconFolder}"
+                                              Command="{Binding OpenDirCommand}"
+                                              CommandParameter="{Binding Nginx.ServiceDirectory}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
+                                              IconTemplate="{StaticResource IconFileText}"
+                                              Command="{Binding OpenConfigCommand}"
+                                              CommandParameter="{Binding Nginx.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Nginx}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Nginx}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                              IconTemplate="{StaticResource IconAppAdd}"
+                                              Command="{Binding InstallCommand}"
+                                              CommandParameter="{Binding Nginx}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                              IconTemplate="{StaticResource IconDelete}"
+                                              Command="{Binding UnInstallCommand}"
+                                              CommandParameter="{Binding Nginx}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Nginx}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Nginx}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                              IconTemplate="{StaticResource IconPlayCircle}"
+                                              Command="{Binding StartCommand}"
+                                              CommandParameter="{Binding Nginx}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                              IconTemplate="{StaticResource IconStopCircle}"
+                                              Command="{Binding StopCommand}"
+                                              CommandParameter="{Binding Nginx}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -263,37 +337,54 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Redis.ServiceDirectory}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Redis.ConfigFilePath}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                              IconTemplate="{StaticResource IconFolder}"
+                                              Command="{Binding OpenDirCommand}"
+                                              CommandParameter="{Binding Redis.ServiceDirectory}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
+                                              IconTemplate="{StaticResource IconFileText}"
+                                              Command="{Binding OpenConfigCommand}"
+                                              CommandParameter="{Binding Redis.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                              IconTemplate="{StaticResource IconAppAdd}"
+                                              Command="{Binding InstallCommand}"
+                                              CommandParameter="{Binding Redis}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                              IconTemplate="{StaticResource IconDelete}"
+                                              Command="{Binding UnInstallCommand}"
+                                              CommandParameter="{Binding Redis}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Redis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Redis}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                              IconTemplate="{StaticResource IconPlayCircle}"
+                                              Command="{Binding StartCommand}"
+                                              CommandParameter="{Binding Redis}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                              IconTemplate="{StaticResource IconStopCircle}"
+                                              Command="{Binding StopCommand}"
+                                              CommandParameter="{Binding Redis}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -361,37 +452,54 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Kis.ServiceDirectory}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Kis.ConfigFilePath}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                              IconTemplate="{StaticResource IconFolder}"
+                                              Command="{Binding OpenDirCommand}"
+                                              CommandParameter="{Binding Kis.ServiceDirectory}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
+                                              IconTemplate="{StaticResource IconFileText}"
+                                              Command="{Binding OpenConfigCommand}"
+                                              CommandParameter="{Binding Kis.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Kis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Kis}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                              IconTemplate="{StaticResource IconAppAdd}"
+                                              Command="{Binding InstallCommand}"
+                                              CommandParameter="{Binding Kis}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                              IconTemplate="{StaticResource IconDelete}"
+                                              Command="{Binding UnInstallCommand}"
+                                              CommandParameter="{Binding Kis}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Kis}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Kis}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                              IconTemplate="{StaticResource IconPlayCircle}"
+                                              Command="{Binding StartCommand}"
+                                              CommandParameter="{Binding Kis}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                              IconTemplate="{StaticResource IconStopCircle}"
+                                              Command="{Binding StopCommand}"
+                                              CommandParameter="{Binding Kis}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -459,37 +567,54 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="目录"
-                                        Command="{Binding OpenDirCommand}"
-                                        CommandParameter="{Binding Wise.ServiceDirectory}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5"
-                                        Content="配置"
-                                        Command="{Binding OpenConfigCommand}"
-                                        CommandParameter="{Binding Wise.ConfigFilePath}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                              IconTemplate="{StaticResource IconFolder}"
+                                              Command="{Binding OpenDirCommand}"
+                                              CommandParameter="{Binding Wise.ServiceDirectory}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
+                                              IconTemplate="{StaticResource IconFileText}"
+                                              Command="{Binding OpenConfigCommand}"
+                                              CommandParameter="{Binding Wise.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="安装"
-                                        Command="{Binding InstallCommand}"
-                                        CommandParameter="{Binding Wise}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="卸载"
-                                        Command="{Binding UnInstallCommand}"
-                                        CommandParameter="{Binding Wise}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                              IconTemplate="{StaticResource IconAppAdd}"
+                                              Command="{Binding InstallCommand}"
+                                              CommandParameter="{Binding Wise}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                              IconTemplate="{StaticResource IconDelete}"
+                                              Command="{Binding UnInstallCommand}"
+                                              CommandParameter="{Binding Wise}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" MinWidth="50" Margin="5" Content="启动"
-                                        Command="{Binding StartCommand}"
-                                        CommandParameter="{Binding Wise}" />
-                                <Button Grid.Column="1" MinWidth="50" Margin="5" Content="停止"
-                                        Command="{Binding StopCommand}"
-                                        CommandParameter="{Binding Wise}" />
+                                <sf:ButtonAdv Grid.Column="0"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                              IconTemplate="{StaticResource IconPlayCircle}"
+                                              Command="{Binding StartCommand}"
+                                              CommandParameter="{Binding Wise}" />
+                                <sf:ButtonAdv Grid.Column="1"
+                                              Margin="5"
+                                              SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                              IconTemplate="{StaticResource IconStopCircle}"
+                                              Command="{Binding StopCommand}"
+                                              CommandParameter="{Binding Wise}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -577,31 +702,36 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Grid.Column="0" Grid.Row="0"
-                                            MinWidth="50" Margin="5"
-                                            Content="目录"
-                                            Command="{Binding OpenDirCommand}"
-                                            CommandParameter="{Binding NeuzApp.Directory}" />
-                                    <Button Grid.Column="0" Grid.Row="1"
-                                            MinWidth="50" Margin="5"
-                                            Content="安装"
-                                            Command="{Binding InstallCommand}"
-                                            CommandParameter="{Binding NeuzApp}" />
-                                    <Button Grid.Column="1" Grid.Row="1"
-                                            MinWidth="50" Margin="5"
-                                            Content="卸载"
-                                            Command="{Binding UnInstallCommand}"
-                                            CommandParameter="{Binding NeuzApp}" />
-                                    <Button Grid.Column="0" Grid.Row="2"
-                                            MinWidth="50" Margin="5"
-                                            Content="启动"
-                                            Command="{Binding StartCommand}"
-                                            CommandParameter="{Binding NeuzApp.Api}" />
-                                    <Button Grid.Column="1" Grid.Row="2"
-                                            MinWidth="50" Margin="5"
-                                            Content="停止"
-                                            Command="{Binding StopCommand}"
-                                            CommandParameter="{Binding NeuzApp.Api}" />
+                                    <sf:ButtonAdv Grid.Column="0" Grid.Row="0"
+                                                  Margin="5"
+                                                  SizeMode="Normal" Label="目录" ToolTip="打开目录"
+                                                  IconTemplate="{StaticResource IconFolder}"
+                                                  Command="{Binding OpenDirCommand}"
+                                                  CommandParameter="{Binding NeuzApp.Directory}" />
+                                    <sf:ButtonAdv Grid.Column="0" Grid.Row="1"
+                                                  Margin="5"
+                                                  SizeMode="Normal" Label="安装" ToolTip="安装服务"
+                                                  IconTemplate="{StaticResource IconAppAdd}"
+                                                  Command="{Binding InstallCommand}"
+                                                  CommandParameter="{Binding NeuzApp}" />
+                                    <sf:ButtonAdv Grid.Column="1" Grid.Row="1"
+                                                  Margin="5"
+                                                  SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
+                                                  IconTemplate="{StaticResource IconDelete}"
+                                                  Command="{Binding UnInstallCommand}"
+                                                  CommandParameter="{Binding NeuzApp}" />
+                                    <sf:ButtonAdv Grid.Column="0" Grid.Row="2"
+                                                  Margin="5"
+                                                  SizeMode="Normal" Label="启动" ToolTip="启动服务"
+                                                  IconTemplate="{StaticResource IconPlayCircle}"
+                                                  Command="{Binding StartCommand}"
+                                                  CommandParameter="{Binding NeuzApp.Api}" />
+                                    <sf:ButtonAdv Grid.Column="1" Grid.Row="2"
+                                                  Margin="5"
+                                                  SizeMode="Normal" Label="停止" ToolTip="停止服务"
+                                                  IconTemplate="{StaticResource IconStopCircle}"
+                                                  Command="{Binding StopCommand}"
+                                                  CommandParameter="{Binding NeuzApp.Api}" />
                                 </Grid>
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="1" HorizontalAlignment="Stretch" />
@@ -647,7 +777,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                            Margin="5"
                                            FontSize="16"
                                            FontWeight="Bold"

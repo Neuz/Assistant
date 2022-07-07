@@ -1,5 +1,4 @@
 ﻿using Syncfusion.SfSkinManager;
-using Syncfusion.Windows.Shared;
 using System.Windows;
 
 namespace Assistant.View.WizardControl;

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Syncfusion.SfSkinManager;
-using System.Windows;
-using System.Windows.Media;
-using Assistant.Utils;
+﻿using Assistant.Utils;
 using Microsoft.Win32;
 using Serilog;
+using Syncfusion.SfSkinManager;
+using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Assistant.View.WizardControl;
 

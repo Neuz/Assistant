@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace Assistant.View
+namespace Assistant.View;
+
+/// <summary>
+/// SystemInfo.xaml 的交互逻辑
+/// </summary>
+public partial class SystemInfoView : UserControl
 {
-    /// <summary>
-    /// SystemInfo.xaml 的交互逻辑
-    /// </summary>
-    public partial class SystemInfoView : UserControl
+    public SystemInfoView()
     {
-        public SystemInfoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

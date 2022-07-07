@@ -15,15 +15,13 @@ public class EnumColorConverter : IValueConverter
     {
         // 运行状态
         if ((Type) parameter == RunningStatus.Running.GetType())
-        {
-            return (RunningStatus)value switch
+            return (RunningStatus) value switch
             {
                 RunningStatus.Running => new SolidColorBrush(Colors.Green),
                 RunningStatus.Stopped => new SolidColorBrush(Colors.Red),
                 RunningStatus.UnKnown => new SolidColorBrush(Colors.Orange),
                 _ => new SolidColorBrush(Colors.White)
             };
-        }
 
         return new SolidColorBrush(Colors.White);
     }

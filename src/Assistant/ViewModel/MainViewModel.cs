@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows;
-using Assistant.View;
+﻿using Assistant.View;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Syncfusion.UI.Xaml.NavigationDrawer;
+using Serilog;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Serilog;
 
 namespace Assistant.ViewModel;
 
@@ -35,6 +33,9 @@ public class MainViewModel : ObservableObject
                     .MinimumLevel.Verbose()
                     .WriteTo.RichTextBox(_logView.LogTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
                     .CreateLogger();
+
+        // ClickHandler(typeof(SystemInfoView));
+        // CurrentView = new SystemInfoView();
     }
 
 
