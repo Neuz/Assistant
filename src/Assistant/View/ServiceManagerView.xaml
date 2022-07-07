@@ -63,20 +63,29 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
-                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                <TextBlock Grid.Row="0" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12"
                                            Foreground="{Binding MySQL.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding MySQL.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5"
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5"
+                                           FontSize="12"
                                            Foreground="{Binding MySQL.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding MySQL.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5"
+                                <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5"
+                                           FontSize="12"
                                            Text="{Binding MySQL.MySQLConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
@@ -133,22 +142,31 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="安装状态" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Nginx.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Nginx.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
-                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                <TextBlock Grid.Row="1" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12"
                                            Foreground="{Binding Nginx.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Nginx.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="端口" />
                                 <TextBlock Grid.Row="2" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold">
+                                           FontSize="12">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} | {1}">
                                             <Binding Path="Nginx.NginxConfig.WebPort" />
@@ -212,22 +230,31 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="安装状态" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Redis.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Redis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="服务状态" />
                                 <TextBlock Grid.Row="1" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Redis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Redis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                <TextBlock Grid.Row="2" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12"
                                            Text="{Binding Redis.RedisConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
@@ -285,24 +312,36 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="安装状态" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Kis.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Kis.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="服务状态" />
                                 <TextBlock Grid.Row="1" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Kis.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Kis.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                <TextBlock Grid.Row="2" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12"
                                            Text="{Binding Kis.Port}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                <TextBlock Grid.Row="3" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="API文档" />
                                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
                                                CommandParameter="{Binding ElementName=KisApiDocsUrl,Path=Text}">
@@ -371,24 +410,36 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="12" Text="安装状态" />
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="安装状态" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Wise.Installed ,Converter={StaticResource BoolColorCvt}}"
                                            Text="{Binding Wise.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="服务状态" />
                                 <TextBlock Grid.Row="1" Grid.Column="1"
                                            Margin="5"
-                                           FontSize="12" FontWeight="Bold"
+                                           FontSize="12"
                                            Foreground="{Binding Wise.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                            Text="{Binding Wise.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                <TextBlock Grid.Row="2" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
+                                           Text="端口" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Margin="5"
+                                           FontSize="12"
                                            Text="{Binding Wise.Port}" />
-                                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                <TextBlock Grid.Row="3" Grid.Column="0"
+                                           Margin="5"
+                                           FontSize="12" FontWeight="Bold"
+                                           Text="API文档" />
                                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
                                                CommandParameter="{Binding ElementName=WiseApiDocsUrl,Path=Text}">
@@ -471,25 +522,34 @@
                                                Text="{Binding NeuzApp.Api.DisplayName}" />
                                     <TextBlock Grid.Row="1" Grid.Column="0"
                                                Margin="5"
-                                               FontSize="12"
+                                               FontSize="12" FontWeight="Bold"
                                                Text="安装状态" />
                                     <TextBlock Grid.Row="1" Grid.Column="1"
                                                Margin="5"
-                                               FontSize="12" FontWeight="Bold"
+                                               FontSize="12"
                                                Foreground="{Binding NeuzApp.Api.Installed ,Converter={StaticResource BoolColorCvt}}"
                                                Text="{Binding NeuzApp.Api.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" FontSize="12" Text="服务状态" />
+                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                               Margin="5"
+                                               FontSize="12" FontWeight="Bold"
+                                               Text="服务状态" />
                                     <TextBlock Grid.Row="2" Grid.Column="1"
                                                Margin="5"
-                                               FontSize="12" FontWeight="Bold"
+                                               FontSize="12"
                                                Foreground="{Binding NeuzApp.Api.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
                                                Text="{Binding NeuzApp.Api.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" FontSize="12" Text="端口" />
-                                    <TextBlock Grid.Row="3" Grid.Column="1"
+                                    <TextBlock Grid.Row="3" Grid.Column="0"
                                                Margin="5"
                                                FontSize="12" FontWeight="Bold"
+                                               Text="端口" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1"
+                                               Margin="5"
+                                               FontSize="12"
                                                Text="{Binding NeuzApp.Api.Port}" />
-                                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" FontSize="12" Text="API文档" />
+                                    <TextBlock Grid.Row="4" Grid.Column="0"
+                                               Margin="5"
+                                               FontSize="12" FontWeight="Bold"
+                                               Text="API文档" />
                                     <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
                                                Margin="5"
                                                FontSize="12">

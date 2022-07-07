@@ -6,11 +6,16 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\Img\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\BeekeeperStudio.png" />
     <None Remove="Resources\BeekeeperStudio.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Img\logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,9 +38,6 @@
 
   <ItemGroup>
     <Resource Include="Resources\Img\BeekeeperStudio.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Img\BeekeeperStudio.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

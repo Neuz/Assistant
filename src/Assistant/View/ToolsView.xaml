@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:Assistant.ViewModel"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <vm:ToolsViewModel></vm:ToolsViewModel>
+        <vm:ToolsViewModel />
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,17 +33,17 @@
                 Orientation="Horizontal">
                 <sf:CardViewItem Header="Beekeeper Studio" Width="300">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Img/BeekeeperStudio.png" Width="50" Margin="10"></Image>
+                        <Image Source="/Resources/Img/BeekeeperStudio.png" Width="50" Margin="10" />
                         <StackPanel>
-                            <TextBlock MaxWidth="220" TextWrapping="Wrap"
+                            <TextBlock MaxWidth="220" TextWrapping="Wrap" Foreground="#B5B5B5"
                                        Text="Open Source SQL Editor and Database Manager A modern, easy to use, and good looking SQL client for MySQL, Postgres, SQLite, SQL Server, and more." />
                             <DockPanel Margin="0,10,0,5">
-                                <Button Content="启动" Width="70" Height="30" 
+                                <Button Content="启动" Width="70" Height="30"
                                         Command="{Binding RunCommand}"
-                                        CommandParameter="BeekeeperStudio"/>
-                                <Button Content="帮助" HorizontalAlignment="Right" Width="70" Height="30" 
+                                        CommandParameter="BeekeeperStudio" />
+                                <Button Content="帮助" HorizontalAlignment="Right" Width="70" Height="30"
                                         Command="{Binding HelpCommand}"
-                                        CommandParameter="BeekeeperStudio"/>
+                                        CommandParameter="BeekeeperStudio" />
                             </DockPanel>
 
                         </StackPanel>

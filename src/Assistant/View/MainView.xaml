@@ -4,26 +4,25 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:sf="http://schemas.syncfusion.com/wpf"
+                     xmlns:vm="clr-namespace:Assistant.ViewModel"
+                     xmlns:view="clr-namespace:Assistant.View"
                      mc:Ignorable="d"
                      Title="{Binding Title}"
+                     Icon="/Resources/Img/logo.ico"
                      CornerRadius="8"
                      TitleTextAlignment="Center"
                      UseNativeChrome="True"
                      WindowState="Normal"
                      WindowStartupLocation="CenterScreen"
                      Height="500"
-                     Width="820"
-                     xmlns:vm="clr-namespace:Assistant.ViewModel"
-                     xmlns:view="clr-namespace:Assistant.View">
+                     Width="820">
     <sf:ChromelessWindow.DataContext>
         <vm:MainViewModel />
     </sf:ChromelessWindow.DataContext>
     <Grid>
-        <sf:SfNavigationDrawer
-            Grid.Column="0"
-            DisplayMode="Expanded"
-            ExpandedModeWidth="160"
-            Background="White">
+        <sf:SfNavigationDrawer Grid.Column="0"
+                               DisplayMode="Expanded"
+                               ExpandedModeWidth="160">
             <sf:SfNavigationDrawer.ContentView>
                 <ContentControl Content="{Binding CurrentView}" />
             </sf:SfNavigationDrawer.ContentView>
@@ -36,7 +35,7 @@
                         Height="16"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Fill="White"
+                        Fill="#FFD83B"
                         Stretch="Fill"
                         Data="{StaticResource Svg.Desktop}" />
                 </sf:NavigationItem.Icon>
@@ -50,12 +49,12 @@
                         Height="16"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Fill="White"
+                        Fill="#FFD83B"
                         Stretch="Fill"
                         Data="{StaticResource Svg.Control}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
-            
+
             <sf:NavigationItem Header="工具箱">
                 <sf:NavigationItem.Icon>
                     <Path
@@ -63,7 +62,7 @@
                         Height="16"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Fill="White"
+                        Fill="#FFD83B"
                         Stretch="Fill"
                         Data="{StaticResource Svg.Code}" />
                 </sf:NavigationItem.Icon>
@@ -76,7 +75,7 @@
                             Height="16"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Fill="White"
+                            Fill="#FFD83B"
                             Stretch="Fill"
                             Data="{StaticResource Svg.Tool}" />
                     </sf:NavigationItem.Icon>
@@ -92,7 +91,7 @@
                             Height="16"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Fill="White"
+                            Fill="#FFD83B"
                             Stretch="Fill"
                             Data="{StaticResource Svg.FileException}" />
                     </sf:NavigationItem.Icon>
