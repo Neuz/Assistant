@@ -12,6 +12,7 @@
                      WindowState="Normal"
                      ShowMinimizeButton="False"
                      ShowMaximizeButton="False"
+                     Icon="/Resources/Img/logo.ico"
                      Height="420"
                      Width="500"
                      WindowStartupLocation="CenterScreen"
@@ -28,32 +29,43 @@
                       Next="WizardControl_OnNext">
         <sf:WizardPage Name="ConfigPage"
                        Title="服务设置"
-                       Description="安装参数设置"
+                       Description="安装参数设置 ( 1/4 )"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="False"
                        FinishVisible="False">
-            <StackPanel Orientation="Vertical">
-                <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
-                    <TextBox Text="{Binding ServiceName}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
-                    <TextBox Text="{Binding ServiceDescription}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
-                    <sf:IntegerTextBox GroupSeperatorEnabled="False"
-                                       MinValue="0"
-                                       MaxValue="65535"
-                                       MinValueOnExceedMinDigit="True"
-                                       MaxValueOnExceedMaxDigit="True"
-                                       MinValidation="OnKeyPress"
-                                       MaxValidation="OnKeyPress"
-                                       Value="{Binding Port}" />
-                </sf:SfTextInputLayout>
-            </StackPanel>
+            <sf:SfBusyIndicator Name="BusyIndicator" IsBusy="False">
+                <StackPanel Orientation="Vertical">
+                    <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
+                        <TextBox Name="TbServiceName" Text="{Binding ServiceName}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
+                        <TextBox Text="{Binding ServiceDescription}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
+                        <sf:IntegerTextBox Name="TbPort"
+                                           GroupSeperatorEnabled="False"
+                                           MinValue="0"
+                                           MaxValue="65535"
+                                           MinValueOnExceedMinDigit="True"
+                                           MaxValueOnExceedMaxDigit="True"
+                                           MinValidation="OnKeyPress"
+                                           MaxValidation="OnKeyPress"
+                                           Value="{Binding Port}" />
+                    </sf:SfTextInputLayout>
+                    <DockPanel LastChildFill="False">
+                        <Button Name="BtnTest"
+                                Width="100" Height="30" DockPanel.Dock="Right"
+                                Content="测试"
+                                Click="BtnTest_OnClick" />
+                        <TextBlock Name="TbTestResult"
+                                   Margin="10,10,10,0" HorizontalAlignment="Left" />
+                    </DockPanel>
+                </StackPanel>
+            </sf:SfBusyIndicator>
         </sf:WizardPage>
         <sf:WizardPage Name="KisConfigPage"
-                       Title="金蝶账套设置"
+                       Title="金蝶账套设置  ( 2/4 )"
                        Description="账套参数设置"
                        PageType="Exterior"
                        CancelVisible="False"
@@ -72,7 +84,7 @@
             </StackPanel>
         </sf:WizardPage>
         <sf:WizardPage Name="PreviewPage"
-                       Title="设置预览"
+                       Title="设置预览  ( 3/4 )"
                        Description="安装参数预览"
                        PageType="Exterior"
                        CancelVisible="False"
@@ -89,7 +101,7 @@
                             Text="{Binding ConfigText}" />
         </sf:WizardPage>
         <sf:WizardPage Name="UpdateConfigPage"
-                       Title="安装或更新"
+                       Title="安装或更新  ( 4/4 )"
                        PageType="Exterior"
                        CancelVisible="False"
                        NextVisible="False"
@@ -118,7 +130,6 @@
                         Content="..." />
                 </Grid>
             </StackPanel>
-
         </sf:WizardPage>
     </sf:WizardControl>
 </sf:ChromelessWindow>

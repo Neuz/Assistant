@@ -12,6 +12,7 @@
                      WindowState="Normal"
                      ShowMinimizeButton="False"
                      ShowMaximizeButton="False"
+                     Icon="/Resources/Img/logo.ico"
                      Height="500"
                      Width="500"
                      WindowStartupLocation="CenterScreen"
@@ -27,42 +28,52 @@
                       NextText="下一步"
                       Next="WizardControl_OnNext">
         <sf:WizardPage Name="ApiConfigPage"
-                       Title="Neuz.Api 服务设置"
-                       Description="Neuz.Api 服务的安装参数设置"
+                       Title="服务设置 ( 1/4 )"
+                       Description="安装参数设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="False"
                        FinishVisible="False">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical">
-                    <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
-                        <TextBox Text="{Binding ApiServiceName}" />
-                    </sf:SfTextInputLayout>
-                    <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
-                        <TextBox Text="{Binding ApiServiceDescription}" />
-                    </sf:SfTextInputLayout>
-                    <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
-                        <sf:IntegerTextBox
-                            GroupSeperatorEnabled="False"
-                            MinValue="0"
-                            MaxValue="65535"
-                            MinValueOnExceedMinDigit="True"
-                            MaxValueOnExceedMaxDigit="True"
-                            MinValidation="OnKeyPress"
-                            MaxValidation="OnKeyPress"
-                            Value="{Binding ApiPort}" />
-                    </sf:SfTextInputLayout>
-                </StackPanel>
+                <sf:SfBusyIndicator Name="BusyIndicator1" IsBusy="False">
+                    <StackPanel Orientation="Vertical">
+                        <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
+                            <TextBox Name="TbServiceName" Text="{Binding ApiServiceName}" />
+                        </sf:SfTextInputLayout>
+                        <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
+                            <TextBox Text="{Binding ApiServiceDescription}" />
+                        </sf:SfTextInputLayout>
+                        <sf:SfTextInputLayout Hint="端口设置" Margin="10,0,10,0">
+                            <sf:IntegerTextBox Name="TbPort"
+                                               GroupSeperatorEnabled="False"
+                                               MinValue="0"
+                                               MaxValue="65535"
+                                               MinValueOnExceedMinDigit="True"
+                                               MaxValueOnExceedMaxDigit="True"
+                                               MinValidation="OnKeyPress"
+                                               MaxValidation="OnKeyPress"
+                                               Value="{Binding ApiPort}" />
+                        </sf:SfTextInputLayout>
+                        <DockPanel LastChildFill="False">
+                            <Button Name="BtnTest1"
+                                    Width="100" Height="30" DockPanel.Dock="Right"
+                                    Content="测试"
+                                    Click="BtnTest_OnClick_1" />
+                            <TextBlock Name="TbTestResult1"
+                                       Margin="10,10,10,0" HorizontalAlignment="Left" />
+                        </DockPanel>
+                    </StackPanel>
+                </sf:SfBusyIndicator>
             </ScrollViewer>
         </sf:WizardPage>
         <sf:WizardPage Name="DatabaseConfigPage1"
-                       Title="数据库连接设置 ( 1/2 )"
+                       Title="数据库连接设置 ( 2/4 )"
                        Description="MySQL 数据库连接设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="True"
                        FinishVisible="False">
-            <sf:SfBusyIndicator Name="BusyIndicator" IsBusy="False">
+            <sf:SfBusyIndicator Name="BusyIndicator2" IsBusy="False">
                 <StackPanel>
                     <sf:SfTextInputLayout Hint="MySQL 服务器地址" Margin="10,10,10,0">
                         <TextBox Name="TbHost" Text="{Binding DatabaseHost}" />
@@ -75,7 +86,7 @@
                                            MaxValueOnExceedMaxDigit="True"
                                            MinValidation="OnKeyPress"
                                            MaxValidation="OnKeyPress"
-                                           Name="TbPort"
+                                           Name="TbMySqlPort"
                                            Value="{Binding DatabasePort}" />
                     </sf:SfTextInputLayout>
 
@@ -86,18 +97,18 @@
                         <TextBox Name="TbPassword" Text="{Binding DatabasePassword}" />
                     </sf:SfTextInputLayout>
                     <DockPanel LastChildFill="False">
-                        <Button Name="BtnTest"
+                        <Button Name="BtnTest2"
                                 Width="100" Height="30" DockPanel.Dock="Right"
                                 Content="测试"
-                                Click="BtnTest_OnClick" />
-                        <TextBlock Name="TbTestResult"
+                                Click="BtnTest_OnClick_2" />
+                        <TextBlock Name="TbTestResult2"
                                    Margin="10,10,10,0" HorizontalAlignment="Left" />
                     </DockPanel>
                 </StackPanel>
             </sf:SfBusyIndicator>
         </sf:WizardPage>
         <sf:WizardPage Name="DatabaseConfigPage2"
-                       Title="数据库连接设置 ( 2/2 )"
+                       Title="数据库连接设置 ( 3/4 )"
                        Description=""
                        PageType="Exterior"
                        CancelVisible="False"
@@ -133,9 +144,8 @@
                                 Text="{Binding PreviewDbSettings}" />
             </StackPanel>
         </sf:WizardPage>
-
         <sf:WizardPage Name="UpdateConfigPage"
-                       Title="安装或更新"
+                       Title="安装或更新 ( 4/4 )"
                        PageType="Exterior"
                        CancelVisible="False"
                        NextVisible="False"

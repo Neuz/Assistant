@@ -12,7 +12,8 @@
                      WindowState="Normal"
                      ShowMinimizeButton="False"
                      ShowMaximizeButton="False"
-                     Height="420"
+                     Icon="/Resources/Img/logo.ico"
+                     Height="500"
                      Width="500"
                      WindowStartupLocation="CenterScreen"
                      xmlns:vm="clr-namespace:Assistant.ViewModel.WizardControl">
@@ -27,45 +28,55 @@
                       NextText="下一步"
                       Next="WizardControl_OnNext">
         <sf:WizardPage Name="ConfigPage"
-                       Title="服务设置"
-                       Description="Nginx服务的安装参数设置"
+                       Title="服务设置 ( 1/2 )"
+                       Description="安装参数设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="False"
                        FinishVisible="False">
-            <StackPanel Orientation="Vertical">
-                <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
-                    <TextBox Text="{Binding ServiceName}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
-                    <TextBox Text="{Binding ServiceDescription}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="Web端口设置" Margin="10,0,10,0">
-                    <sf:IntegerTextBox x:Name="WebPortTextBox"
-                                       GroupSeperatorEnabled="False"
-                                       MinValue="0"
-                                       MaxValue="65535"
-                                       MinValueOnExceedMinDigit="True"
-                                       MaxValueOnExceedMaxDigit="True"
-                                       MinValidation="OnKeyPress"
-                                       MaxValidation="OnKeyPress"
-                                       Value="{Binding WebPort}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="PDA端口设置" Margin="10,0,10,0">
-                    <sf:IntegerTextBox x:Name="PdaPortTextBox"
-                                       GroupSeperatorEnabled="False"
-                                       MinValue="0"
-                                       MaxValue="65535"
-                                       MinValueOnExceedMinDigit="True"
-                                       MaxValueOnExceedMaxDigit="True"
-                                       MinValidation="OnKeyPress"
-                                       Value="{Binding PdaPort}" />
-                </sf:SfTextInputLayout>
-            </StackPanel>
+            <sf:SfBusyIndicator Name="BusyIndicator" IsBusy="False">
+                <StackPanel Orientation="Vertical">
+                    <sf:SfTextInputLayout Hint="Windows服务名" Margin="10,10,10,0">
+                        <TextBox Name="TbServiceName" Text="{Binding ServiceName}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="Windows服务描述" Margin="10,0,10,0">
+                        <TextBox Text="{Binding ServiceDescription}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="Web端口设置" Margin="10,0,10,0">
+                        <sf:IntegerTextBox Name="WebPortTextBox"
+                                           GroupSeperatorEnabled="False"
+                                           MinValue="0"
+                                           MaxValue="65535"
+                                           MinValueOnExceedMinDigit="True"
+                                           MaxValueOnExceedMaxDigit="True"
+                                           MinValidation="OnKeyPress"
+                                           MaxValidation="OnKeyPress"
+                                           Value="{Binding WebPort}" />
+                    </sf:SfTextInputLayout>
+                    <sf:SfTextInputLayout Hint="PDA端口设置" Margin="10,0,10,0">
+                        <sf:IntegerTextBox Name="PdaPortTextBox"
+                                           GroupSeperatorEnabled="False"
+                                           MinValue="0"
+                                           MaxValue="65535"
+                                           MinValueOnExceedMinDigit="True"
+                                           MaxValueOnExceedMaxDigit="True"
+                                           MinValidation="OnKeyPress"
+                                           Value="{Binding PdaPort}" />
+                    </sf:SfTextInputLayout>
+                    <DockPanel LastChildFill="False">
+                        <Button Name="BtnTest"
+                                Width="100" Height="30" DockPanel.Dock="Right"
+                                Content="测试"
+                                Click="BtnTest_OnClick" />
+                        <TextBlock Name="TbTestResult"
+                                   Margin="10,10,10,0" HorizontalAlignment="Left" />
+                    </DockPanel>
+                </StackPanel>
+            </sf:SfBusyIndicator>
         </sf:WizardPage>
         <sf:WizardPage Name="PreviewPage"
-                       Title="设置预览"
-                       Description="Nginx服务的安装参数预览"
+                       Title="参数预览 ( 2/2 )"
+                       Description="安装参数预览"
                        PageType="Exterior"
                        CancelVisible="False"
                        NextVisible="False"
