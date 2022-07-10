@@ -37,12 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Img\BeekeeperStudio.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="View\ToolsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
