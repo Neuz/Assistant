@@ -60,6 +60,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
@@ -77,7 +78,7 @@
         </StackPanel>
 
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
-        <sf:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}" Header="{Binding IndicatorText}">
+        <sf:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}" AnimationType="Box">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -801,5 +802,15 @@
                 </sf:CardView>
             </Grid>
         </sf:SfBusyIndicator>
+        <StatusBar Grid.Row="3" Margin="10,0,10,0">
+            <StatusBarItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding BusyText}"></TextBlock>
+                </Grid>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </UserControl>

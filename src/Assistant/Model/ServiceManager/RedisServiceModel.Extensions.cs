@@ -40,8 +40,9 @@ public static class RedisServiceModelExtensions
     /// 安装
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> Install(this RedisServiceModel model)
+    public static async Task Install(this RedisServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.BinPath, nameof(model.BinPath));
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
@@ -52,46 +53,42 @@ public static class RedisServiceModelExtensions
         if (File.Exists(model.ConfigFilePath))
         {
             var rs = await FileUtils.BackupFile(model.ConfigFilePath);
-            if (!rs) return rs;
+            infoAction?.Invoke($"备份配置文件 [{rs}]");
         }
 
-        // 写入新配置文件
+        // 更新配置文件
         var text = model.GetConfigText();
         await File.WriteAllTextAsync(model.ConfigFilePath, text, new UTF8Encoding(false));
-        Log.Information($"create file: {model.ConfigFilePath}");
+        infoAction?.Invoke($"更新配置文件 [{model.ConfigFilePath}]");
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
         await FileUtils.WriteToFile(model, insConfPath);
+        infoAction?.Invoke($"写入ins.conf: [{insConfPath}]");
 
         // 创建Windows服务
         var binPath = @$"""{model.BinPath}"" --service-run ""{model.ConfigFilePath}""";
-        return await WinServiceUtils.CreateService(binPath, model.ServiceName, model.ServiceDescription ?? string.Empty, model.ServiceDescription ?? string.Empty);
+        await WinServiceUtils.CreateService(binPath, model.ServiceName, model.ServiceDescription ?? string.Empty, model.ServiceDescription ?? string.Empty);
+        infoAction?.Invoke($"windows 服务创建成功: [{model.ServiceName}]");
     }
 
     /// <summary>
     /// 卸载
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> UnInstall(this RedisServiceModel model)
+    public static async Task UnInstall(this RedisServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
-        try
+
+        infoAction?.Invoke($"删除Windows服务 [{model.ServiceName}]");
+        await WinServiceUtils.DeleteService(model.ServiceName);
+        if (File.Exists(model.InsConfFilePath))
         {
-            var rs = await WinServiceUtils.DeleteService(model.ServiceName);
-            if (!rs) return rs;
-            if (File.Exists(model.InsConfFilePath)) File.Delete(model.InsConfFilePath);
-            var logFilePath = Path.Combine(model.LogDirectory, "redis_server.log");
-            if (File.Exists(logFilePath)) File.Delete(logFilePath);
-            if (File.Exists(model.ConfigFilePath)) File.Delete(model.ConfigFilePath);
-            return true;
-        }
-        catch (Exception e)
-        {
-            Log.Error(e.Message);
-            return false;
+            File.Delete(model.InsConfFilePath);
+            infoAction?.Invoke($"删除ins.conf [{model.InsConfFilePath}]");
         }
     }
 }

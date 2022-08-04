@@ -29,10 +29,10 @@ public class MainViewModel : ObservableObject
         _logView     = new LogView();
         // 日志配置
         const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
-        Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.RichTextBox(_logView.LogTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
-                    .CreateLogger();
+        // Log.Logger = new LoggerConfiguration()
+        //             .MinimumLevel.Verbose()
+        //             .WriteTo.RichTextBox(_logView.LogTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
+        //             .CreateLogger();
 
         // ClickHandler(typeof(SystemInfoView));
         // CurrentView = new SystemInfoView();

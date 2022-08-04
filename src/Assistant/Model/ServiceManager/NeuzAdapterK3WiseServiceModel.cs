@@ -9,7 +9,7 @@ public partial class NeuzAdapterK3WiseServiceModel : ServiceBaseModel
 {
     public NeuzAdapterK3WiseServiceModel()
     {
-        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "k3wise");
+        var baseDir = Path.Combine(Global.CurrentDir, "Adapters", "K3Wise");
         DisplayName        = "Neuz 适配器 for K3Wise";
         Version            = "";
         ServiceName        = "Neuz.Adapter.K3Wise";

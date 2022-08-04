@@ -74,32 +74,32 @@
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
             <sf:SfNavigationDrawer.FooterItems>
-                <sf:NavigationItem Header="日志"
-                                   Command="{Binding ClickCommand}"
-                                   CommandParameter="{x:Type view:LogView}">
-                    <sf:NavigationItem.Icon>
-                        <Path
-                            Width="16"
-                            Height="16"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Fill="#FFD83B"
-                            Stretch="Fill"
-                            Data="{StaticResource Svg.FileException}" />
-                    </sf:NavigationItem.Icon>
-                </sf:NavigationItem>
-                <!-- <sf:NavigationItem Header="设置" Visibility="Hidden"> -->
+                <!-- <sf:NavigationItem Header="日志" -->
+                <!--                    Command="{Binding ClickCommand}" -->
+                <!--                    CommandParameter="{x:Type view:LogView}"> -->
                 <!--     <sf:NavigationItem.Icon> -->
                 <!--         <Path -->
                 <!--             Width="16" -->
                 <!--             Height="16" -->
                 <!--             HorizontalAlignment="Center" -->
                 <!--             VerticalAlignment="Center" -->
-                <!--             Fill="White" -->
+                <!--             Fill="#FFD83B" -->
                 <!--             Stretch="Fill" -->
-                <!--             Data="{StaticResource Svg.Settings}" /> -->
+                <!--             Data="{StaticResource Svg.FileException}" /> -->
                 <!--     </sf:NavigationItem.Icon> -->
                 <!-- </sf:NavigationItem> -->
+                <sf:NavigationItem Header="设置" Visibility="Hidden">
+                    <sf:NavigationItem.Icon>
+                        <Path
+                            Width="16"
+                            Height="16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="White"
+                            Stretch="Fill"
+                            Data="{StaticResource Svg.Settings}" />
+                    </sf:NavigationItem.Icon>
+                </sf:NavigationItem>
             </sf:SfNavigationDrawer.FooterItems>
         </sf:SfNavigationDrawer>
     </Grid>

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Assistant.Utils;
+using CliWrap;
+using CliWrap.Buffered;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Assistant.Utils;
-using CliWrap;
-using CliWrap.Buffered;
-using CliWrap.EventStream;
-using Serilog;
 
 // ReSharper disable InconsistentNaming
 
@@ -21,31 +19,24 @@ public static class MySQLServiceModelExtensions
     /// <returns></returns>
     public static async Task<MySQLServiceModel> Flush(this MySQLServiceModel model)
     {
-        if (File.Exists(model.InsConfFilePath))
-            model = await FileUtils.ReadFromConf<MySQLServiceModel>(model.InsConfFilePath) ?? new MySQLServiceModel();
-        else
-            model = new MySQLServiceModel();
+        var rs = File.Exists(model.InsConfFilePath) 
+                    ? await FileUtils.ReadFromConf<MySQLServiceModel>(model.InsConfFilePath) ?? throw new ApplicationException("刷新时序列化失败") 
+                    : new MySQLServiceModel();
 
         var installed = await WinServiceUtils.IsInstalled(model.ServiceName!);
         var status    = await WinServiceUtils.GetRunningStatus(model.ServiceName!);
-        var rs        = FileUtils.DeepClone(model);
-        if (rs != null)
-        {
-            rs.Installed     = installed;
-            rs.RunningStatus = status;
-            return rs;
-        }
-
-        Log.Error("刷新时序列化失败");
-        return model;
+        rs.Installed     = installed;
+        rs.RunningStatus = status;
+        return rs;
     }
 
     /// <summary>
     /// 安装
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> Install(this MySQLServiceModel model)
+    public static async Task Install(this MySQLServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.BinPath, nameof(model.BinPath));
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
@@ -53,100 +44,106 @@ public static class MySQLServiceModelExtensions
         ArgumentNullException.ThrowIfNull(model.ServiceDirectory, nameof(model.ServiceDirectory));
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
 
+        if (!File.Exists(model.MySQLExePath)) throw new ApplicationException($"文件不存在 {model.MySQLExePath}");
+        if (!File.Exists(model.BinPath)) throw new ApplicationException($"文件不存在 {model.BinPath}");
+
         // 创建目录
-        if (!Directory.Exists(model.TempDirectory)) Directory.CreateDirectory(model.TempDirectory);
-        if (!Directory.Exists(model.LogDirectory)) Directory.CreateDirectory(model.LogDirectory);
-
-
-        // mysql.exe初始化
-        if (!File.Exists(model.MySQLExePath))
+        if (!Directory.Exists(model.TempDirectory))
         {
-            Log.Error($"文件不存在 {model.MySQLExePath}");
-            return false;
+            Directory.CreateDirectory(model.TempDirectory);
+            infoAction?.Invoke($"创建目录 [{model.TempDirectory}]");
+        }
+
+        if (!Directory.Exists(model.LogDirectory))
+        {
+            Directory.CreateDirectory(model.LogDirectory);
+            infoAction?.Invoke($"创建目录 [{model.LogDirectory}]");
         }
 
         // 备份配置文件
         if (File.Exists(model.ConfigFilePath))
         {
             var rs = await FileUtils.BackupFile(model.ConfigFilePath);
-            if (!rs) return rs;
+            infoAction?.Invoke($"备份配置文件 [{rs}]");
         }
 
-
-        // 写入新配置文件
+        // 更新配置文件
         var iniText = model.GetIniText(true);
         await File.WriteAllTextAsync(model.ConfigFilePath, iniText, new UTF8Encoding(false));
-        Log.Information($"create file: {model.ConfigFilePath}");
 
-        Log.Information("开始执行MySQL初始化");
+        // mysql 初始化
+        infoAction?.Invoke($"开始执行MySQL初始化 [{model.BinPath}]");
         var cli = Cli.Wrap(model.BinPath)
                      .WithArguments(new[] {"--initialize", "--user=mysql", "--console"})
                      .WithValidation(CommandResultValidation.None);
-
+        infoAction?.Invoke(cli.ToString());
         var cliResult = await cli.ExecuteBufferedAsync();
-        Log.Information(cliResult.StandardOutput);
-        Log.Warning(cliResult.StandardError);
+        infoAction?.Invoke(cliResult.StandardOutput);
+        infoAction?.Invoke(cliResult.StandardError);
 
 
         // 创建windows服务
         var binPath = @$"{model.BinPath} --defaults-file=""{model.ConfigFilePath}"" {model.ServiceName}";
         await WinServiceUtils.CreateService(binPath, model.ServiceName, model.ServiceDescription ?? string.Empty, model.ServiceDescription ?? string.Empty);
-        Log.Information($"windows 服务创建成功: {model.ServiceName}");
+        infoAction?.Invoke($"windows 服务创建成功: [{model.ServiceName}]");
 
         // 启动服务
         await WinServiceUtils.StartService(model.ServiceName);
+        infoAction?.Invoke($"windows 服务启动成功: [{model.ServiceName}]");
+
 
         // 设置密码
+        infoAction?.Invoke("设置密码");
         var sqlText = model.GetResetSql();
         var sqlPath = Path.Combine(model.ServiceDirectory, "reset.sql");
         await File.WriteAllTextAsync(sqlPath, sqlText, new UTF8Encoding(false));
-        // $" -h localhost -P {MySQLService.Port} < {resetSqlPath}"
         cli = Cli.Wrap("cmd.exe")
                  .WithArguments(new[] {"/c", model.MySQLExePath, "-h", "localhost", "-P", $"{model.MySQLConfig.Port}", "<", sqlPath})
                  .WithValidation(CommandResultValidation.ZeroExitCode);
         cliResult = await cli.ExecuteBufferedAsync();
-        Log.Information(cliResult.StandardOutput);
-        Log.Warning(cliResult.StandardError);
+        infoAction?.Invoke(cliResult.StandardOutput);
+        infoAction?.Invoke(cliResult.StandardError);
 
         if (File.Exists(sqlPath)) File.Delete(sqlPath);
 
         // 写入新配置文件
         iniText = model.GetIniText();
         await File.WriteAllTextAsync(model.ConfigFilePath, iniText, new UTF8Encoding(false));
-        Log.Information($"create file: {model.ConfigFilePath}");
 
         await WinServiceUtils.StopService(model.ServiceName);
+        infoAction?.Invoke($"windows 服务停止成功: [{model.ServiceName}]");
+
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
         await FileUtils.WriteToFile(model, insConfPath);
-
-        return true;
+        infoAction?.Invoke($"写入ins.conf: [{insConfPath}]");
     }
 
     /// <summary>
     /// 卸载
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> UnInstall(this MySQLServiceModel model)
+    public static async Task UnInstall(this MySQLServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
-        try
+
+        infoAction?.Invoke($"删除Windows服务 [{model.ServiceName}]");
+        await WinServiceUtils.DeleteService(model.ServiceName);
+
+        if (Directory.Exists(model.TempDirectory))
         {
-            var rs = await WinServiceUtils.DeleteService(model.ServiceName);
-            if (!rs) return rs;
-            if (Directory.Exists(model.TempDirectory)) Directory.Delete(model.TempDirectory, true);
-            if (Directory.Exists(model.LogDirectory)) Directory.Delete(model.LogDirectory, true);
-            if (File.Exists(model.InsConfFilePath)) File.Delete(model.InsConfFilePath);
-            if (File.Exists(model.ConfigFilePath)) File.Delete(model.ConfigFilePath);
-            return true;
+            Directory.Delete(model.TempDirectory, true);
+            infoAction?.Invoke($"清理临时目录 [{model.TempDirectory}]");
         }
-        catch (Exception e)
+
+        if (File.Exists(model.InsConfFilePath))
         {
-            Log.Error(e.Message);
-            return false;
+            File.Delete(model.InsConfFilePath);
+            infoAction?.Invoke($"删除ins.conf [{model.InsConfFilePath}]");
         }
     }
 }

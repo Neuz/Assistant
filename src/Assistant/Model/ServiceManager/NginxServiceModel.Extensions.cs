@@ -40,8 +40,9 @@ public static class NginxServiceModelExtensions
     /// 安装
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> Install(this NginxServiceModel model)
+    public static async Task Install(this NginxServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.BinPath, nameof(model.BinPath));
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
@@ -50,50 +51,66 @@ public static class NginxServiceModelExtensions
         ArgumentNullException.ThrowIfNull(model.TempDirectory, nameof(model.TempDirectory));
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
 
+        if (!Directory.Exists(model.TempDirectory))
+        {
+            Directory.CreateDirectory(model.TempDirectory);
+            infoAction?.Invoke($"创建目录 [{model.TempDirectory}]");
+        }
+
+        if (!Directory.Exists(model.LogDirectory))
+        {
+            Directory.CreateDirectory(model.LogDirectory);
+            infoAction?.Invoke($"创建目录 [{model.LogDirectory}]");
+        }
+
         // 备份配置文件
         if (File.Exists(model.ConfigFilePath))
         {
             var rs = await FileUtils.BackupFile(model.ConfigFilePath);
-            if (!rs) return rs;
+            infoAction?.Invoke($"备份配置文件 [{rs}]");
         }
 
-        // 写入配置文件
-        var a = model.NginxConfig.ToString();
-        await File.WriteAllTextAsync(model.ConfigFilePath, a, new UTF8Encoding(false));
+        // 更新配置文件
+        var contents = model.NginxConfig.ToString();
+        await FileUtils.WriteToFile(contents, model.ConfigFilePath);
+        infoAction?.Invoke($"更新配置文件 [{model.ConfigFilePath}]");
+
 
         // 写入ins.conf
         var insConfPath = Path.Combine(model.ServiceDirectory, Global.InstallConfFileName);
         await FileUtils.WriteToFile(model, insConfPath);
+        infoAction?.Invoke($"写入ins.conf: [{insConfPath}]");
 
-        if (!Directory.Exists(model.TempDirectory)) Directory.CreateDirectory(model.TempDirectory);
-        if (!Directory.Exists(model.LogDirectory)) Directory.CreateDirectory(model.LogDirectory);
 
         // 创建Windows服务
-        return await WinServiceUtils.CreateService(model.BinPath, model.ServiceName, model.ServiceDescription ?? string.Empty, model.ServiceDescription ?? string.Empty);
+        await WinServiceUtils.CreateService(model.BinPath, model.ServiceName, model.ServiceDescription ?? string.Empty, model.ServiceDescription ?? string.Empty);
+        infoAction?.Invoke($"windows 服务创建成功: [{model.ServiceName}]");
     }
 
     /// <summary>
     /// 卸载
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="infoAction"></param>
     /// <returns></returns>
-    public static async Task<bool> UnInstall(this NginxServiceModel model)
+    public static async Task UnInstall(this NginxServiceModel model, Action<string>? infoAction = null)
     {
         ArgumentNullException.ThrowIfNull(model.ServiceName, nameof(model.ServiceName));
         ArgumentNullException.ThrowIfNull(model.LogDirectory, nameof(model.LogDirectory));
-        try
+
+        infoAction?.Invoke($"删除Windows服务 [{model.ServiceName}]");
+        await WinServiceUtils.DeleteService(model.ServiceName);
+
+        if (Directory.Exists(model.TempDirectory))
         {
-            var rs = await WinServiceUtils.DeleteService(model.ServiceName);
-            if (!rs) return rs;
-            if (Directory.Exists(model.TempDirectory)) Directory.Delete(model.TempDirectory, true);
-            if (Directory.Exists(model.LogDirectory)) Directory.Delete(model.LogDirectory, true);
-            if (File.Exists(model.InsConfFilePath)) File.Delete(model.InsConfFilePath);
-            return true;
+            Directory.Delete(model.TempDirectory, true);
+            infoAction?.Invoke($"清理临时目录 [{model.TempDirectory}]");
         }
-        catch (Exception e)
+
+        if (File.Exists(model.InsConfFilePath))
         {
-            Log.Error(e.Message);
-            return false;
+            File.Delete(model.InsConfFilePath);
+            infoAction?.Invoke($"删除ins.conf [{model.InsConfFilePath}]");
         }
     }
 }

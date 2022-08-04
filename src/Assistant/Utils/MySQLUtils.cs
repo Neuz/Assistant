@@ -41,11 +41,7 @@ public class MySQLUtils
         });
     }
 
-    public static Task ImportSQL(string connStr,
-        string? errorFilePath = null,
-        Action<string>? currentFileHandler = null,
-        Action<object, ImportProgressArgs>? importProgressChangedHandler = null,
-        params string[] filePaths)
+    public static Task ImportSQL(string connStr, string filePath, Action<object, ImportProgressArgs>? importProgressChangedHandler = null)
     {
         ArgumentNullException.ThrowIfNull(connStr, nameof(connStr));
 
@@ -57,16 +53,8 @@ public class MySQLUtils
             cmd.Connection = conn;
             conn.Open();
             mb.ImportInfo.IntervalForProgressReport = 2000; // 引发 ImportProgressChanged 事件的时间间隔（以毫秒为单位）
-            if (!string.IsNullOrEmpty(errorFilePath)) mb.ImportInfo.ErrorLogFile = errorFilePath;
-
             if (importProgressChangedHandler != null) mb.ImportProgressChanged += importProgressChangedHandler.Invoke;
-
-            foreach (var filePath in filePaths)
-            {
-                currentFileHandler?.Invoke(filePath);
-                mb.ImportFromFile(filePath);
-            }
-
+            mb.ImportFromFile(filePath);
             conn.Close();
         });
     }

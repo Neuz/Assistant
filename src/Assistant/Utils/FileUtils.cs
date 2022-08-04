@@ -52,19 +52,18 @@ public class FileUtils
         await File.WriteAllTextAsync(filePath, text, new UTF8Encoding(false));
     }
 
-    public static async Task<bool> BackupFile(string? filePath)
+    public static async Task<string> BackupFile(string? filePath)
     {
         return await Task.Run(() =>
         {
-            if (!File.Exists(filePath)) throw new FileNotFoundException($"文件不存在 [{filePath}]");
+            if (!File.Exists(filePath)) throw new ApplicationException("文件不存在");
             var dir = Path.GetDirectoryName(filePath);
             ArgumentNullException.ThrowIfNull(dir);
             var oldFileName = Path.GetFileName(filePath);
             var newFilename = $"{oldFileName}.{DateTime.Now:yyyyMMddhhmmss}.bak";
             var newFilePath = Path.Combine(dir, newFilename);
             File.Copy(filePath, newFilePath, true);
-            Log.Information($"create file: {newFilePath}");
-            return true;
+            return newFilePath;
         });
     }
 
@@ -78,7 +77,7 @@ public class FileUtils
         try
         {
             var cli = Cli.Wrap("explorer.exe")
-                         .WithArguments(new []{"/e,", dirPath })
+                         .WithArguments(new[] {"/e,", dirPath})
                          .WithValidation(CommandResultValidation.None);
             Log.Information(cli.ToString());
             await cli.ExecuteBufferedAsync();
@@ -124,8 +123,19 @@ public class FileUtils
     public static async Task OpenUrl(string url)
     {
         var cli = Cli.Wrap("cmd.exe")
-                     .WithArguments(new[] { "/c", "start", url })
+                     .WithArguments(new[] {"/c", "start", url})
                      .WithValidation(CommandResultValidation.None);
         await cli.ExecuteAsync();
+    }
+
+    /// <summary>
+    /// 打开系统服务 services.msc
+    /// </summary>
+    /// <returns></returns>
+    public static async Task OpenWinSvc()
+    {
+        await Cli.Wrap("cmd.exe")
+                 .WithArguments(new[] {"/c", "services.msc"})
+                 .ExecuteAsync();
     }
 }
