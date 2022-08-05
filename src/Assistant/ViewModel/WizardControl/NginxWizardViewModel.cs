@@ -1,7 +1,5 @@
-﻿using System.Windows.Input;
-using Assistant.Model.ServiceManager;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Assistant.Model.ServiceManager;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Assistant.ViewModel.WizardControl;
 

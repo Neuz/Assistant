@@ -1,5 +1,5 @@
-﻿using CZGL.SystemInfo;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CZGL.SystemInfo;
 using System;
 using System.Collections.Generic;
 

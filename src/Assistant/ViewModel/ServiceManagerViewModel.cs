@@ -2,8 +2,8 @@
 using Assistant.Utils;
 using Assistant.View.WizardControl;
 using Assistant.ViewModel.WizardControl;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using System;
 using System.ComponentModel;
@@ -84,11 +84,7 @@ public class ServiceManagerViewModel : ObservableObject
         get => _mysql;
         set => SetProperty(ref _mysql, value);
     }
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-    }
+    
 
     private NeuzAppService _neuzApp;
 

@@ -1,10 +1,10 @@
 ﻿using Assistant.View;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Serilog;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Serilog;
 
 namespace Assistant.ViewModel;
 
@@ -12,7 +12,7 @@ public class MainViewModel : ObservableObject
 {
     private UserControl? _currentView;
     public string Title => "Neuz 助手";
-    
+
     private readonly LogView _logView;
 
     public UserControl? CurrentView
@@ -29,13 +29,13 @@ public class MainViewModel : ObservableObject
         _logView     = new LogView();
         // 日志配置
         const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
-        // Log.Logger = new LoggerConfiguration()
-        //             .MinimumLevel.Verbose()
-        //             .WriteTo.RichTextBox(_logView.LogTextBox, outputTemplate: outputTemplate, syncRoot: LogSyncLock)
-        //             .CreateLogger();
+        Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.File("Logs/.log", shared: true, rollingInterval: RollingInterval.Day, outputTemplate: outputTemplate)
+                    .CreateLogger();
 
-        // ClickHandler(typeof(SystemInfoView));
-        // CurrentView = new SystemInfoView();
+        ClickHandler(typeof(SystemInfoView));
+        CurrentView = new SystemInfoView();
     }
 
 

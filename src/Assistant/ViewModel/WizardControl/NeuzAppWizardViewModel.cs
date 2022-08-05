@@ -1,5 +1,5 @@
 ﻿using Assistant.Model.ServiceManager;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Assistant.ViewModel.WizardControl;
 

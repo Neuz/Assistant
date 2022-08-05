@@ -20,20 +20,21 @@
 
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.4.4" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.6" />
-    <PackageReference Include="Serilog.Sinks.RichTextBox.Wpf" Version="1.1.0" />
-    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.36" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.36" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.40" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.40" />
   </ItemGroup>
 
   <ItemGroup>
