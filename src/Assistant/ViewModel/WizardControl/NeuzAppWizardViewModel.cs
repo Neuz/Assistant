@@ -10,7 +10,7 @@ public class NeuzAppWizardViewModel : ObservableObject
     }
 
 
-    public NeuzAppWizardViewModel(NeuzAppServiceModel app)
+    public NeuzAppWizardViewModel(NeuzAppService app)
     {
         _app = app;
 
@@ -19,7 +19,7 @@ public class NeuzAppWizardViewModel : ObservableObject
     }
 
 
-    private readonly NeuzAppServiceModel _app = new();
+    private readonly NeuzAppService _app = new();
 
     public string ApiServiceName
     {

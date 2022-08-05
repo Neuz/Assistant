@@ -10,7 +10,7 @@ public class RedisWizardViewModel : ObservableObject
     }
 
 
-    public RedisWizardViewModel(RedisServiceModel redis)
+    public RedisWizardViewModel(RedisService redis)
     {
         _redis      = redis;
         _configText = _redis.GetConfigText() ?? string.Empty;
@@ -47,5 +47,5 @@ public class RedisWizardViewModel : ObservableObject
 
     private string _configText = "";
 
-    private readonly RedisServiceModel _redis = new();
+    private readonly RedisService _redis = new();
 }

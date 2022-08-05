@@ -10,7 +10,7 @@ public class NeuzAdapterKisWizardViewModel : ObservableObject
     }
 
 
-    public NeuzAdapterKisWizardViewModel(NeuzAdapterKisServiceModel kis)
+    public NeuzAdapterKisWizardViewModel(KisAdapterService kis)
     {
         _kis       = kis;
         ConfigText = _kis.ToConfigString();
@@ -77,5 +77,5 @@ public class NeuzAdapterKisWizardViewModel : ObservableObject
 
     private string _configText = "";
 
-    private readonly NeuzAdapterKisServiceModel _kis = new();
+    private readonly KisAdapterService _kis = new();
 }

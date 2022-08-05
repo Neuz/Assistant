@@ -12,7 +12,7 @@ public class NginxWizardViewModel : ObservableObject
     }
 
 
-    public NginxWizardViewModel(NginxServiceModel nginx)
+    public NginxWizardViewModel(NginxService nginx)
     {
         _nginx      = nginx;
         _configText = _nginx.NginxConfig.ToString();
@@ -59,5 +59,5 @@ public class NginxWizardViewModel : ObservableObject
 
     private string _configText = "";
 
-    private readonly NginxServiceModel _nginx = new();
+    private readonly NginxService _nginx = new();
 }

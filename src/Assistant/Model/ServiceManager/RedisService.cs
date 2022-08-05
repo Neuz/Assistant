@@ -1,12 +1,56 @@
-﻿using System.IO;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Assistant.Utils;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Assistant.Model.ServiceManager;
 
 // ReSharper disable once InconsistentNaming
-public partial class RedisServiceModel : ServiceBaseModel
+public partial class RedisService : ServiceBase
 {
-    public RedisServiceModel()
+    public override async Task Install(Action<string>? infoAction = null)
+    {
+        ArgumentNullException.ThrowIfNull(BinPath, nameof(BinPath));
+        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
+        ArgumentNullException.ThrowIfNull(ConfigFilePath, nameof(ConfigFilePath));
+        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
+
+        // 备份配置文件
+        if (File.Exists(ConfigFilePath))
+        {
+            var rs = await FileUtils.BackupFile(ConfigFilePath);
+            infoAction?.Invoke($"备份配置文件 [{rs}]");
+        }
+
+        // 更新配置文件
+        var text = GetConfigText();
+        await File.WriteAllTextAsync(ConfigFilePath, text, new UTF8Encoding(false));
+        infoAction?.Invoke($"更新配置文件 [{ConfigFilePath}]");
+
+        // 写入ins.conf
+        var insConfPath = Path.Combine(ServiceDirectory, Global.InstallConfFileName);
+        await FileUtils.WriteToFile(this, insConfPath);
+        infoAction?.Invoke($"写入ins.conf: [{insConfPath}]");
+
+        await base.Install(infoAction);
+    }
+
+    public override async Task UnInstall(Action<string>? infoAction = null)
+    {
+        if (File.Exists(InsConfFilePath))
+        {
+            File.Delete(InsConfFilePath);
+            infoAction?.Invoke($"删除ins.conf [{InsConfFilePath}]");
+        }
+
+        await base.UnInstall(infoAction);
+    }
+}
+
+public partial class RedisService
+{
+    public RedisService()
     {
         var baseDir = Path.Combine(Global.CurrentDir, "Services", "Redis");
         DisplayName        = "Redis";
@@ -21,10 +65,7 @@ public partial class RedisServiceModel : ServiceBaseModel
         RunningStatus      = RunningStatus.UnKnown;
         RedisConfig        = new RedisConfigModel();
     }
-}
 
-public partial class RedisServiceModel : ServiceBaseModel
-{
     public RedisConfigModel RedisConfig { get; set; } = new();
 
     public string? GetConfigText()

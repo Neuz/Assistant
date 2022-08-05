@@ -12,7 +12,7 @@ public class MySQLWizardViewModel : ObservableObject
     }
 
 
-    public MySQLWizardViewModel(MySQLServiceModel mysql)
+    public MySQLWizardViewModel(MySqlService mysql)
     {
         _model = mysql;
     }
@@ -43,5 +43,5 @@ public class MySQLWizardViewModel : ObservableObject
     }
 
 
-    private readonly MySQLServiceModel _model = new();
+    private readonly MySqlService _model = new();
 }

@@ -10,7 +10,7 @@ public class NeuzAdapterK3WiseWizardViewModel : ObservableObject
     }
 
 
-    public NeuzAdapterK3WiseWizardViewModel(NeuzAdapterK3WiseServiceModel wise)
+    public NeuzAdapterK3WiseWizardViewModel(K3WiseAdapterService wise)
     {
         _wise       = wise;
         ConfigText = _wise.ToConfigString();
@@ -48,5 +48,5 @@ public class NeuzAdapterK3WiseWizardViewModel : ObservableObject
 
     private string _configText = "";
 
-    private readonly NeuzAdapterK3WiseServiceModel _wise = new();
+    private readonly K3WiseAdapterService _wise = new();
 }
