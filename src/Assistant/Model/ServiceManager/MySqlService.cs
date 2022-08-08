@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
 // ReSharper disable InconsistentNaming
 
@@ -14,11 +15,12 @@ public partial class MySqlService : ServiceBase
 {
     public override async Task Install(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(BinPath, nameof(BinPath));
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(ConfigFilePath, nameof(ConfigFilePath));
-        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
-        ArgumentNullException.ThrowIfNull(LogDirectory, nameof(LogDirectory));
+        Guard.IsNotNullOrEmpty(BinPath);
+        Guard.IsNotNullOrEmpty(ServiceName);
+        Guard.IsNotNullOrEmpty(ConfigFilePath);
+        Guard.IsNotNullOrEmpty(ServiceDirectory);
+        Guard.IsNotNullOrEmpty(TempDirectory);
+        Guard.IsNotNullOrEmpty(LogDirectory);
 
         if (!File.Exists(MySQLExePath)) throw new ApplicationException($"文件不存在 {MySQLExePath}");
         if (!File.Exists(BinPath)) throw new ApplicationException($"文件不存在 {BinPath}");
@@ -97,8 +99,9 @@ public partial class MySqlService : ServiceBase
 
     public override async Task UnInstall(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(LogDirectory, nameof(LogDirectory));
+        Guard.IsNotNullOrEmpty(ServiceName);
+        Guard.IsNotNullOrEmpty(LogDirectory);
+        Guard.IsNotNullOrEmpty(TempDirectory);
 
         if (Directory.Exists(TempDirectory))
         {
@@ -129,8 +132,8 @@ public partial class MySqlService
         BinPath            = Path.Combine(baseDir, "bin", "mysqld.exe");
         ServiceDescription = "Neuz.MySQL 服务";
         ServiceDirectory   = baseDir;
-        LogDirectory       = Path.Combine(baseDir, "Logs");
-        LogFilePath        = Path.Combine(baseDir, "Logs", "error.log");
+        LogDirectory       = Path.Combine(baseDir, "logs");
+        LogFilePath        = Path.Combine(baseDir, "logs", "error.log");
         Installed          = false;
         RunningStatus      = RunningStatus.UnKnown;
         ConfigFilePath     = Path.Combine(baseDir, "my.ini");

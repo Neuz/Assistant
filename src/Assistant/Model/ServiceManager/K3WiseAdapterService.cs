@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Assistant.Utils;
+using CommunityToolkit.Diagnostics;
 
 // ReSharper disable ReplaceWithSingleCallToAny
 
@@ -13,14 +14,16 @@ public partial class K3WiseAdapterService : ServiceBase
 {
     public override async Task Install(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(BinPath, nameof(BinPath));
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(ConfigFilePath, nameof(ConfigFilePath));
-        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
-        ArgumentNullException.ThrowIfNull(LogDirectory, nameof(LogDirectory));
+        Guard.IsNotNullOrEmpty(BinPath);
+        Guard.IsNotNullOrEmpty(ServiceName);
+        Guard.IsNotNullOrEmpty(ConfigFilePath);
+        Guard.IsNotNullOrEmpty(ServiceDirectory);
+        Guard.IsNotNullOrEmpty(LogDirectory);
 
         if ((!Directory.Exists(ServiceDirectory) || !Directory.EnumerateFileSystemEntries(ServiceDirectory).Any()) && string.IsNullOrEmpty(ZipFilePath))
-            throw new FileNotFoundException($"{ServiceDirectory} 目录不存在或为空目录，请选择软件包\r\n{ServiceDirectory}");
+            ThrowHelper.ThrowArgumentException($"{ServiceDirectory} 目录不存在或为空目录，请选择软件包\r\n{ServiceDirectory}");
+
+
 
         // 备份现有 Adapter
         if (Directory.Exists(ServiceDirectory))

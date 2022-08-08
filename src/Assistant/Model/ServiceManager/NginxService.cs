@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
 namespace Assistant.Model.ServiceManager;
 
@@ -10,12 +11,12 @@ public partial class NginxService : ServiceBase
 {
     public override async Task Install(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(BinPath, nameof(BinPath));
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(ConfigFilePath, nameof(ConfigFilePath));
-        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
-        ArgumentNullException.ThrowIfNull(TempDirectory, nameof(TempDirectory));
-        ArgumentNullException.ThrowIfNull(LogDirectory, nameof(LogDirectory));
+        Guard.IsNotNullOrEmpty(BinPath);
+        Guard.IsNotNullOrEmpty(ServiceName);
+        Guard.IsNotNullOrEmpty(ConfigFilePath);
+        Guard.IsNotNullOrEmpty(ServiceDirectory);
+        Guard.IsNotNullOrEmpty(TempDirectory);
+        Guard.IsNotNullOrEmpty(LogDirectory);
 
         if (!Directory.Exists(TempDirectory))
         {
@@ -53,7 +54,7 @@ public partial class NginxService : ServiceBase
 
     public override async Task UnInstall(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
+        Guard.IsNotNullOrEmpty(ServiceName);
 
         if (Directory.Exists(TempDirectory))
         {
@@ -77,6 +78,7 @@ public partial class NginxService
     public NginxService()
     {
         var baseDir = Path.Combine(Global.CurrentDir, "Services", "Nginx");
+
         DisplayName        = "Nginx";
         Version            = "1.21.5";
         ServiceName        = "Neuz.Nginx";
@@ -93,7 +95,7 @@ public partial class NginxService
 
     public string? TempDirectory { get; set; }
 
-    public NginxConfigModel NginxConfig { get; set; } = new();
+    public NginxConfigModel NginxConfig { get; set; }
 
     public class NginxConfigModel
     {

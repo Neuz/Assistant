@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
 namespace Assistant.Model.ServiceManager;
 
@@ -11,10 +12,11 @@ public partial class RedisService : ServiceBase
 {
     public override async Task Install(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(BinPath, nameof(BinPath));
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(ConfigFilePath, nameof(ConfigFilePath));
-        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
+        Guard.IsNotNullOrEmpty(BinPath);
+        Guard.IsNotNullOrEmpty(ServiceName);
+        Guard.IsNotNullOrEmpty(ConfigFilePath);
+        Guard.IsNotNullOrEmpty(ServiceDirectory);
+        Guard.IsNotNullOrEmpty(LogDirectory);
 
         // 备份配置文件
         if (File.Exists(ConfigFilePath))
@@ -41,7 +43,7 @@ public partial class RedisService : ServiceBase
 
     public override async Task UnInstall(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
+        Guard.IsNotNullOrEmpty(ServiceName);
 
         infoAction?.Invoke($"删除Windows服务 [{ServiceName}]");
         await WinServiceUtils.DeleteService(ServiceName);
@@ -66,18 +68,18 @@ public partial class RedisService
         RedisConfig        = new RedisConfigModel();
     }
 
-    public RedisConfigModel RedisConfig { get; set; } = new();
+    public RedisConfigModel RedisConfig { get; set; }
 
-    public string? GetConfigText()
+    public string GetConfigText()
     {
-        return string.Format(RedisConfig._configText, RedisConfig.Port);
+        return string.Format(RedisConfig.ConfigText, RedisConfig.Port);
     }
 
     public class RedisConfigModel
     {
         public int Port { get; set; } = 10002;
 
-        internal string _configText = @"bind 127.0.0.1
+        internal string ConfigText = @"bind 127.0.0.1
 protected-mode yes
 port 10002
 tcp-backlog 511
