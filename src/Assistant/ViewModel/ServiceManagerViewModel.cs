@@ -278,7 +278,7 @@ public class ServiceManagerViewModel : ObservableObject
                 }
                 case NeuzAppService:
                 {
-                    if (NeuzApp.Api.Installed) throw new ApplicationException($"[{NeuzApp.Api.ServiceName}]已安装");
+                    // if (NeuzApp.Api.Installed) throw new ApplicationException($"[{NeuzApp.Api.ServiceName}]已安装");
 
                     var wizard = new NeuzAppWizardView {DataContext = new NeuzAppWizardViewModel(NeuzApp)};
                     if (!(wizard.ShowDialog() ?? false)) break;

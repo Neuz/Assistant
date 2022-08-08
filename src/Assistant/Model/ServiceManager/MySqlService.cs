@@ -112,7 +112,8 @@ public partial class MySqlService : ServiceBase
             infoAction?.Invoke($"删除ins.conf [{InsConfFilePath}]");
         }
 
-        await base.UnInstall(infoAction);
+        infoAction?.Invoke($"删除Windows服务 [{ServiceName}]");
+        await WinServiceUtils.DeleteService(ServiceName);
     }
 }
 

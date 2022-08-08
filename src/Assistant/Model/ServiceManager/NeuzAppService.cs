@@ -182,7 +182,7 @@ public partial class NeuzAppService
                                 .Select(f =>
                                  {
                                      var fi    = new FileInfo(f);
-                                     var split = fi.Name[..fi.Name.LastIndexOf(fi.Extension, StringComparison.Ordinal)].Split("_Script_");
+                                     var split = fi.Name[..fi.Name.LastIndexOf(fi.Extension, StringComparison.Ordinal)].Split("_script_");
                                      return new
                                      {
                                          fileName = fi.Name,

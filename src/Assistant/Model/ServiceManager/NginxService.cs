@@ -46,11 +46,15 @@ public partial class NginxService : ServiceBase
         await FileUtils.WriteToFile(this, insConfPath);
         infoAction?.Invoke($"写入ins.conf: [{insConfPath}]");
 
-        await base.Install(infoAction);
+        // 创建Windows服务
+        await WinServiceUtils.CreateService(BinPath, ServiceName, ServiceDescription ?? string.Empty, ServiceDescription ?? string.Empty);
+        infoAction?.Invoke($"windows 服务创建成功: [{ServiceName}]");
     }
 
     public override async Task UnInstall(Action<string>? infoAction = null)
     {
+        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
+
         if (Directory.Exists(TempDirectory))
         {
             Directory.Delete(TempDirectory, true);
@@ -63,8 +67,8 @@ public partial class NginxService : ServiceBase
             infoAction?.Invoke($"删除ins.conf [{InsConfFilePath}]");
         }
 
-
-        await base.UnInstall(infoAction);
+        infoAction?.Invoke($"删除Windows服务 [{ServiceName}]");
+        await WinServiceUtils.DeleteService(ServiceName);
     }
 }
 

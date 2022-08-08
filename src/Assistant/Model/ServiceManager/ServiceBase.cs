@@ -49,22 +49,13 @@ public class ServiceBase : IService
         return WinServiceUtils.StopService(ServiceName);
     }
 
-    public virtual async Task Install(Action<string>? infoAction = null)
+    public virtual Task Install(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-        ArgumentNullException.ThrowIfNull(ServiceDirectory, nameof(ServiceDirectory));
-
-        // 创建Windows服务
-        var binPath = @$"""{BinPath}"" --service-run ""{ConfigFilePath}""";
-        await WinServiceUtils.CreateService(binPath, ServiceName, ServiceDescription ?? string.Empty, ServiceDescription ?? string.Empty);
-        infoAction?.Invoke($"windows 服务创建成功: [{ServiceName}]");
+        throw new NotImplementedException();
     }
 
-    public virtual async Task UnInstall(Action<string>? infoAction = null)
+    public virtual Task UnInstall(Action<string>? infoAction = null)
     {
-        ArgumentNullException.ThrowIfNull(ServiceName, nameof(ServiceName));
-
-        infoAction?.Invoke($"删除Windows服务 [{ServiceName}]");
-        await WinServiceUtils.DeleteService(ServiceName);
+        throw new NotImplementedException();
     }
 }

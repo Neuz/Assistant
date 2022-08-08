@@ -41,16 +41,16 @@ public partial class K3WiseAdapterService : ServiceBase
             // 解压zip
             infoAction?.Invoke($"正在解压 [{ZipFilePath}]");
 
-            var startFlag = "K3Wise/"; // 识别标识
+            var startFlag = "k3wise\\"; // 识别标识
 
             using var archive    = ZipFile.OpenRead(ZipFilePath);
-            var       hasAdapter = archive.Entries.Where(e => e.FullName.StartsWith(startFlag)).Any();
+            var       hasAdapter = archive.Entries.Where(e => e.FullName.StartsWith(startFlag,StringComparison.OrdinalIgnoreCase)).Any();
             if (!hasAdapter) throw new ApplicationException("当前文件不是 NeuzWiseAdapter 安装文件");
             foreach (var entry in archive.Entries)
             {
                 if (!entry.FullName.StartsWith(startFlag, StringComparison.OrdinalIgnoreCase)) continue;
-
-                var split = entry.FullName.Split("/");
+                
+                var split = entry.FullName.Split("\\");
                 if (string.IsNullOrEmpty(entry.Name))
                 {
                     var dir = Path.Combine(ServiceDirectory, Path.Combine(split[1..]));
@@ -97,7 +97,8 @@ public partial class K3WiseAdapterService : ServiceBase
             infoAction?.Invoke($"删除ins.conf [{InsConfFilePath}]");
         }
 
-        await base.UnInstall(infoAction);
+        infoAction?.Invoke($"删除Windows服务 [{ServiceName}]");
+        await WinServiceUtils.DeleteService(ServiceName);
     }
 }
 

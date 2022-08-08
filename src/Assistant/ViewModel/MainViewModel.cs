@@ -13,7 +13,6 @@ public class MainViewModel : ObservableObject
     private UserControl? _currentView;
     public string Title => "Neuz 助手";
 
-    private readonly LogView _logView;
 
     public UserControl? CurrentView
     {
@@ -21,17 +20,14 @@ public class MainViewModel : ObservableObject
         set => SetProperty(ref _currentView, value);
     }
 
-    public static readonly object LogSyncLock = new();
-
     public MainViewModel()
     {
         ClickCommand = new RelayCommand<object?>(ClickHandler);
-        _logView     = new LogView();
         // 日志配置
         const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
                     .MinimumLevel.Verbose()
-                    .WriteTo.File("Logs/.log", shared: true, rollingInterval: RollingInterval.Day, outputTemplate: outputTemplate)
+                    .WriteTo.File("Assistant.log", shared: true, rollingInterval: RollingInterval.Day, outputTemplate: outputTemplate)
                     .CreateLogger();
 
         ClickHandler(typeof(SystemInfoView));
@@ -46,11 +42,8 @@ public class MainViewModel : ObservableObject
         var t = obj as Type;
 
         if (t == typeof(ServiceManagerView)) CurrentView = new ServiceManagerView();
-
         if (t == typeof(SystemInfoView)) CurrentView = new SystemInfoView();
-
-        if (t == typeof(ToolsView)) CurrentView = new ToolsView();
-
-        if (t == typeof(LogView)) CurrentView = _logView;
+        if (t == typeof(ToolsView)) CurrentView  = new ToolsView();
+        if (t == typeof(BackupView)) CurrentView = new BackupView();
     }
 }
