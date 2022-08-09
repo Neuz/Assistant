@@ -42,16 +42,19 @@ public partial class KisAdapterService : ServiceBase
             // 解压zip
             infoAction?.Invoke($"正在解压 [{ZipFilePath}]");
 
-            var startFlag = "kisu\\"; // 识别标识
-
             using var archive    = ZipFile.OpenRead(ZipFilePath);
+            var separatorChar = archive.Entries.Where(e => e.FullName.Contains(Path.DirectorySeparatorChar)).Any()
+                                    ? Path.DirectorySeparatorChar
+                                    : Path.AltDirectorySeparatorChar;
+            var startFlag = $"kisu{separatorChar}"; // 识别标识
+
             var       hasAdapter = archive.Entries.Where(e => e.FullName.StartsWith(startFlag,StringComparison.OrdinalIgnoreCase)).Any();
             if (!hasAdapter) throw new ApplicationException("当前文件不是 NeuzWiseAdapter 安装文件");
             foreach (var entry in archive.Entries)
             {
                 if (!entry.FullName.StartsWith(startFlag, StringComparison.OrdinalIgnoreCase)) continue;
 
-                var split = entry.FullName.Split("/");
+                var split = entry.FullName.Split(separatorChar);
                 if (string.IsNullOrEmpty(entry.Name))
                 {
                     var dir = Path.Combine(ServiceDirectory, Path.Combine(split[1..]));

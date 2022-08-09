@@ -65,7 +65,7 @@
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
             <TextBlock Margin="5,20,15,0">
-                <Hyperlink Command="{Binding OpenWinSvcCommand}">
+                <Hyperlink Command="{Binding OpenWinServiceCommand}">
                     <Run Text="打开服务" />
                 </Hyperlink>
             </TextBlock>
@@ -74,7 +74,7 @@
                           SizeMode="Small"
                           ToolTip="刷新"
                           IconTemplate="{StaticResource IconFlush}"
-                          Command="{Binding FlushCommand}" />
+                          Command="{Binding FlushUICommand}" />
         </StackPanel>
 
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
@@ -90,9 +90,9 @@
                     CanGroup="False"
                     ShowHeader="False"
                     Orientation="Horizontal">
-                    <sf:CardViewItem Header="{Binding MySQL.DisplayName}">
+                    <sf:CardViewItem Header="{Binding Mysql.DisplayName}">
                         <StackPanel>
-                            <TextBlock Margin="10,0,10,0" Text="{Binding MySQL.Version}" />
+                            <TextBlock Margin="10,0,10,0" Text="{Binding Mysql.Version}" />
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="15,0,10,0">
                                 <Grid.RowDefinitions>
@@ -111,23 +111,23 @@
                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                            Margin="5"
                                            FontSize="12"
-                                           Foreground="{Binding MySQL.Installed ,Converter={StaticResource BoolColorCvt}}"
-                                           Text="{Binding MySQL.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
+                                           Foreground="{Binding Mysql.Installed ,Converter={StaticResource BoolColorCvt}}"
+                                           Text="{Binding Mysql.Installed, Converter={StaticResource BoolStringCvt}, ConverterParameter='已安装|未安装'}" />
                                 <TextBlock Grid.Row="1" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
                                            Text="服务状态" />
                                 <TextBlock Grid.Row="1" Grid.Column="1" Margin="5"
                                            FontSize="12"
-                                           Foreground="{Binding MySQL.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
-                                           Text="{Binding MySQL.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
+                                           Foreground="{Binding Mysql.RunningStatus, Converter={StaticResource EnumColorCvt}, ConverterParameter={x:Type svcMgr:RunningStatus}}"
+                                           Text="{Binding Mysql.RunningStatus, Converter={StaticResource EnumStringCvt}}" />
                                 <TextBlock Grid.Row="2" Grid.Column="0"
                                            Margin="5"
                                            FontSize="12" FontWeight="Bold"
                                            Text="端口" />
                                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5"
                                            FontSize="12"
-                                           Text="{Binding MySQL.MySQLConfig.Port}" />
+                                           Text="{Binding Mysql.MySQLConfig.Port}" />
                             </Grid>
                             <Separator Margin="10,5,10,5" Height="2" HorizontalAlignment="Stretch" />
                             <Grid Margin="10,0,10,0">
@@ -140,13 +140,13 @@
                                               SizeMode="Normal" Label="目录" ToolTip="打开目录"
                                               IconTemplate="{StaticResource IconFolder}"
                                               Command="{Binding OpenDirCommand}"
-                                              CommandParameter="{Binding MySQL.ServiceDirectory}" />
+                                              CommandParameter="{Binding Mysql.ServiceDirectory}" />
                                 <sf:ButtonAdv Grid.Column="1"
                                               Margin="5"
                                               SizeMode="Normal" Label="配置" ToolTip="打开配置文件"
                                               IconTemplate="{StaticResource IconFileText}"
                                               Command="{Binding OpenConfigCommand}"
-                                              CommandParameter="{Binding MySQL.ConfigFilePath}" />
+                                              CommandParameter="{Binding Mysql.ConfigFilePath}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -158,13 +158,13 @@
                                               SizeMode="Normal" Label="安装" ToolTip="安装服务"
                                               IconTemplate="{StaticResource IconAppAdd}"
                                               Command="{Binding InstallCommand}"
-                                              CommandParameter="{Binding MySQL}" />
+                                              CommandParameter="{Binding Mysql}" />
                                 <sf:ButtonAdv Grid.Column="1"
                                               Margin="5"
                                               SizeMode="Normal" Label="卸载" ToolTip="卸载服务"
                                               IconTemplate="{StaticResource IconDelete}"
                                               Command="{Binding UnInstallCommand}"
-                                              CommandParameter="{Binding MySQL}" />
+                                              CommandParameter="{Binding Mysql}" />
                             </Grid>
                             <Grid Margin="10,0,10,0">
                                 <Grid.ColumnDefinitions>
@@ -176,13 +176,13 @@
                                               SizeMode="Normal" Label="启动" ToolTip="启动服务"
                                               IconTemplate="{StaticResource IconPlayCircle}"
                                               Command="{Binding StartCommand}"
-                                              CommandParameter="{Binding MySQL}" />
+                                              CommandParameter="{Binding Mysql}" />
                                 <sf:ButtonAdv Grid.Column="1"
                                               Margin="5"
                                               SizeMode="Normal" Label="停止" ToolTip="停止服务"
                                               IconTemplate="{StaticResource IconStopCircle}"
                                               Command="{Binding StopCommand}"
-                                              CommandParameter="{Binding MySQL}" />
+                                              CommandParameter="{Binding Mysql}" />
                             </Grid>
                         </StackPanel>
                     </sf:CardViewItem>
@@ -708,7 +708,7 @@
                                                   SizeMode="Normal" Label="目录" ToolTip="打开目录"
                                                   IconTemplate="{StaticResource IconFolder}"
                                                   Command="{Binding OpenDirCommand}"
-                                                  CommandParameter="{Binding NeuzApp.Directory}" />
+                                                  CommandParameter="{Binding NeuzApp.BaseDirectory}" />
                                     <sf:ButtonAdv Grid.Column="0" Grid.Row="1"
                                                   Margin="5"
                                                   SizeMode="Normal" Label="安装" ToolTip="安装服务"
@@ -802,13 +802,13 @@
                 </sf:CardView>
             </Grid>
         </sf:SfBusyIndicator>
-        <StatusBar Grid.Row="3" Margin="10,0,10,0">
+        <StatusBar Grid.Row="3">
             <StatusBarItem>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding BusyText}"></TextBlock>
+                    <TextBlock Grid.Column="0"  Margin="10,0,10,0" Text="{Binding BusyText}" />
                 </Grid>
             </StatusBarItem>
         </StatusBar>

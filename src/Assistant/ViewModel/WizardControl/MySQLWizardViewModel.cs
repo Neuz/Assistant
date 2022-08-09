@@ -1,26 +1,19 @@
-﻿using Assistant.Model.ServiceManager;
+﻿using System.ComponentModel;
+using Assistant.Model.ServiceManager;
 using CommunityToolkit.Mvvm.ComponentModel;
+// ReSharper disable InconsistentNaming
 
 namespace Assistant.ViewModel.WizardControl;
 
-public class MySQLWizardViewModel : ObservableObject
+public partial class MySQLWizardViewModel : ObservableObject
 {
-    public MySQLWizardViewModel()
-    {
-    }
-
-
-    public MySQLWizardViewModel(MySqlService mysql)
-    {
-        _model = mysql;
-    }
-
 
     public string ServiceName
     {
         get => _model.ServiceName ?? string.Empty;
         set => SetProperty(_model.ServiceName, value, _model, (model, s) => model.ServiceName = s);
     }
+    
 
     public string ServiceDescription
     {
@@ -40,6 +33,6 @@ public class MySQLWizardViewModel : ObservableObject
         set => SetProperty(_model.MySQLConfig.Password, value, _model, (model, s) => model.MySQLConfig.Password = s);
     }
 
-
-    private readonly MySqlService _model = new();
+    [ObservableProperty]
+    public MySqlService _model;
 }

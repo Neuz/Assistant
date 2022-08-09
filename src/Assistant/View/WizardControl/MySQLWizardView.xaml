@@ -18,7 +18,7 @@
                      WindowStartupLocation="CenterScreen"
                      xmlns:vm="clr-namespace:Assistant.ViewModel.WizardControl">
     <sf:ChromelessWindow.DataContext>
-        <vm:MySQLWizardViewModel />
+        <vm:MySQLWizardViewModel/>
     </sf:ChromelessWindow.DataContext>
     <sf:WizardControl HelpVisible="False"
                       FinishButtonClosesWindow="True"

@@ -2,41 +2,23 @@
 using Assistant.Utils;
 using Assistant.View.WizardControl;
 using Assistant.ViewModel.WizardControl;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 // ReSharper disable InconsistentNaming
 
 namespace Assistant.ViewModel;
 
-public class ServiceManagerViewModel : ObservableObject
+public partial class ServiceManagerViewModel : ObservableObject
 {
     public ServiceManagerViewModel()
     {
-        FlushCommand      = new AsyncRelayCommand(FlushHandler);
-        OpenDirCommand    = new AsyncRelayCommand<object>(OpenDirHandler);
-        OpenConfigCommand = new AsyncRelayCommand<object>(OpenConfigHandler);
-        InstallCommand    = new AsyncRelayCommand<object>(InstallHandler);
-        UnInstallCommand  = new AsyncRelayCommand<object>(UnInstallHandler);
-        StartCommand      = new AsyncRelayCommand<object>(StartHandler);
-        StopCommand       = new AsyncRelayCommand<object>(StopHandler);
-        OpenUrlCommand    = new AsyncRelayCommand<object>(OpenUrlHandler);
-        OpenWinSvcCommand = new RelayCommand(OpenWinSvcHandler);
-
-
-        _mysql   = new MySqlService();
-        _nginx   = new NginxService();
-        _redis   = new RedisService();
-        _neuzApp = new NeuzAppService();
-        _kis     = new KisAdapterService();
-        _wise    = new K3WiseAdapterService();
     }
 
 
@@ -44,81 +26,33 @@ public class ServiceManagerViewModel : ObservableObject
 
     public string Title => "服务管理";
 
-    private bool _isBusy;
+    [ObservableProperty]
+    private bool isBusy;
 
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
-    }
+    [ObservableProperty]
+    private string busyText = "";
 
-    private string _busyText = "";
+    [ObservableProperty]
+    private RedisService _redis = new();
 
-    public string BusyText
-    {
-        get => _busyText;
-        set => SetProperty(ref _busyText, value);
-    }
+    [ObservableProperty]
+    private NginxService _nginx = new();
 
+    [ObservableProperty]
+    private MySqlService _mysql = new();
 
-    private RedisService _redis;
+    [ObservableProperty]
+    private NeuzAppService _neuzApp = new();
 
-    public RedisService Redis
-    {
-        get => _redis;
-        set => SetProperty(ref _redis, value);
-    }
+    [ObservableProperty]
+    private KisAdapterService _kis = new();
 
-    private NginxService _nginx;
-
-    public NginxService Nginx
-    {
-        get => _nginx;
-        set => SetProperty(ref _nginx, value);
-    }
-
-    private MySqlService _mysql;
-
-    public MySqlService MySQL
-    {
-        get => _mysql;
-        set => SetProperty(ref _mysql, value);
-    }
-    
-
-    private NeuzAppService _neuzApp;
-
-    public NeuzAppService NeuzApp
-    {
-        get => _neuzApp;
-        set => SetProperty(ref _neuzApp, value);
-    }
-
-    private KisAdapterService _kis;
-
-    public KisAdapterService Kis
-    {
-        get => _kis;
-        set => SetProperty(ref _kis, value);
-    }
-
-    private K3WiseAdapterService _wise;
-
-    public K3WiseAdapterService Wise
-    {
-        get => _wise;
-        set => SetProperty(ref _wise, value);
-    }
+    [ObservableProperty]
+    private K3WiseAdapterService _wise = new();
 
     #endregion
 
     #region 命令
-
-    /// <summary>
-    /// 刷新
-    /// </summary>
-    public ICommand FlushCommand { get; }
-
 
     private async Task Flush()
     {
@@ -152,8 +86,9 @@ public class ServiceManagerViewModel : ObservableObject
             return rs;
         }
 
+
         Nginx   = await FlushServiceBase(Nginx);
-        MySQL   = await FlushServiceBase(MySQL);
+        Mysql   = await FlushServiceBase(Mysql);
         Redis   = await FlushServiceBase(Redis);
         Kis     = await FlushServiceBase(Kis);
         Wise    = await FlushServiceBase(Wise);
@@ -188,8 +123,12 @@ public class ServiceManagerViewModel : ObservableObject
         if (showMessageBox) MessageBox.Show(msg);
     }
 
-
-    private async Task FlushHandler()
+    /// <summary>
+    /// 刷新UI
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    private async Task FlushUI()
     {
         await BusyRun(async () =>
         {
@@ -202,16 +141,16 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 打开目录
     /// </summary>
-    public ICommand OpenDirCommand { get; }
-
-    private async Task OpenDirHandler(object? param)
+    /// <param name="dir"></param>
+    /// <returns></returns>
+    [RelayCommand]
+    private async Task OpenDir(string? dir)
     {
         await BusyRun(async () =>
         {
-            var dir = param?.ToString() ?? throw new ApplicationException("目录为空");
-            if (!Directory.Exists(dir)) throw new ApplicationException($"找不到目录 [{dir}]");
-
-            InfoMsg($"打开目录 [{dir}]");
+            Guard.IsNotNullOrEmpty(dir, "目录为空");
+            if (!Directory.Exists(dir)) ThrowHelper.ThrowArgumentException($"找不到目录 [{dir}]");
+            InfoMsg($"正在打开目录 [{dir}]");
             await FileUtils.OpenDirectory(dir);
         });
     }
@@ -219,14 +158,13 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 打开配置文件
     /// </summary>
-    public ICommand OpenConfigCommand { get; }
-
-    private async Task OpenConfigHandler(object? param)
+    [RelayCommand]
+    private async Task OpenConfig(string? filePath)
     {
         await BusyRun(async () =>
         {
-            var filePath = param?.ToString() ?? throw new ApplicationException("文件路径为空");
-            if (!File.Exists(filePath)) throw new ApplicationException($"找不到文件 [{filePath}]");
+            Guard.IsNotNullOrEmpty(filePath, "文件路径为空");
+            if (!File.Exists(filePath)) ThrowHelper.ThrowArgumentException($"找不到文件 [{filePath}]");
 
             InfoMsg($"打开文件 [{filePath}]");
             await FileUtils.OpenFileWithNotepad(filePath);
@@ -236,9 +174,8 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 安装服务
     /// </summary>
-    public ICommand InstallCommand { get; }
-
-    private async Task InstallHandler(object? param)
+    [RelayCommand]
+    private async Task Install(object? param)
     {
         await BusyRun(async () =>
         {
@@ -257,12 +194,12 @@ public class ServiceManagerViewModel : ObservableObject
                 }
                 case MySqlService:
                 {
-                    if (MySQL.Installed) throw new ApplicationException($"[{MySQL.ServiceName}]已安装");
+                    if (Mysql.Installed) throw new ApplicationException($"[{Mysql.ServiceName}]已安装");
 
-                    var wizard = new MySQLWizardView {DataContext = new MySQLWizardViewModel(MySQL)};
+                    var wizard = new MySQLWizardView {DataContext = new MySQLWizardViewModel{_model = Mysql} };
                     if (!(wizard.ShowDialog() ?? false)) break;
-                    await MySQL.Install(msg => InfoMsg(msg));
-                    InfoMsg($"[{MySQL.ServiceName}]安装成功", true);
+                    await Mysql.Install(msg => InfoMsg(msg));
+                    InfoMsg($"[{Mysql.ServiceName}]安装成功", true);
                     break;
                 }
                 case RedisService:
@@ -318,9 +255,8 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 卸载服务
     /// </summary>
-    public ICommand UnInstallCommand { get; }
-
-    private async Task UnInstallHandler(object? param)
+    [RelayCommand]
+    private async Task UnInstall(object? param)
     {
         await BusyRun(async () =>
         {
@@ -337,10 +273,10 @@ public class ServiceManagerViewModel : ObservableObject
                 }
                 case MySqlService:
                 {
-                    if (MySQL.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{MySQL.ServiceName}]运行中");
+                    if (Mysql.RunningStatus == RunningStatus.Running) throw new ApplicationException($"[{Mysql.ServiceName}]运行中");
 
-                    await MySQL.UnInstall(msg => InfoMsg(msg));
-                    InfoMsg($"[{MySQL.ServiceName}]卸载成功", true);
+                    await Mysql.UnInstall(msg => InfoMsg(msg));
+                    InfoMsg($"[{Mysql.ServiceName}]卸载成功", true);
                     break;
                 }
                 case RedisService:
@@ -380,9 +316,10 @@ public class ServiceManagerViewModel : ObservableObject
     /// <summary>
     /// 启动服务
     /// </summary>
-    public ICommand StartCommand { get; }
-
-    private async Task StartHandler(object? param)
+    /// <param name="param"></param>
+    /// <returns></returns>
+    [RelayCommand]
+    private async Task Start(object? param)
     {
         if (param is not ServiceBase model) return;
 
@@ -394,44 +331,29 @@ public class ServiceManagerViewModel : ObservableObject
         });
     }
 
-    public ICommand OpenUrlCommand { get; }
-
-    public async Task OpenUrlHandler(object? param)
+    /// <summary>
+    /// 打开URL
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    [RelayCommand]
+    public async Task OpenUrl(string? url)
     {
         await BusyRun(async () =>
         {
-            switch (param)
-            {
-                case KisAdapterService kis:
-                {
-                    var url = $"http://localhost:{kis.Port}/swagger";
-                    await FileUtils.OpenUrl(url);
-                    InfoMsg($"打开 url: {url}");
-                    break;
-                }
-                case K3WiseAdapterService wise:
-                {
-                    var url = $"http://localhost:{wise.Port}/swagger";
-                    await FileUtils.OpenUrl(url);
-                    InfoMsg($"打开 url: {url}");
-                    break;
-                }
-                case string url:
-                {
-                    await FileUtils.OpenUrl(url);
-                    InfoMsg($"打开 url: {url}");
-                    break;
-                }
-            }
+            Guard.IsNotNullOrEmpty(url);
+            InfoMsg($"打开 url: {url}");
+            await FileUtils.OpenUrl(url);
         });
     }
 
     /// <summary>
     /// 停止服务
     /// </summary>
-    public ICommand StopCommand { get; }
-
-    private async Task StopHandler(object? param)
+    /// <param name="param"></param>
+    /// <returns></returns>
+    [RelayCommand]
+    private async Task Stop(object? param)
     {
         if (param is not ServiceBase model) return;
 
@@ -443,10 +365,11 @@ public class ServiceManagerViewModel : ObservableObject
         });
     }
 
-
-    public ICommand OpenWinSvcCommand { get; }
-
-    private void OpenWinSvcHandler()
+    /// <summary>
+    /// 打开Windows服务
+    /// </summary>
+    [RelayCommand]
+    private void OpenWinService()
     {
         _ = FileUtils.OpenWinSvc();
     }
