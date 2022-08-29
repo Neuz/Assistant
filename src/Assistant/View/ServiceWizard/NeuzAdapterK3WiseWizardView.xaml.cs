@@ -1,40 +1,32 @@
 ﻿using System;
-using Syncfusion.SfSkinManager;
 using System.Windows;
 using System.Windows.Media;
 using Assistant.Utils;
+using Microsoft.Win32;
 using Serilog;
+using Syncfusion.SfSkinManager;
 
-namespace Assistant.View.WizardControl;
+namespace Assistant.View.ServiceWizard;
 
 /// <summary>
-/// RedisWizardView.xaml 的交互逻辑
+/// NeuzAdapterK3WiseWizardView.xaml 的交互逻辑
 /// </summary>
-public partial class RedisWizardView
+public partial class NeuzAdapterK3WiseWizardView
 {
-    public RedisWizardView()
+    public NeuzAdapterK3WiseWizardView()
     {
         SfSkinManager.SetTheme(this, new Theme("FluentDark"));
         InitializeComponent();
     }
 
-    private void WizardControl_OnNext(object sender, RoutedEventArgs e)
+
+    private void BtnOfd_OnClick(object sender, RoutedEventArgs e)
     {
-        // if (!ConfigPage.IsSelected) return;
-        //
-        // try
-        // {
-        //     if (PdaPortTextBox.Value == null) throw new Exception($"PDA端口设置不允许为空");
-        //     if (WebPortTextBox.Value == null) throw new Exception($"Web端口设置不允许为空");
-        //     if (WebPortTextBox.Value == PdaPortTextBox.Value) throw new Exception($"Web端口和PDA端口不允许相同");
-        //
-        // }
-        // catch (Exception ex)
-        // {
-        //     Log.Error(ex.Message);
-        //     MessageBox.Show(ex.Message);
-        // }
+        var ofd = new OpenFileDialog {Filter = "压缩文件(*.zip)|*.zip|所有文件(*.*)|*.*"};
+
+        if (ofd.ShowDialog(this) ?? false) TbZipFilePath.Text = ofd.FileName;
     }
+
 
     private async void BtnTest_OnClick(object sender, RoutedEventArgs e)
     {

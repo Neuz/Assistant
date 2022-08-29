@@ -1,14 +1,13 @@
 ﻿using System;
-using Syncfusion.SfSkinManager;
 using System.Windows;
 using System.Windows.Media;
 using Assistant.Utils;
 using Serilog;
-using Syncfusion.Windows.Tools.Controls;
+using Syncfusion.SfSkinManager;
 
 // ReSharper disable InconsistentNaming
 
-namespace Assistant.View.WizardControl;
+namespace Assistant.View.ServiceWizard;
 
 /// <summary>
 /// MySQLWizardView.xaml 的交互逻辑
@@ -20,7 +19,7 @@ public partial class MySQLWizardView
         SfSkinManager.SetTheme(this, new Theme("FluentDark"));
         InitializeComponent();
     }
-    
+
 
     private async void BtnTest_OnClick(object sender, RoutedEventArgs e)
     {
@@ -28,7 +27,7 @@ public partial class MySQLWizardView
 
         try
         {
-            if(await WinServiceUtils.IsInstalled(TbServiceName.Text))
+            if (await WinServiceUtils.IsInstalled(TbServiceName.Text))
                 throw new Exception($"[{TbServiceName.Text}] 服务名已存在");
 
             if (NetWorkUtils.PortAvailable(Convert.ToInt32(TbPort.Value)))

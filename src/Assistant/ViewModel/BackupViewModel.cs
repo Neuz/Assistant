@@ -1,58 +1,78 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Assistant.Model;
+using Assistant.Model.Backup;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using Assistant.Utils;
+using Assistant.View.BackupWizard;
+using CommunityToolkit.Mvvm.Messaging;
+
+// ReSharper disable InconsistentNaming
 
 namespace Assistant.ViewModel;
 
-public class BackupViewModel : ObservableObject
+public partial class BackupViewModel : ObservableObject
 {
     public string Title => "数据备份";
 
+    private string DbBackupDir => Path.Combine(Global.BackupsDir, "DB_Backup");
+
+    #region Property
+
+    [ObservableProperty]
     private bool _isBusy;
 
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
-    }
-
-
+    [ObservableProperty]
     private string _busyText = "";
 
-    public string BusyText
+    [ObservableProperty]
+    private ObservableCollection<BackupFile> _backupFiles = new();
+
+    #endregion
+
+
+    #region Command
+
+    /// <summary>
+    /// 刷新
+    /// </summary>
+    [RelayCommand]
+    private void FlushUI()
     {
-        get => _busyText;
-        set => SetProperty(ref _busyText, value);
+        MessageBox.Show("Flush ui");
+        // Directory.GetFiles(DbBackupDir,"*.sql")
+        //          .Select(f=>new BackupFile())
     }
 
-    private string _databaseHost = "localhost";
-
-    public string DatabaseHost
+    /// <summary>
+    /// 新建备份
+    /// </summary>
+    /// <param name="obj"></param>
+    [RelayCommand]
+    private void AddBackFile(object? obj)
     {
-        get => _databaseHost;
-        set => SetProperty(ref _databaseHost, value);
+        var wizard = new BackupWizardView();
+        wizard.ShowDialog();
+
     }
 
-    private int _databasePort = 10001;
-
-    public int DatabasePort
+    /// <summary>
+    /// 还原备份
+    /// </summary>
+    /// <param name="obj"></param>
+    [RelayCommand]
+    private void RestoreBackupFile(object? obj)
     {
-        get => _databasePort;
-        set => SetProperty(ref _databasePort, value);
+        MessageBox.Show("Restore");
     }
 
+    [RelayCommand]
+    private async Task OpenDir() => await FileUtils.OpenDirectory(DbBackupDir);
 
-    private string _databaseUser = "root";
-
-    public string DatabaseUser
-    {
-        get => _databaseUser;
-        set => SetProperty(ref _databaseUser, value);
-    }
-
-    private string _databasePassword = "Neuz123";
-
-    public string DatabasePassword
-    {
-        get => _databasePassword;
-        set => SetProperty(ref _databasePassword, value);
-    }
+    #endregion
 }

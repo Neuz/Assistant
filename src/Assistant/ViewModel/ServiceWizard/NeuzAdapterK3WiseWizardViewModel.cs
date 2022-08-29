@@ -1,7 +1,7 @@
 ﻿using Assistant.Model.ServiceManager;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Assistant.ViewModel.WizardControl;
+namespace Assistant.ViewModel.ServiceWizard;
 
 public class NeuzAdapterK3WiseWizardViewModel : ObservableObject
 {

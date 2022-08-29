@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using Assistant.Model.ServiceManager;
+﻿using Assistant.Model.ServiceManager;
 using CommunityToolkit.Mvvm.ComponentModel;
+
 // ReSharper disable InconsistentNaming
 
-namespace Assistant.ViewModel.WizardControl;
+namespace Assistant.ViewModel.ServiceWizard;
 
 public partial class MySQLWizardViewModel : ObservableObject
 {

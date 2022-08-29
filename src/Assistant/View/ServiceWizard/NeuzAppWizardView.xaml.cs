@@ -1,12 +1,12 @@
-﻿using Assistant.Utils;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
+using Assistant.Utils;
 using Microsoft.Win32;
 using Serilog;
 using Syncfusion.SfSkinManager;
-using System;
-using System.Windows;
-using System.Windows.Media;
 
-namespace Assistant.View.WizardControl;
+namespace Assistant.View.ServiceWizard;
 
 /// <summary>
 /// NeuzAppWizardView.xaml 的交互逻辑
@@ -17,10 +17,6 @@ public partial class NeuzAppWizardView
     {
         SfSkinManager.SetTheme(this, new Theme("FluentDark"));
         InitializeComponent();
-    }
-
-    private void WizardControl_OnNext(object sender, RoutedEventArgs e)
-    {
     }
 
     private async void BtnTest_OnClick_1(object sender, RoutedEventArgs e)

@@ -23,12 +23,14 @@
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.6" />
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.43" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.43" />
@@ -48,19 +50,22 @@
     <Compile Update="View\SystemInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\MySQLWizardView.xaml.cs">
+    <Compile Update="View\ServiceWizard\MySQLWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\NeuzAdapterK3WiseWizardView.xaml.cs">
+    <Compile Update="View\ServiceWizard\NeuzAdapterK3WiseWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\NeuzAppWizardView.xaml.cs">
+    <Compile Update="View\ServiceWizard\NeuzAppWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\NeuzAdapterKisWizardView.xaml.cs">
+    <Compile Update="View\ServiceWizard\NeuzAdapterKisWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WizardControl\RedisWizardView.xaml.cs">
+    <Compile Update="View\BackupWizard\BackupWizardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ServiceWizard\RedisWizardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -78,23 +83,27 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\MySQLWizardView.xaml">
+    <Page Update="View\ServiceWizard\MySQLWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\NeuzAdapterK3WiseWizardView.xaml">
+    <Page Update="View\ServiceWizard\NeuzAdapterK3WiseWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\NeuzAppWizardView.xaml">
+    <Page Update="View\ServiceWizard\NeuzAppWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\NeuzAdapterKisWizardView.xaml">
+    <Page Update="View\ServiceWizard\NeuzAdapterKisWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WizardControl\RedisWizardView.xaml">
+    <Page Update="View\BackupWizard\BackupWizardView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ServiceWizard\RedisWizardView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

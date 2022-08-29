@@ -1,7 +1,7 @@
 ﻿using Assistant.Model.ServiceManager;
 using Assistant.Utils;
-using Assistant.View.WizardControl;
-using Assistant.ViewModel.WizardControl;
+using Assistant.View.ServiceWizard;
+using Assistant.ViewModel.ServiceWizard;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using MySQLWizardViewModel = Assistant.ViewModel.ServiceWizard.MySQLWizardViewModel;
 
 // ReSharper disable InconsistentNaming
 

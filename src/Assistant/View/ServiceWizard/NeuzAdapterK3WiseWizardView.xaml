@@ -1,4 +1,4 @@
-﻿<sf:ChromelessWindow x:Class="Assistant.View.WizardControl.NeuzAdapterKisWizardView"
+﻿<sf:ChromelessWindow x:Class="Assistant.View.ServiceWizard.NeuzAdapterK3WiseWizardView"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,23 +13,22 @@
                      ShowMinimizeButton="False"
                      ShowMaximizeButton="False"
                      Icon="/Resources/Img/logo.ico"
-                     Height="420"
+                     Height="500"
                      Width="500"
                      WindowStartupLocation="CenterScreen"
-                     xmlns:vm="clr-namespace:Assistant.ViewModel.WizardControl">
+                     xmlns:serviceWizard="clr-namespace:Assistant.ViewModel.ServiceWizard">
     <sf:ChromelessWindow.DataContext>
-        <vm:NeuzAdapterKisWizardViewModel />
+        <serviceWizard:NeuzAdapterK3WiseWizardViewModel />
     </sf:ChromelessWindow.DataContext>
     <sf:WizardControl HelpVisible="False"
                       FinishButtonClosesWindow="True"
                       FinishText="安装"
                       CancelText="取消"
                       BackText="上一步"
-                      NextText="下一步"
-                      Next="WizardControl_OnNext">
+                      NextText="下一步">
         <sf:WizardPage Name="ConfigPage"
-                       Title="服务设置"
-                       Description="安装参数设置 ( 1/4 )"
+                       Title="服务设置   ( 1/3 )"
+                       Description="安装参数设置"
                        PageType="Exterior"
                        CancelVisible="False"
                        BackVisible="False"
@@ -64,27 +63,8 @@
                 </StackPanel>
             </sf:SfBusyIndicator>
         </sf:WizardPage>
-        <sf:WizardPage Name="KisConfigPage"
-                       Title="金蝶账套设置  ( 2/4 )"
-                       Description="账套参数设置"
-                       PageType="Exterior"
-                       CancelVisible="False"
-                       BackVisible="False"
-                       FinishVisible="False">
-            <StackPanel Orientation="Vertical">
-                <sf:SfTextInputLayout Hint="金蝶账套编码" Margin="10,10,10,0">
-                    <TextBox Text="{Binding AccountNumber}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="金蝶账套用户名" Margin="10,0,10,0">
-                    <TextBox Text="{Binding AccountUser}" />
-                </sf:SfTextInputLayout>
-                <sf:SfTextInputLayout Hint="金蝶账套密码" Margin="10,10,10,0">
-                    <TextBox Text="{Binding AccountPwd}" />
-                </sf:SfTextInputLayout>
-            </StackPanel>
-        </sf:WizardPage>
         <sf:WizardPage Name="PreviewPage"
-                       Title="设置预览  ( 3/4 )"
+                       Title="设置预览   ( 2/3 )"
                        Description="安装参数预览"
                        PageType="Exterior"
                        CancelVisible="False"
@@ -101,7 +81,7 @@
                             Text="{Binding ConfigText}" />
         </sf:WizardPage>
         <sf:WizardPage Name="UpdateConfigPage"
-                       Title="安装或更新  ( 4/4 )"
+                       Title="安装或更新   ( 3/3 )"
                        PageType="Exterior"
                        CancelVisible="False"
                        NextVisible="False"
@@ -130,6 +110,7 @@
                         Content="..." />
                 </Grid>
             </StackPanel>
+
         </sf:WizardPage>
     </sf:WizardControl>
 </sf:ChromelessWindow>

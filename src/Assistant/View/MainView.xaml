@@ -77,7 +77,7 @@
                                ToolTip="数据备份"
                                Command="{Binding ClickCommand}"
                                CommandParameter="{x:Type view:BackupView}"
-                               Visibility="Hidden">
+                               Visibility="Visible">
                 <sf:NavigationItem.Icon>
                     <Path
                         Width="16"

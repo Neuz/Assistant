@@ -9,6 +9,13 @@
     <UserControl.DataContext>
         <vm:BackupViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="IconFlush">
+            <Grid>
+                <Path Stretch="Fill" Fill="White" Data="{StaticResource Svg.Reload}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -20,36 +27,47 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
+            <syncfusion:ButtonAdv Name="BtnFlush"
+                                  Width="30" Height="30"
+                                  SizeMode="Small"
+                                  ToolTip="刷新"
+                                  IconTemplate="{StaticResource IconFlush}"
+                                  Command="{Binding FlushUICommand}" />
+        </StackPanel>
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
         <syncfusion:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}" AnimationType="Box">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="10,5,10,0" FontSize="16" FontWeight="Bold" Content="MySQL参数" />
-                <Grid Grid.Row="1" Background="CadetBlue">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="数据库地址" />
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="444" />
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="数据库地址" />
-                        <TextBox Grid.Row="1" Grid.Column="3" Text="444" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="1" />
-            </Grid>
+            <syncfusion:SfDataGrid
+                x:Name="SfDataGrid"
+                AutoGenerateColumns="False"
+                NavigationMode="Row"
+                SelectionMode="Single"
+                AllowEditing="False"
+                RowHeight="35"
+                GridLinesVisibility="None"
+                ColumnSizer="Star"
+                ItemsSource="{Binding BackupFiles}">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="新建备份" Command="{Binding AddBackFileCommand}" />
+                        <Separator />
+                        <MenuItem Header="在文件夹中显示" />
+                        <Separator />
+                        <MenuItem Header="刷新" Command="{Binding FlushUICommand}" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+                <syncfusion:SfDataGrid.RecordContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="还原备份" Click="MenuItem_OnClick" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.RecordContextMenu>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="Name" HeaderText="名称" />
+                    <syncfusion:GridTextColumn MappingName="ModifyTime" HeaderText="修改时间"
+                                               DisplayBinding="{Binding Path=ModifyTime, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                    <syncfusion:GridTextColumn MappingName="Note" HeaderText="备注" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
         </syncfusion:SfBusyIndicator>
         <StatusBar Grid.Row="3" Margin="10,0,10,0">
             <StatusBarItem>
