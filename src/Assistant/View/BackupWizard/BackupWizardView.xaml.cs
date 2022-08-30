@@ -17,8 +17,6 @@ public partial class BackupWizardView
     public BackupWizardView()
     {
         SfSkinManager.SetTheme(this, new Theme("FluentDark"));
-
-
         InitializeComponent();
         WizardControl.SelectedPageChanged += WizardControl_SelectedPageChanged;
     }
