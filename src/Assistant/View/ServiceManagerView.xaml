@@ -51,6 +51,7 @@
                 <Path Fill="White" Stretch="Fill" Data="{StaticResource Svg.StopCircle}" />
             </Grid>
         </DataTemplate>
+        <SolidColorBrush x:Key="HyperlinkForeground" Color="#FF61AEEE"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -65,7 +66,7 @@
         <Label Grid.Row="0" Margin="10,5,10,0" FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
             <TextBlock Margin="5,20,15,0">
-                <Hyperlink Command="{Binding OpenWinServiceCommand}">
+                <Hyperlink Command="{Binding OpenWinServiceCommand}" Foreground="{DynamicResource HyperlinkForeground}">
                     <Run Text="打开服务" />
                 </Hyperlink>
             </TextBlock>
@@ -436,7 +437,7 @@
                                            Text="API文档" />
                                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
-                                               CommandParameter="{Binding ElementName=KisApiDocsUrl,Path=Text}">
+                                               CommandParameter="{Binding ElementName=KisApiDocsUrl,Path=Text}" Foreground="{DynamicResource HyperlinkForeground}">
                                         <Run Name="KisApiDocsUrl">
                                             <Run.Text>
                                                 <MultiBinding StringFormat="http://localhost:{0}/swagger">
@@ -551,7 +552,7 @@
                                            Text="API文档" />
                                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
-                                               CommandParameter="{Binding ElementName=WiseApiDocsUrl,Path=Text}">
+                                               CommandParameter="{Binding ElementName=WiseApiDocsUrl,Path=Text}" Foreground="{DynamicResource HyperlinkForeground}">
                                         <Run Name="WiseApiDocsUrl">
                                             <Run.Text>
                                                 <MultiBinding StringFormat="http://localhost:{0}/swagger">
@@ -680,7 +681,7 @@
                                                Margin="5"
                                                FontSize="12">
                                         <Hyperlink Command="{Binding OpenUrlCommand}"
-                                                   CommandParameter="{Binding ElementName=ApiUrl,Path=Text}">
+                                                   CommandParameter="{Binding ElementName=ApiUrl,Path=Text}" Foreground="{DynamicResource HyperlinkForeground}">
                                             <Run Name="ApiUrl">
                                                 <Run.Text>
                                                     <MultiBinding StringFormat="http://localhost:{0}">
@@ -755,7 +756,7 @@
                                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="访问地址" />
                                 <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
-                                               CommandParameter="{Binding ElementName=WebClientUrl,Path=Text}">
+                                               CommandParameter="{Binding ElementName=WebClientUrl,Path=Text}" Foreground="{DynamicResource HyperlinkForeground}">
                                         <Run Name="WebClientUrl">
                                             <Run.Text>
                                                 <MultiBinding StringFormat="http://localhost:{0}">
@@ -786,7 +787,7 @@
                                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" FontSize="12" Text="访问地址" />
                                 <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
                                     <Hyperlink Command="{Binding OpenUrlCommand}"
-                                               CommandParameter="{Binding ElementName=PdaClientUrl,Path=Text}">
+                                               CommandParameter="{Binding ElementName=PdaClientUrl,Path=Text}" Foreground="{DynamicResource HyperlinkForeground}">
                                         <Run Name="PdaClientUrl">
                                             <Run.Text>
                                                 <MultiBinding StringFormat="http://localhost:{0}">

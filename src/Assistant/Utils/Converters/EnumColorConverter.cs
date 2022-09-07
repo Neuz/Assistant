@@ -17,9 +17,9 @@ public class EnumColorConverter : IValueConverter
         if ((Type) parameter == RunningStatus.Running.GetType())
             return (RunningStatus) value switch
             {
-                RunningStatus.Running => new SolidColorBrush(Colors.Green),
-                RunningStatus.Stopped => new SolidColorBrush(Colors.Red),
-                RunningStatus.UnKnown => new SolidColorBrush(Colors.Orange),
+                RunningStatus.Running => new SolidColorBrush(Color.FromRgb(152, 195, 121)),
+                RunningStatus.Stopped => new SolidColorBrush(Color.FromRgb(224, 108, 117)),
+                RunningStatus.UnKnown => new SolidColorBrush(Color.FromRgb(209, 154, 102)),
                 _ => new SolidColorBrush(Colors.White)
             };
 
