@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -68,14 +69,22 @@ public class MySQLUtils
         return Task.Run(() =>
         {
             using var conn = new MySqlConnection(connStr);
-            using var cmd  = new MySqlCommand();
-            using var mb   = new MySqlBackup(cmd);
-            cmd.Connection = conn;
-            conn.Open();
-            mb.ImportInfo.IntervalForProgressReport = 2000; // 引发 ImportProgressChanged 事件的时间间隔（以毫秒为单位）
-            if (importProgressChangedHandler != null) mb.ImportProgressChanged += importProgressChangedHandler.Invoke;
-            mb.ImportFromFile(filePath);
-            conn.Close();
+            var fileContent = File.ReadAllText(filePath);
+            var script = new MySqlScript(conn, fileContent);
+            if (importProgressChangedHandler != null)
+            {
+                script.StatementExecuted += (sender, args) =>
+                {
+                    var a = new ImportProgressArgs(args.Position, fileContent.Length);
+                    importProgressChangedHandler.Invoke(sender, a);
+                };
+                script.ScriptCompleted += (sender, _) =>
+                {
+                    var a = new ImportProgressArgs(1, 1);
+                    importProgressChangedHandler.Invoke(sender!, a);
+                };
+            }
+            script.Execute();
         });
     }
 
@@ -97,6 +106,6 @@ public class MySQLUtils
 
     public static async Task BackupToFile()
     {
-        
+
     }
 }
