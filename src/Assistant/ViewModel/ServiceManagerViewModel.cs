@@ -259,6 +259,9 @@ public partial class ServiceManagerViewModel : ObservableObject
     [RelayCommand]
     private async Task UnInstall(object? param)
     {
+        if (MessageBox.Show($"是否确认卸载[{Nginx.ServiceName}]服务？", "", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
+            return;
+
         await BusyRun(async () =>
         {
             await Flush();

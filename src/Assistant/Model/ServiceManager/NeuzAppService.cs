@@ -27,16 +27,16 @@ public partial class NeuzAppService
     {
         public NeuzApiService()
         {
-            DisplayName        = "Neuz.Api";
-            Version            = "";
-            ServiceName        = "Neuz.Api";
+            DisplayName = "Neuz.Api";
+            Version = "";
+            ServiceName = "Neuz.Api";
             ServiceDescription = "Neuz.API 服务";
-            BinPath            = Path.Combine(Global.CurrentDir, "App", "api", "Neuz.Web.Entry.exe");
-            ServiceDirectory   = Path.Combine(Global.CurrentDir, "App", "api");
-            LogDirectory       = Path.Combine(Global.CurrentDir, "App", "api", "logs");
-            ConfigFilePath     = Path.Combine(Global.CurrentDir, "App", "api", "dbsettings.json");
-            Installed          = false;
-            RunningStatus      = RunningStatus.UnKnown;
+            BinPath = Path.Combine(Global.CurrentDir, "App", "api", "Neuz.Web.Entry.exe");
+            ServiceDirectory = Path.Combine(Global.CurrentDir, "App", "api");
+            LogDirectory = Path.Combine(Global.CurrentDir, "App", "api", "logs");
+            ConfigFilePath = Path.Combine(Global.CurrentDir, "App", "api", "dbsettings.json");
+            Installed = false;
+            RunningStatus = RunningStatus.UnKnown;
         }
 
 
@@ -75,9 +75,9 @@ CREATE DATABASE IF NOT EXISTS {NeuzLogDbName} CHARACTER SET utf8mb4;";
                 {
                     ConnectionStrings = new ConnectionStringsModel
                     {
-                        DefaultConnection     = string.Format(ConnStringTemplate, database.Host, neuzDbName, database.User, database.Password, database.Port),
+                        DefaultConnection = string.Format(ConnStringTemplate, database.Host, neuzDbName, database.User, database.Password, database.Port),
                         MultiTenantConnection = string.Format(ConnStringTemplate, database.Host, neuzSaaSDbName, database.User, database.Password, database.Port),
-                        LogConnection         = string.Format(ConnStringTemplate, database.Host, neuzLogDbName, database.User, database.Password, database.Port)
+                        LogConnection = string.Format(ConnStringTemplate, database.Host, neuzLogDbName, database.User, database.Password, database.Port)
                     };
                 }
 
@@ -95,7 +95,7 @@ CREATE DATABASE IF NOT EXISTS {NeuzLogDbName} CHARACTER SET utf8mb4;";
                     return JsonSerializer.Serialize(this, new JsonSerializerOptions
                     {
                         WriteIndented = true,
-                        Encoder       = JavaScriptEncoder.Create(UnicodeRanges.All)
+                        Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
                     });
                 }
             }
@@ -116,8 +116,8 @@ public partial class NeuzAppService
                      : new NeuzApiService();
 
         var installed = await WinServiceUtils.IsInstalled(Api.ServiceName!);
-        var status    = await WinServiceUtils.GetRunningStatus(Api.ServiceName!);
-        rs.Api.Installed     = installed;
+        var status = await WinServiceUtils.GetRunningStatus(Api.ServiceName!);
+        rs.Api.Installed = installed;
         rs.Api.RunningStatus = status;
         return rs;
     }
@@ -140,6 +140,8 @@ public partial class NeuzAppService
             infoAction?.Invoke($"创建目录 [{BackupDirectory}]");
             Directory.CreateDirectory(BackupDirectory);
             var appBkFilePath = Path.Combine(BackupDirectory, $"App.{DateTime.Now:yyyyMMddhhmmss}.zip");
+            //TODO：备份时如何排除log文件
+            infoAction?.Invoke($"备份当前 NeuzApp");
             await FileUtils.ZipFromDirectory(BaseDirectory, appBkFilePath);
             infoAction?.Invoke($"备份当前 NeuzApp 完成 [{appBkFilePath}]");
         }
@@ -151,7 +153,7 @@ public partial class NeuzAppService
         if (!string.IsNullOrEmpty(zipFilePath) && File.Exists(zipFilePath))
         {
             infoAction?.Invoke($"开始解压");
-            ZipFile.ExtractToDirectory(zipFilePath, BaseDirectory, true);
+            await FileUtils.ZipExtractToDirectory(zipFilePath, BaseDirectory);
             infoAction?.Invoke($"解压完成");
         }
 
@@ -170,7 +172,7 @@ public partial class NeuzAppService
         // 创建数据库
         infoAction?.Invoke("创建数据库");
         var sqlPath = Path.Combine(SqlDirectory, "create_db.sql");
-        var sqlStr  = Api.Database.CreateDatabaseSql();
+        var sqlStr = Api.Database.CreateDatabaseSql();
         await FileUtils.WriteToFile(sqlStr, sqlPath);
         infoAction?.Invoke($"创建临时脚本 [{sqlPath}]");
         builder = GetMySqlConnectionStringBuilder();
@@ -181,16 +183,16 @@ public partial class NeuzAppService
         var sqlFiles = Directory.GetFiles(SqlDirectory, "*.sql", SearchOption.AllDirectories)
                                 .Select(f =>
                                  {
-                                     var fi    = new FileInfo(f);
+                                     var fi = new FileInfo(f);
                                      var split = fi.Name[..fi.Name.LastIndexOf(fi.Extension, StringComparison.Ordinal)].Split("_script_");
                                      return new
                                      {
                                          fileName = fi.Name,
-                                         dbName   = (split.Length > 1 ? split[1] : "").ToLower(),
+                                         dbName = (split.Length > 1 ? split[1] : "").ToLower(),
                                          filePath = f
                                      };
                                  })
-                                .Where(f => new[] {"neuz", "neuz_log", "neuz_saas"}.Contains(f.dbName))
+                                .Where(f => new[] { "neuz", "neuz_log", "neuz_saas" }.Contains(f.dbName))
                                 .OrderBy(f => f.dbName)
                                 .ThenBy(f => f.fileName)
                                 .ToList();
@@ -198,8 +200,8 @@ public partial class NeuzAppService
         foreach (var sqlFile in sqlFiles)
         {
             builder = GetMySqlConnectionStringBuilder();
-            if (sqlFile.dbName == "neuz") builder.Database      = Api.Database.NeuzDbName;
-            if (sqlFile.dbName == "neuz_log") builder.Database  = Api.Database.NeuzLogDbName;
+            if (sqlFile.dbName == "neuz") builder.Database = Api.Database.NeuzDbName;
+            if (sqlFile.dbName == "neuz_log") builder.Database = Api.Database.NeuzLogDbName;
             if (sqlFile.dbName == "neuz_saas") builder.Database = Api.Database.NeuzSaaSDbName;
 
             try
@@ -215,12 +217,13 @@ public partial class NeuzAppService
             sqlIndex++;
         }
 
-        // 备份配置文件
-        if (File.Exists(Api.ConfigFilePath))
-        {
-            var rs = await FileUtils.BackupFile(Api.ConfigFilePath);
-            infoAction?.Invoke($"备份配置文件 [{rs}]");
-        }
+        //无需单独备份配置文件，因为前面已整个 NeuzApp 备份
+        //// 备份配置文件
+        //if (File.Exists(Api.ConfigFilePath))
+        //{
+        //    var rs = await FileUtils.BackupFile(Api.ConfigFilePath);
+        //    infoAction?.Invoke($"备份配置文件 [{rs}]");
+        //}
 
         // 更新配置文件
         var text = Api.Database.DbSettings.ToString();
@@ -228,11 +231,15 @@ public partial class NeuzAppService
         infoAction?.Invoke($"更新配置文件 [{Api.ConfigFilePath}]");
 
         // 创建windows服务
-        // todo 这里没放https
-        // var binPath = @$"{model.BinPath} --urls ""http://*:8001;https://*:8002""";
-        var binPath = @$"{Api.BinPath} --urls ""http://*:{Api.Port}""";
-        await WinServiceUtils.CreateService(binPath, Api.ServiceName, Api.ServiceDescription ?? string.Empty, Api.ServiceDescription ?? string.Empty);
-        infoAction?.Invoke($"创建windows服务: {Api.ServiceName}");
+        var installed = await WinServiceUtils.IsInstalled(Api.ServiceName!);
+        if (!installed)
+        {
+            // todo 这里没放https
+            // var binPath = @$"{model.BinPath} --urls ""http://*:8001;https://*:8002""";
+            var binPath = @$"{Api.BinPath} --urls ""http://*:{Api.Port}""";
+            await WinServiceUtils.CreateService(binPath, Api.ServiceName, Api.ServiceDescription ?? string.Empty, Api.ServiceDescription ?? string.Empty);
+            infoAction?.Invoke($"创建windows服务: {Api.ServiceName}");
+        }
 
         // 写入ins.conf
         await FileUtils.WriteToFile(Api, Api.InsConfFilePath);
@@ -258,11 +265,11 @@ public partial class NeuzAppService
     {
         return new MySqlConnectionStringBuilder
         {
-            Server             = Api.Database.Host,
-            Port               = Convert.ToUInt32(Api.Database.Port),
-            UserID             = Api.Database.User,
-            Password           = Api.Database.Password,
-            CharacterSet       = "utf8mb4",
+            Server = Api.Database.Host,
+            Port = Convert.ToUInt32(Api.Database.Port),
+            UserID = Api.Database.User,
+            Password = Api.Database.Password,
+            CharacterSet = "utf8mb4",
             AllowUserVariables = true
         };
     }
