@@ -134,6 +134,8 @@ public partial class NeuzAppService
         if ((!Directory.Exists(BaseDirectory) || !Directory.EnumerateFileSystemEntries(BaseDirectory).Any()) && string.IsNullOrEmpty(zipFilePath))
             throw new FileNotFoundException($"目录不存在或为空目录，请选择软件包进行安装 \r\n[{BaseDirectory}]");
 
+        var installed = await WinServiceUtils.IsInstalled(Api.ServiceName!);
+
         // 备份当前NeuzApp
         if (Directory.Exists(BaseDirectory))
         {
@@ -231,7 +233,6 @@ public partial class NeuzAppService
         infoAction?.Invoke($"更新配置文件 [{Api.ConfigFilePath}]");
 
         // 创建windows服务
-        var installed = await WinServiceUtils.IsInstalled(Api.ServiceName!);
         if (!installed)
         {
             // todo 这里没放https
@@ -240,6 +241,9 @@ public partial class NeuzAppService
             await WinServiceUtils.CreateService(binPath, Api.ServiceName, Api.ServiceDescription ?? string.Empty, Api.ServiceDescription ?? string.Empty);
             infoAction?.Invoke($"创建windows服务: {Api.ServiceName}");
         }
+
+        //启动服务
+        await WinServiceUtils.StartService(Api.ServiceName);
 
         // 写入ins.conf
         await FileUtils.WriteToFile(Api, Api.InsConfFilePath);
