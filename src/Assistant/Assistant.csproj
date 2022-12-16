@@ -19,25 +19,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.4.4" />
+    <PackageReference Include="CliWrap" Version="3.5.0" />
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-    <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
+    <PackageReference Include="CZGL.SystemInfo" Version="2.0.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.6" />
-    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.7" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.43" />
+    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.3.0.61" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.3.0.61" />
   </ItemGroup>
 
   <ItemGroup>
