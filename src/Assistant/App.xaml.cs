@@ -8,7 +8,7 @@ public partial class App
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjY0NTUzQDMyMzAyZTMyMmUzMERWMkNqUDM3VFh0T1hmNlduNHZiTFVEMlZTL01CUlZYV3NyeHBPalc0eGM9");
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("ODI3MzQ2QDMyMzAyZTM0MmUzMGRRVlNTUUdVWTRCSk1EV3VxczRNcEE1akV4bTlXcSsxaTJLYUtwT0VmQTg9");
         SfSkinManager.ApplyStylesOnApplication = true;
         base.OnStartup(e);
         new MainView().Show();

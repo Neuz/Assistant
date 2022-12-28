@@ -28,7 +28,7 @@ public class SystemInfoViewModel : ObservableObject
         };
     }
 
-    public NetworkInfo[] NetworkInfos { get; } = NetworkInfo.GetRealNetworkInfos();
+    public NetworkInfo[] NetworkInfos { get; } 
 
     public DiskInfo[] DiskInfos { get; } = DiskInfo.GetDisks();
 
