@@ -4,9 +4,10 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Assistant.View.BaseServices;
 using Serilog;
 
-namespace Assistant.ViewModel;
+namespace Assistant;
 
 public class MainViewModel : ObservableObject
 {
@@ -30,8 +31,8 @@ public class MainViewModel : ObservableObject
                     .WriteTo.File("Assistant.log", shared: true, rollingInterval: RollingInterval.Day, outputTemplate: outputTemplate)
                     .CreateLogger();
 
-        ClickHandler(typeof(SystemInfoView));
-        CurrentView = new SystemInfoView();
+        // ClickHandler(typeof(SystemInfoView));
+        // CurrentView = new SystemInfoView();
     }
 
 
@@ -39,11 +40,8 @@ public class MainViewModel : ObservableObject
 
     private void ClickHandler(object? obj)
     {
-        var t = obj as Type;
+        var t= obj as Type;
 
-        if (t == typeof(ServiceManagerView)) CurrentView = new ServiceManagerView();
-        if (t == typeof(SystemInfoView)) CurrentView = new SystemInfoView();
-        if (t == typeof(ToolsView)) CurrentView  = new ToolsView();
-        if (t == typeof(BackupView)) CurrentView = new BackupView();
+        if (t == typeof(MySQLView)) CurrentView = new MySQLView();
     }
 }

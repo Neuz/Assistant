@@ -5,120 +5,57 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Img\logo.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Resources\Img\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\BeekeeperStudio.png" />
-    <None Remove="Resources\BeekeeperStudio.svg" />
+    <None Remove="Assets\BeekeeperStudio.png" />
+    <None Remove="Assets\BeekeeperStudio.svg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Img\logo.ico" />
+    <EmbeddedResource Include="Assets\Img\logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.4.4" />
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-    <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.6" />
-    <PackageReference Include="Serilog" Version="2.11.0" />
+    <Resource Include="Assets\Img\logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.6.4" />
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Syncfusion.Edit.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="20.2.0.43" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.43" />
+    <PackageReference Include="Syncfusion.Edit.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="23.1.36" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="23.1.36" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="View\BackupView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ToolsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\SystemInfoView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ServiceWizard\MySQLWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ServiceWizard\NeuzAdapterK3WiseWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ServiceWizard\NeuzAppWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ServiceWizard\NeuzAdapterKisWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\BackupWizard\BackupWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="View\ServiceWizard\RedisWizardView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <None Update="Assets\Zips\MySQL.zip">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Zips\Nginx.zip">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Zips\Redis.zip">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="View\BackupView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ToolsView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\SystemInfoView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ServiceWizard\MySQLWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ServiceWizard\NeuzAdapterK3WiseWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ServiceWizard\NeuzAppWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ServiceWizard\NeuzAdapterKisWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\BackupWizard\BackupWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="View\ServiceWizard\RedisWizardView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Resources\Services\MySQL.zip">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Services\Nginx.zip">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Services\Redis.zip">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Model\BaseServices\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

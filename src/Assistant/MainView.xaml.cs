@@ -1,6 +1,6 @@
 ﻿using Syncfusion.SfSkinManager;
 
-namespace Assistant.View;
+namespace Assistant;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
