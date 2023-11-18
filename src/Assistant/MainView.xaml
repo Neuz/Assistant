@@ -45,8 +45,90 @@
                         Data="{StaticResource Svg.Sql}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
-            <sf:NavigationItem Header="数据库管理"
-                               ToolTip="数据库管理"
+            <sf:NavigationItem Header="基础服务" ItemType="Header"/>
+            <sf:NavigationItem Header="MySQL"
+                                   ToolTip="MySQL"
+                                   Command="{Binding ClickCommand}"
+                                   CommandParameter="{x:Type baseService:MySQLView}">
+                    <sf:NavigationItem.Icon>
+                        <Path
+                            Width="16"
+                            Height="16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="#FFD83B"
+                            Stretch="Fill"
+                            Data="{StaticResource Svg.Sql}" />
+                    </sf:NavigationItem.Icon>
+                </sf:NavigationItem>
+
+            <sf:NavigationItem Header="Redis"
+                               ToolTip="Redis"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:MySQLView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+
+            <sf:NavigationItem Header="Nginx"
+                               ToolTip="Nginx"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:MySQLView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+
+            <sf:NavigationItem Header="Neuz应用" ItemType="Header"/>
+            <sf:NavigationItem Header="Neuz.Api"
+                               ToolTip="Neuz.Api"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:MySQLView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+            <sf:NavigationItem Header="Neuz.Adapter"
+                               ToolTip="Neuz.Adapter"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:MySQLView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+
+            <sf:NavigationItem Header="运维工具" ItemType="Header"/>
+            <sf:NavigationItem Header="网络检测"
+                               ToolTip="Neuz.Adapter"
                                Command="{Binding ClickCommand}"
                                CommandParameter="{x:Type baseService:MySQLView}">
                 <sf:NavigationItem.Icon>
@@ -62,7 +144,7 @@
             </sf:NavigationItem>
 
             <sf:SfNavigationDrawer.FooterItems>
-                <sf:NavigationItem Header="设置" Visibility="Hidden">
+                <sf:NavigationItem Header="更多">
                     <sf:NavigationItem.Icon>
                         <Path
                             Width="16"

@@ -5,43 +5,33 @@ using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Assistant.View.BaseServices;
+using Assistant.ViewModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Serilog;
+using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Assistant;
 
-public class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject
 {
-    private UserControl? _currentView;
     public string Title => "Neuz 助手";
-
-
-    public UserControl? CurrentView
-    {
-        get => _currentView;
-        set => SetProperty(ref _currentView, value);
-    }
 
     public MainViewModel()
     {
-        ClickCommand = new RelayCommand<object?>(ClickHandler);
-        // 日志配置
-        const string outputTemplate = "[{Level:u3}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] {Message:lj}{NewLine}{Exception}";
-        Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.File("Assistant.log", shared: true, rollingInterval: RollingInterval.Day, outputTemplate: outputTemplate)
-                    .CreateLogger();
-
-        // ClickHandler(typeof(SystemInfoView));
-        // CurrentView = new SystemInfoView();
+        CurrentView ??= Ioc.Default.GetService<DashboardView>();
     }
+    
 
+    [ObservableProperty]
+    private UserControl? _currentView;
+    
 
-    public ICommand ClickCommand { get; }
-
-    private void ClickHandler(object? obj)
+    [RelayCommand]
+    private void Click(Type type)
     {
-        var t= obj as Type;
-
-        if (t == typeof(MySQLView)) CurrentView = new MySQLView();
+        if (type == null) throw new ArgumentNullException(nameof(type));
+        CurrentView = (UserControl)Ioc.Default.GetService(type)!;
     }
+
 }

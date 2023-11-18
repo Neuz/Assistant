@@ -1,18 +1,26 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace Assistant.ViewModel;
 
-public class DashboardViewModel : ObservableObject
+public partial class DashboardViewModel : ObservableObject
 {
+
     public string Title => "仪表盘";
     public Geometry? Icon { get; } = Application.Current.FindResource("Svg.Sql") as Geometry;
     public string IconColor => "#FAD83B";
-    public string Version => "v5.7.36";
+
+
+    [RelayCommand]
+    private void Flush()
+    {
+        // todo
+        MessageBox.Show("Todo:刷新");
+    }
 }
