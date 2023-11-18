@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using Assistant.Messages;
+using Assistant.View.BaseServices;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -21,6 +23,7 @@ public partial class DashboardViewModel : ObservableObject
     private void Flush()
     {
         // todo
-        MessageBox.Show("Todo:刷新");
+        
+        WeakReferenceMessenger.Default.Send(new GotoMessage<Type>(typeof(MySQLView)));
     }
 }
