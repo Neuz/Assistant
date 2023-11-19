@@ -41,6 +41,23 @@
     <PackageReference Include="Syncfusion.Shared.WPF" Version="23.1.36" />
     <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="23.1.36" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="23.1.36" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\BaseServices\NginxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\BaseServices\RedisView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\OperationsTools\WinSvcView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\OperationsTools\NetworkView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

@@ -26,7 +26,6 @@ public class MySQL
         TempDir             = Path.Combine(baseDir, "tmp");
         Installed           = false;
         WinServiceInstalled = false;
-        Status              = RunningStatus.UnKnown;
     }
 
     public int Port { get; set; }
@@ -43,7 +42,6 @@ public class MySQL
     public bool Installed { get; set; }
     public bool WinServiceInstalled { get; set; }
 
-    public RunningStatus Status { get; set; }
 
     public Dictionary<string, object> Infos => new()
     {
@@ -56,18 +54,6 @@ public class MySQL
         {"ConfigPath", ConfigPath},
         {"Data目录", DataDir},
         {"是否注册Windows服务", WinServiceInstalled},
-        {"Windows服务运行状态", Status.GetDescription()}
     };
 
-    public enum RunningStatus
-    {
-        [MyDescription(Text = "停止")]
-        Stopped = 0,
-
-        [MyDescription(Text = "运行中")]
-        Running = 1,
-
-        [MyDescription(Text = "未知")]
-        UnKnown = -1
-    }
 }

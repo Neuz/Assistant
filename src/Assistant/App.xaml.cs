@@ -6,6 +6,7 @@ using Syncfusion.SfSkinManager;
 using System.Windows;
 using Assistant.Services;
 using Assistant.View.BaseServices;
+using Assistant.View.OperationsTools;
 
 namespace Assistant;
 
@@ -23,10 +24,13 @@ public partial class App
         // 服务依赖
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-               .AddSingleton<UIService>() // UI 相关服务
-               .AddTransient<MainView>()  // View
+               .AddSingleton<UIService>()     // UI 相关服务
+               .AddSingleton<WinSvcService>() // Windows服务
+               .AddTransient<MainView>()      // View
                .AddTransient<DashboardView>()
                .AddTransient<MySQLView>()
+               .AddTransient<RedisView>()
+               .AddTransient<WinSvcView>()
                .BuildServiceProvider());
     }
 

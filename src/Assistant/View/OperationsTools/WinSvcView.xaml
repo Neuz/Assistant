@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="Assistant.View.OperationsTools.WinSvcView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:vm="clr-namespace:Assistant.ViewModel.OperationsTools"
+             xmlns:m="clr-namespace:Assistant.Model.OperationsTools"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:WinSvcViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="IconFlush">
+            <Grid>
+                <Path Stretch="Fill" Fill="White" Data="{StaticResource Svg.Reload}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IconAdd">
+            <Grid>
+                <Path Stretch="Fill" Fill="White" Data="{StaticResource Svg.AppAdd}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="10,5,10,0" Orientation="Horizontal">
+            <Label FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5,10,0">
+            <syncfusion:ButtonAdv
+                Width="100" Height="30" Margin="0,0,10,0"
+                SizeMode="Normal"
+                ToolTip="注册服务"
+                Label="注册服务"
+                IconTemplate="{StaticResource IconAdd}"
+                Command="{Binding FlushCommand}" />
+            <syncfusion:ButtonAdv
+                Width="30" Height="30"
+                SizeMode="Small"
+                ToolTip="刷新"
+                IconTemplate="{StaticResource IconFlush}"
+                Command="{Binding FlushCommand}" />
+        </StackPanel>
+        <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
+        <syncfusion:SfDataGrid Grid.Row="2" 
+                               FilterRowPosition="None"
+                               GridLinesVisibility="Vertical"
+                               SelectionMode="Single"
+                               NavigationMode="Row"
+                               AutoGenerateColumns="False"
+                               AutoGenerateColumnsMode="None"
+                               ItemsSource="{Binding WinSvcList}" SourceType="{x:Type m:WinSvc}">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn HeaderText="PID" MappingName="Pid" 
+                                           TextAlignment="Right"
+                                           ColumnSizer="SizeToHeader" 
+                                           ShowToolTip="True"
+                                           FilterRowEditorType="TextBox" FilterRowOptionsVisibility="Collapsed"/>
+                <syncfusion:GridTextColumn HeaderText="服务名称" MappingName="DisplayName" 
+                                           TextAlignment="Left"
+                                           SortMode="Display"
+                                           ColumnSizer="SizeToCells" MaximumWidth="200"
+                                           ShowToolTip="True"
+                                           FilterRowEditorType="TextBox" FilterRowOptionsVisibility="Collapsed"/>
+                <syncfusion:GridTextColumn HeaderText="启动方式" MappingName="StartType" 
+                                           TextAlignment="Center"
+                                           ColumnSizer="SizeToHeader" 
+                                           FilterRowEditorType="MultiSelectComboBox" FilterRowOptionsVisibility="Collapsed"/>
+                <syncfusion:GridTextColumn HeaderText="运行状态" MappingName="Status" 
+                                           TextAlignment="Center"
+                                           ColumnSizer="SizeToHeader" 
+                                           FilterRowEditorType="MultiSelectComboBox" FilterRowOptionsVisibility="Collapsed"/>
+                <syncfusion:GridTextColumn HeaderText="描述" MappingName="Description" 
+                                           TextAlignment="Left"
+                                           ShowToolTip="True"
+                                           ColumnSizer="AutoLastColumnFill" MaximumWidth="280" TextTrimming="CharacterEllipsis"
+                                           FilterRowOptionsVisibility="Collapsed"/>
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.RecordContextMenu>
+                <ContextMenu>
+                    <ContextMenu.Resources>
+                        <vm:WinSvcViewModel x:Key="WinSvcViewModel" />
+                    </ContextMenu.Resources>
+                    <MenuItem Header="刷新" Command="{Binding FlushCommand,Source={StaticResource WinSvcViewModel}}" 
+                              CommandParameter="{Binding}"/>
+                    <Separator></Separator>
+                    <MenuItem Header="打开目录"  />
+                    <MenuItem Header="启动"  />
+                    <MenuItem Header="停止"  />
+                    <MenuItem Header="重启"  />
+                    <Separator></Separator>
+                    <MenuItem Header="杀死进程"  />
+                    <MenuItem Header="卸载"  />
+                </ContextMenu>
+            </syncfusion:SfDataGrid.RecordContextMenu>
+        </syncfusion:SfDataGrid>
+        
+    </Grid>
+</UserControl>
