@@ -32,6 +32,5 @@ public partial class MySQLViewModel : ObservableObject
     [RelayCommand]
     private void Flush()
     {
-        MySql = _uiService.FlushObject(MySql, m => { m.ServiceName = DateTime.Now.ToString("O"); })!;
     }
 }

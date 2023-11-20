@@ -21,9 +21,8 @@ public partial class NginxViewModel : ObservableObject
     private readonly UIService _uiService = Ioc.Default.GetRequiredService<UIService>();
 
 
-    public string Title => "MySQL";
+    public string Title => "Nginx";
     public Geometry? Icon { get; } = Application.Current.FindResource("Svg.Sql") as Geometry;
-    public string IconColor => "#FAD83B";
     public string Version => "v5.7.36";
 
     [ObservableProperty]
@@ -32,6 +31,5 @@ public partial class NginxViewModel : ObservableObject
     [RelayCommand]
     private void Flush()
     {
-        MySql = _uiService.FlushObject(MySql, m => { m.ServiceName = DateTime.Now.ToString("O"); })!;
     }
 }

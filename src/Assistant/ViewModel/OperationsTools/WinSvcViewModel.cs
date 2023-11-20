@@ -16,12 +16,12 @@ public partial class WinSvcViewModel : ObservableObject
 
 
     [ObservableProperty]
-    private List<WinSvc> _winSvcList = new();
+    private List<WinSvc> _winSvcObjList = new();
 
     [RelayCommand]
     private async Task Flush(object obj)
     {
         var s = Ioc.Default.GetRequiredService<WinSvcService>();
-        WinSvcList = s.Query();
+        // WinSvcObjList = s.Query("Neuz");
     }
 }

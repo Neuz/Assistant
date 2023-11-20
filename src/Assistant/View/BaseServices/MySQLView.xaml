@@ -61,7 +61,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <ItemsControl Grid.ColumnSpan="3" Grid.Column="0"
-                                  ItemsSource="{Binding MySql.Infos}">
+                                  >
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>

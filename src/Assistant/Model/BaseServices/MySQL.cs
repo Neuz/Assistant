@@ -1,59 +1,46 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using Assistant.Model.OperationsTools;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using Syncfusion.Licensing;
+using Syncfusion.Windows.Shared;
 
 namespace Assistant.Model.BaseServices;
 
 public class MySQL
 {
-    public MySQL()
+    public string ServiceName { get; set; } = "Neuz.MySQL";
+
+    public WinSvc? WinSvc { get; set; } = null;
+
+    public int Port { get; set; } = 10001;
+
+
+    public string? BasePath
     {
-        var baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Services", "MySQL");
-        Port                = 10001;
-        ServiceName         = "Neuz.MySQL";
-        ServiceDescription  = "Neuz.MySQL 数据服务";
-        BinPath             = Path.Combine(baseDir, "bin", "mysqld.exe");
-        BinDir              = Path.Combine(baseDir, "bin");
-        LogPath             = Path.Combine(baseDir, "logs", "error.log");
-        LogDir              = Path.Combine(baseDir, "logs");
-        ConfigPath          = Path.Combine(baseDir, "my.ini");
-        ConfigDir           = baseDir;
-        DataDir             = Path.Combine(baseDir, "data");
-        TempDir             = Path.Combine(baseDir, "tmp");
-        Installed           = false;
-        WinServiceInstalled = false;
+        get
+        {
+            var binPath = WinSvc?.BinPath;
+            if (binPath == null) return null;
+            var index = binPath.IndexOf(" --defaults-file=", StringComparison.Ordinal);
+            var path  = index > 0 ? binPath.Remove(index) : binPath;
+            return Path.GetDirectoryName(path);
+        }
     }
 
-    public int Port { get; set; }
-    public string ServiceName { get; set; }
-    public string ServiceDescription { get; set; }
-    public string BinPath { get; set; }
-    public string BinDir { get; set; }
-    public string LogPath { get; set; }
-    public string LogDir { get; set; }
-    public string ConfigPath { get; set; }
-    public string ConfigDir { get; set; }
-    public string DataDir { get; set; }
-    public string TempDir { get; set; }
-    public bool Installed { get; set; }
-    public bool WinServiceInstalled { get; set; }
+    public string LogPath => BasePath.IsNullOrWhiteSpace()
+                                 ? string.Empty
+                                 : Path.Combine(BasePath ?? "", "logs", "error.log");
 
+    public string ConfigPath => BasePath.IsNullOrWhiteSpace()
+                                    ? string.Empty
+                                    : Path.Combine(BasePath ?? "", "my.ini");
 
-    public Dictionary<string, object> Infos => new()
-    {
-        {"实例安装", Installed},
-        {"端口", Port},
-        {"服务名", ServiceName},
-        {"服务描述", ServiceDescription},
-        {"BinPath", BinPath},
-        {"LogPath", LogPath},
-        {"ConfigPath", ConfigPath},
-        {"Data目录", DataDir},
-        {"是否注册Windows服务", WinServiceInstalled},
-    };
+    public string DataDir => BasePath.IsNullOrWhiteSpace()
+                                 ? string.Empty
+                                 : Path.Combine(BasePath ?? "", "data");
 
+    public string TempDir => BasePath.IsNullOrWhiteSpace()
+                                 ? string.Empty
+                                 : Path.Combine(BasePath ?? "", "tmp");
 }

@@ -42,7 +42,7 @@
                         VerticalAlignment="Center"
                         Fill="#FFD83B"
                         Stretch="Fill"
-                        Data="{StaticResource Svg.Sql}" />
+                        Data="{StaticResource Svg.Dashboard}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
             <sf:NavigationItem Header="基础服务" ItemType="Header"/>

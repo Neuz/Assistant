@@ -34,14 +34,14 @@ public class WinSvcService
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public List<WinSvc> Query(string? name = null)
+    public List<WinSvc?> Query(string? name = null)
     {
         var services = name.IsNullOrWhiteSpace()
                            ? ServiceController.GetServices()
                            : ServiceController.GetServices().Where(s => s.ServiceName.Equals(name, StringComparison.OrdinalIgnoreCase));
         var rs = services.Select(s => new WinSvc
                           {
-                              Name        = s.ServiceName,
+                              ServiceName        = s.ServiceName,
                               DisplayName = s.DisplayName,
                               Description = string.Empty,
                               Pid         = null,
@@ -56,11 +56,12 @@ public class WinSvcService
     }
 
 
+
     private void GetSvcInfo(IEnumerable<WinSvc> services)
     {
         foreach (var s in services)
         {
-            var mo = new ManagementObject($"Win32_Service.Name='{s.Name}'");
+            var mo = new ManagementObject($"Win32_Service.Name='{s.ServiceName}'");
             mo.Get();
             s.Description = mo.GetPropertyValue("Description")?.ToString();
             s.Pid = mo.GetPropertyValue("ProcessId") != null
@@ -77,9 +78,9 @@ public class WinSvcService
     /// <returns></returns>
     public async Task<WinSvc> Start(WinSvc svc)
     {
-        Guard.IsNotNullOrWhiteSpace(svc.Name);
-        var rs = await Start(svc.Name);
-        return Query(svc.Name).First();
+        Guard.IsNotNullOrWhiteSpace(svc.ServiceName);
+        var rs = await Start(svc.ServiceName);
+        return Query(svc.ServiceName).First();
     }
 
     /// <summary>
@@ -101,9 +102,9 @@ public class WinSvcService
     /// <returns></returns>
     public async Task<WinSvc> Stop(WinSvc svc)
     {
-        Guard.IsNotNullOrWhiteSpace(svc.Name);
-        var rs = await Stop(svc.Name);
-        return Query(svc.Name).First();
+        Guard.IsNotNullOrWhiteSpace(svc.ServiceName);
+        var rs = await Stop(svc.ServiceName);
+        return Query(svc.ServiceName).First();
     }
 
     /// <summary>
@@ -125,9 +126,9 @@ public class WinSvcService
     /// <returns></returns>
     public async Task<WinSvc> Delete(WinSvc svc)
     {
-        Guard.IsNotNullOrWhiteSpace(svc.Name);
-        var rs = await Delete(svc.Name);
-        return Query(svc.Name).First();
+        Guard.IsNotNullOrWhiteSpace(svc.ServiceName);
+        var rs = await Delete(svc.ServiceName);
+        return Query(svc.ServiceName).First();
     }
 
     /// <summary>

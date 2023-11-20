@@ -21,7 +21,7 @@ public partial class RedisViewModel : ObservableObject
     private readonly UIService _uiService = Ioc.Default.GetRequiredService<UIService>();
 
 
-    public string Title => "MySQL";
+    public string Title => "Redis";
     public Geometry? Icon { get; } = Application.Current.FindResource("Svg.Sql") as Geometry;
     public string IconColor => "#FAD83B";
     public string Version => "v5.7.36";
@@ -32,6 +32,5 @@ public partial class RedisViewModel : ObservableObject
     [RelayCommand]
     private void Flush()
     {
-        MySql = _uiService.FlushObject(MySql, m => { m.ServiceName = DateTime.Now.ToString("O"); })!;
     }
 }

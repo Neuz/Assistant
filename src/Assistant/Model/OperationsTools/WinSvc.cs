@@ -7,8 +7,7 @@ namespace Assistant.Model.OperationsTools;
 
 public class WinSvc
 {
-
-    public string? Name { get; set; }=Empty;
+    public string? ServiceName { get; set; } = Empty;
     public string? DisplayName { get; set; } = Empty;
     public string? Description { get; set; } = Empty;
     public int? Pid { get; set; } = null;
@@ -20,12 +19,12 @@ public class WinSvc
     /// <summary>
     /// 启动类型
     /// </summary>
-    public StartMode StartType { get; init; }
+    public StartMode? StartType { get; init; }
 
     /// <summary>
     /// 运行状态
     /// </summary>
-    public RunningStatus Status { get; init; }
+    public RunningStatus? Status { get; init; }
 
 
     public enum StartMode
