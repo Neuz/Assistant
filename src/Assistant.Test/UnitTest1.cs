@@ -1,5 +1,4 @@
 using System.Text;
-using Assistant.Model.OperationsTools;
 using Assistant.Services;
 using IniParser;
 using Path = System.IO.Path;
@@ -16,7 +15,7 @@ public class UnitTest1
 
         try
         {
-            var rs = wss.Query("Apple Mobile Device Service");
+            var rs = wss.Query("AppReadiness2");
         }
         catch (Exception e)
         {

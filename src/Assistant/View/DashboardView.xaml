@@ -6,14 +6,12 @@
              xmlns:vm="clr-namespace:Assistant.ViewModel"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:baseServices="clr-namespace:Assistant.View.BaseServices"
-             xmlns:converters="clr-namespace:Assistant.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <vm:DashboardViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <converters:WinSvcToColorConverter x:Key="WinSvcToColorConverter" />
         <DataTemplate x:Key="IconFlush">
             <Grid>
                 <Path Stretch="Fill" Fill="White" Data="{StaticResource Svg.Reload}" />
@@ -27,7 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="10,5,10,0" Orientation="Horizontal">
             <Label FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
@@ -42,160 +40,42 @@
         </StackPanel>
         <Separator Grid.Row="1" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
         <syncfusion:SfBusyIndicator Grid.Row="2" IsBusy="{Binding IsBusy}" AnimationType="Box">
-            <StackPanel Margin="10,5,10,0">
-                <Label FontSize="12" FontWeight="Bold" Content="基础服务" />
-                <ItemsControl Margin="5,10,0,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Border.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="{Binding MySql.ServiceName}" IsEnabled="False" />
-                                <Separator />
-                                <MenuItem Header="详细信息"
-                                          Command="{Binding GotoCommand}"
-                                          CommandParameter="{x:Type baseServices:MySQLView}" />
-                                <Separator />
-                                <MenuItem Header="启动" Command="{Binding StartCommand}" CommandParameter="{Binding MySql}"/>
-                                <MenuItem Header="停止" Command="{Binding StopCommand}" CommandParameter="{Binding MySql}"/>
-                                <MenuItem Header="重启" />
-                            </ContextMenu>
-                        </Border.ContextMenu>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="{Binding MySql.ServiceName}" />
-                            <Label Grid.Column="2"
-                                   Background="{Binding MySqlColor}" />
-                        </Grid>
-                    </Border>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="Neuz.Redis" />
-                            <Label Grid.Column="2" Background="Gray" />
-                        </Grid>
-                    </Border>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="Neuz.Nginx" />
-                            <Label Grid.Column="2" Background="GreenYellow" />
-                        </Grid>
-                    </Border>
-                </ItemsControl>
-                <Separator Margin="10,30,10,0" Height="2" HorizontalAlignment="Stretch" />
-                <Label FontSize="12" FontWeight="Bold" Content="基础服务" />
-                <ItemsControl Margin="5,10,0,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="Neuz.MySQL" />
-                            <Label Grid.Column="2" Background="Red" />
-                        </Grid>
-                    </Border>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="Neuz.Redis" />
-                            <Label Grid.Column="2" Background="Gray" />
-                        </Grid>
-                    </Border>
-                    <Border Height="40" Width="200"
-                            BorderThickness="1" BorderBrush="#454545" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Path Grid.Column="0"
-                                  Width="25" Height="25" Margin="5"
-                                  Stretch="Fill" Fill="#fff"
-                                  Data="{StaticResource Svg.Code}" />
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                   FontSize="14" FontWeight="Bold" Content="Neuz.Nginx" />
-                            <Label Grid.Column="2" Background="GreenYellow" />
-                        </Grid>
-                    </Border>
-                </ItemsControl>
-                <Separator Margin="10,30,10,0" Height="2" HorizontalAlignment="Stretch" />
-            </StackPanel>
+            <Border BorderThickness="1" BorderBrush="#454545" Margin="10,5,10,0">
+                <StackPanel >
+                    <StackPanel Margin="5,0" Orientation="Horizontal">
+                        <Label Height="14" Width="2" Background="#4397e6" />
+                        <Label FontSize="14" FontWeight="Bold" Content="基础服务" />
+                    </StackPanel>
+                    <ItemsControl Margin="5,10,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <Border Height="40" Width="200"
+                                BorderThickness="1" BorderBrush="#454545" Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Path Grid.Column="0"
+                                      Width="25" Height="25" Margin="5"
+                                      Stretch="Fill" Fill="#fff"
+                                      Data="{StaticResource Svg.Code}" />
+                                <Label Grid.Column="1" VerticalAlignment="Center"
+                                       FontSize="14" FontWeight="Bold" Content="Neuz.MySQL" />
+                                <Label Grid.Column="2"
+                                       Background="Red" />
+                            </Grid>
+                        </Border>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
         </syncfusion:SfBusyIndicator>
     </Grid>
 </UserControl>

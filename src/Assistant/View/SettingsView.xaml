@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Assistant.View.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:Assistant.ViewModel"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:SettingsViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Column="0" Grid.Row="0" Margin="10,5,10,0">
+            <Label FontSize="18" FontWeight="Bold" Content="{Binding Title}" />
+        </DockPanel>
+        <Separator Grid.Row="1" Grid.Column="0" Margin="10,0,10,0" Height="2" HorizontalAlignment="Stretch" />
+        <Border Grid.Row="2" Grid.Column="0" BorderThickness="1" BorderBrush="#454545" Margin="10,5,10,5">
+            <Grid Margin="5,10,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="基础目录" />
+                    <DockPanel Grid.Column="1" Grid.Row="0">
+                        <Button DockPanel.Dock="Right" Width="30" Margin="5" Content="..." Command="{Binding SelectFolderCommand}"/>
+                        <TextBox Margin="5" Text="{Binding BasePath}" IsReadOnly="True" />
+                    </DockPanel>
+                    <Label Grid.Column="0" Grid.Row="1" Margin="5" Content="更新源" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Text="{Binding SourceUrl}" />
+                </Grid>
+                <Button Grid.Row="1"
+                        HorizontalAlignment="Right" Margin="10"
+                        Width="100" Height="30" Content="保存" 
+                        Command="{Binding SaveCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
