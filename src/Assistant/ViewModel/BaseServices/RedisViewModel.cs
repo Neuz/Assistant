@@ -1,24 +1,16 @@
-﻿using System;
-using System.DirectoryServices.ActiveDirectory;
+﻿using Assistant.Model;
+using Assistant.Services;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Forms.VisualStyles;
-using Assistant.Model;
-using Assistant.Services;
-using CommunityToolkit.Diagnostics;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.VisualBasic.Logging;
-using Microsoft.Win32;
-using MMC20;
-using Syncfusion.Data.Extensions;
-using Syncfusion.UI.Xaml.Grid;
 using Log = Serilog.Log;
 
 // ReSharper disable InconsistentNaming
@@ -38,7 +30,7 @@ public partial class RedisViewModel : ObservableObject
     private bool _isBusy;
 
     [ObservableProperty]
-    private string _busyText;
+    private string? _busyText;
 
     [ObservableProperty]
     private RedisDefaultCls _redisDefault = new();
@@ -68,7 +60,7 @@ public partial class RedisViewModel : ObservableObject
     private bool _isEnabledDelete;
 
     [ObservableProperty]
-    private string _zipFile;
+    private string? _zipFile;
 
     private async Task WithBusy(Func<Task> action)
     {
