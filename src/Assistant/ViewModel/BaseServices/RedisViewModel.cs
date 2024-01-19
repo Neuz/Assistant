@@ -37,7 +37,7 @@ public partial class RedisViewModel : ObservableObject
     private RedisDefault _redisDefault = new();
 
     [ObservableProperty]
-    private WinSvc? _redisService;
+    private WinSvc? _winService;
 
     [ObservableProperty]
     private bool _isShowInfoPanel;
@@ -64,14 +64,14 @@ public partial class RedisViewModel : ObservableObject
     private string? _zipFile;
 
     [ObservableProperty]
-    private Dictionary<string, object> _currStatus = new Dictionary<string, object>()
+    private Dictionary<string, object> _currStatus = new()
     {
-        {"ad",111},
-        {"ad2",111},
-        {"ad3",111},
-        {"ad4",111},
-        {"ad5",111},
-        {"ad6",111},
+        {"ad", 111},
+        {"ad2", 111},
+        {"ad3", 111},
+        {"ad4", 111},
+        {"ad5", 111},
+        {"ad6", 111}
     };
 
     private async Task WithBusy(Func<Task> action)
@@ -194,13 +194,13 @@ public partial class RedisViewModel : ObservableObject
                 IsShowInfoPanel    = isInstall;
                 IsShowInstallPanel = !isInstall;
 
-                RedisService = _winSvcService.Query(RedisDefault.ServiceName);
+                WinService = _winSvcService.Query(RedisDefault.ServiceName);
 
                 //设置上下文菜单启用
-                IsEnabledCreate = RedisService == null;
-                IsEnabledDelete = RedisService != null;
+                IsEnabledCreate = WinService == null;
+                IsEnabledDelete = WinService != null;
 
-                var status = RedisService?.ServiceController?.Status;
+                var status = WinService?.ServiceController?.Status;
 
                 if (status == null)
                 {
@@ -209,7 +209,7 @@ public partial class RedisViewModel : ObservableObject
                 else
                 {
                     IsEnabledStart   = status == ServiceControllerStatus.Stopped;
-                    IsEnabledRestart = IsEnabledStop = RedisService?.ServiceController?.CanStop ?? false;
+                    IsEnabledRestart = IsEnabledStop = WinService?.ServiceController?.CanStop ?? false;
                 }
             });
 
@@ -252,7 +252,6 @@ public partial class RedisViewModel : ObservableObject
             Log.Information($"{ZipFile} 解压至 {destDir}");
             await _fileService.ZipExtract(ZipFile, destDir);
 
-            
 
             if (MessageBox.Show("是否创建Windows服务并启动？", "注册Windows服务确认", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
@@ -268,11 +267,5 @@ public partial class RedisViewModel : ObservableObject
         });
 
         await Flush();
-    }
-
-    private void UpdateRedisStatus()
-    {
-    
-
     }
 }

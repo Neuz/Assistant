@@ -104,17 +104,17 @@
                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="Windows 服务名" />
                         <Label Grid.Row="0" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.ServiceName}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding WinService.ServiceName}" />
 
                         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="启动类型" />
                         <Label Grid.Row="1" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.StartTypeStr}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding WinService.StartTypeStr}" />
 
                         <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="运行状态" />
                         <Label Grid.Row="2" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.StatusStr}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding WinService.StatusStr}" />
                     </Grid>
                 </Border>
                 <syncfusion:TabControlExt Grid.Row="1" Margin="10"
