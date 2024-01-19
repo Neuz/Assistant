@@ -44,7 +44,22 @@
                         Data="{StaticResource Svg.Dashboard}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
-            <sf:NavigationItem ItemType="Separator"/>
+            <sf:NavigationItem ItemType="Separator" />
+
+            <sf:NavigationItem Header="MySQL"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:MySQLView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
 
             <sf:NavigationItem Header="Redis"
                                Command="{Binding ClickCommand}"
@@ -58,6 +73,21 @@
                         Fill="#FFD83B"
                         Stretch="Fill"
                         Data="{StaticResource Svg.Sql}" />
+                </sf:NavigationItem.Icon>
+            </sf:NavigationItem>
+
+            <sf:NavigationItem Header="Caddy"
+                               Command="{Binding ClickCommand}"
+                               CommandParameter="{x:Type baseService:CaddyView}">
+                <sf:NavigationItem.Icon>
+                    <Path
+                        Width="16"
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="#FFD83B"
+                        Stretch="Fill"
+                        Data="{StaticResource Svg.FileText}" />
                 </sf:NavigationItem.Icon>
             </sf:NavigationItem>
 

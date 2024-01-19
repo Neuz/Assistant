@@ -6,9 +6,9 @@ using Assistant.ViewModel.BaseServices;
 
 namespace Assistant.View.BaseServices;
 
-public partial class RedisView : UserControl
+public partial class CaddyView : UserControl
 {
-    public RedisView()
+    public CaddyView()
     {
         InitializeComponent();
     }
@@ -16,6 +16,6 @@ public partial class RedisView : UserControl
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
-        ((RedisViewModel) DataContext).FlushCommand.Execute(null);
+        ((CaddyViewModel) DataContext).FlushCommand.Execute(null);
     }
 }

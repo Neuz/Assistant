@@ -33,6 +33,8 @@ public partial class App
                .AddTransient<DashboardView>()
                .AddTransient<SettingsView>()
                .AddTransient<RedisView>()
+               .AddTransient<CaddyView>()
+               .AddTransient<MySQLView>()
                .BuildServiceProvider());
     }
 

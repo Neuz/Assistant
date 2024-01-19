@@ -60,6 +60,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="View\BaseServices\MySQLView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\BaseServices\CaddyView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\BaseServices\RedisView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

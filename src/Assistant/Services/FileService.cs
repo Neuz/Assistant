@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Assistant.Model;
 using CommunityToolkit.Diagnostics;
 
+// ReSharper disable InconsistentNaming
+
 namespace Assistant.Services;
 
 public class FileService
@@ -47,4 +49,23 @@ public class FileService
         await Task.Run(() => ZipFile.ExtractToDirectory(zipFilePath, destDir, overwrite));
     }
 
+    /// <summary>
+    /// 初始化my.ini
+    /// </summary>
+    /// <param name="baseDir"></param>
+    public void InitMySqlIni(string baseDir)
+    {
+        var iniPath = Path.Combine(baseDir, "my.ini");
+        var dataDir = Path.Combine(baseDir, "data");
+        var tempDir = Path.Combine(baseDir, "tmp");
+        var logPath = Path.Combine(baseDir, "logs", "error.log");
+
+        var ini  = new FileIniDataParser();
+        var data = ini.ReadFile(iniPath);
+        data["mysqld"]["basedir"]   = $"\"{baseDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
+        data["mysqld"]["datadir"]   = $"\"{dataDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
+        data["mysqld"]["tmpdir"]    = $"\"{tempDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
+        data["mysqld"]["log-error"] = $"\"{logPath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
+        ini.WriteFile(iniPath, data, new UTF8Encoding(false));
+    }
 }

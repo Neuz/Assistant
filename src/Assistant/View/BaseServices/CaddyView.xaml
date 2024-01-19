@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Assistant.View.BaseServices.RedisView"
+﻿<UserControl x:Class="Assistant.View.BaseServices.CaddyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,7 +8,7 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <vm:RedisViewModel />
+        <vm:CaddyViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -104,17 +104,17 @@
                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="Windows 服务名" />
                         <Label Grid.Row="0" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.ServiceName}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding Service.ServiceName}" />
 
                         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="启动类型" />
                         <Label Grid.Row="1" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.StartTypeStr}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding Service.StartTypeStr}" />
 
                         <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                                FontSize="12" Content="运行状态" />
                         <Label Grid.Row="2" Grid.Column="1"
-                               FontSize="12" FontWeight="Bold" Content="{Binding RedisService.StatusStr}" />
+                               FontSize="12" FontWeight="Bold" Content="{Binding Service.StatusStr}" />
                     </Grid>
                 </Border>
                 <syncfusion:TabControlExt Grid.Row="1" Margin="10"
@@ -122,7 +122,7 @@
                                           ShowTabItemContextMenu="False"
                                           CloseButtonType="Hide">
                     <syncfusion:TabItemExt Header="当前状态">
-                        <ItemsControl ItemsSource="{Binding CurrStatus}">
+                        <ItemsControl ItemsSource="{Binding RedisInfoDict}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
