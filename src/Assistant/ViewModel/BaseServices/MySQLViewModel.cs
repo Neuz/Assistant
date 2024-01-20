@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
@@ -22,6 +23,7 @@ public partial class MySQLViewModel : ObservableObject
     private readonly GlobalConfig  _global        = Ioc.Default.GetRequiredService<GlobalConfig>();
     private readonly WinSvcService _winSvcService = Ioc.Default.GetRequiredService<WinSvcService>();
     private readonly FileService   _fileService   = Ioc.Default.GetRequiredService<FileService>();
+    private readonly StatService _statService = Ioc.Default.GetRequiredService<StatService>();
 
     public string Title => "MySQL";
 
@@ -35,7 +37,7 @@ public partial class MySQLViewModel : ObservableObject
     private MySQLDefault _mysqlDefault = new();
 
     [ObservableProperty]
-    private WinSvc? _service;
+    private WinSvc? _winService;
 
     [ObservableProperty]
     private bool _isShowInfoPanel;
@@ -60,6 +62,10 @@ public partial class MySQLViewModel : ObservableObject
 
     [ObservableProperty]
     private string? _zipFile;
+
+
+    [ObservableProperty]
+    private IList<Stats> _currStatus;
 
     private async Task WithBusy(Func<Task> action)
     {
@@ -178,13 +184,13 @@ public partial class MySQLViewModel : ObservableObject
                 IsShowInfoPanel    = isInstall;
                 IsShowInstallPanel = !isInstall;
 
-                Service = _winSvcService.Query(MysqlDefault.ServiceName);
+                WinService = _winSvcService.Query(MysqlDefault.ServiceName);
 
                 //设置上下文菜单启用
-                IsEnabledCreate = Service == null;
-                IsEnabledDelete = Service != null;
+                IsEnabledCreate = WinService == null;
+                IsEnabledDelete = WinService != null;
 
-                var status = Service?.ServiceController?.Status;
+                var status = WinService?.ServiceController?.Status;
 
                 if (status == null)
                 {
@@ -193,9 +199,15 @@ public partial class MySQLViewModel : ObservableObject
                 else
                 {
                     IsEnabledStart   = status == ServiceControllerStatus.Stopped;
-                    IsEnabledRestart = IsEnabledStop = Service?.ServiceController?.CanStop ?? false;
+                    IsEnabledRestart = IsEnabledStop = WinService?.ServiceController?.CanStop ?? false;
                 }
             });
+
+            if (WinService?.Status == ServiceControllerStatus.Running)
+            {
+                // 加载 Redis 运行监测
+                CurrStatus = ( await _statService.GetMySQLStatsList(MysqlDefault.User,MysqlDefault.Password)).OrderBy(stats => stats.Order).ToList();
+            }
 
             // 为了界面丝滑，delay一下
             await Task.Delay(1000);

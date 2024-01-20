@@ -1,6 +1,12 @@
 using System.Text;
+using Assistant.Model;
 using Assistant.Services;
+using CliWrap;
+using CliWrap.Buffered;
+using Dapper;
 using IniParser;
+using MySqlConnector;
+using Syncfusion.Data.Extensions;
 using Path = System.IO.Path;
 
 namespace Assistant.Test;
@@ -34,19 +40,17 @@ public class UnitTest1
         var tempDir = Path.Combine(baseDir, "tmp");
         var dataDir = Path.Combine(baseDir, "data");
         var logPath = Path.Combine(baseDir, "logs", "error.log");
-        var cc = Path.DirectorySeparatorChar;
-        var dd = Path.AltDirectorySeparatorChar;
+        var cc      = Path.DirectorySeparatorChar;
+        var dd      = Path.AltDirectorySeparatorChar;
 
 
-        var ini       = new FileIniDataParser();
-        var data      = ini.ReadFile(myIniPath);
-        data["mysqld"]["basedir"]   = $"\"{baseDir.Replace(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar)}\"";
+        var ini  = new FileIniDataParser();
+        var data = ini.ReadFile(myIniPath);
+        data["mysqld"]["basedir"]   = $"\"{baseDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
         data["mysqld"]["datadir"]   = $"\"{dataDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
         data["mysqld"]["tmpdir"]    = $"\"{tempDir.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
         data["mysqld"]["log-error"] = $"\"{logPath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}\"";
         ini.WriteFile(myIniPath, data, new UTF8Encoding(false));
-
-        
     }
 
 
@@ -66,5 +70,55 @@ public class UnitTest1
         var ccc = Path.GetFullPath(c);
 
         var eee = File.Exists(binPath);
+    }
+
+
+    [TestMethod]
+    public void TestMethod4()
+    {
+        var path = "D:\\Neuz\\Services\\Redis\\redis-cli.exe";
+        var cli = Cli.Wrap(path)
+                     .WithArguments(new[] {"-h", "localhost", "-p", "10002", "INFO"});
+
+
+        var rs = cli.ExecuteBufferedAsync().Task.Result;
+
+        var rr = new List<Stats>();
+        var aa = rs.StandardOutput.Split(Environment.NewLine)
+                   .Select(l => l.Trim())
+                   .Where(l => l.Contains(":"))
+                   .ToList();
+
+    }
+
+    [TestMethod]
+    public void TestMethod5()
+    {
+        var builder = new MySqlConnectionStringBuilder
+        {
+            Server            = "127.0.0.1",
+            Port              = Convert.ToUInt32(10001),
+            UserID            = "root",
+            Password          = "Neuz123",
+            ConnectionTimeout = Convert.ToUInt32(10)
+        };
+        
+        using var conn = new MySqlConnection(builder.ToString());
+        conn.Open();
+        //"{DapperRow, Variable_name = 'back_log', Value = '900'}"
+            
+        // var sql = "SHOW GLOBAL variables";
+        var sql = "SHOW GLOBAL status";
+        var a = conn.Query(sql)
+                    .Select(s=>new KeyValuePair<string,string>(s.Variable_name,s.Value))
+                    .ToList();
+
+       //var aa =  new StatService().GetMySQLStatsList("root", "Neuz123").Result;
+    }
+
+    public class MyClass
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

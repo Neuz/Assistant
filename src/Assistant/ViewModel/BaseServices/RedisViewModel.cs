@@ -23,6 +23,7 @@ public partial class RedisViewModel : ObservableObject
     private readonly GlobalConfig  _global        = Ioc.Default.GetRequiredService<GlobalConfig>();
     private readonly WinSvcService _winSvcService = Ioc.Default.GetRequiredService<WinSvcService>();
     private readonly FileService   _fileService   = Ioc.Default.GetRequiredService<FileService>();
+    private readonly StatService   _statService   = Ioc.Default.GetRequiredService<StatService>();
 
 
     public string Title => "Redis";
@@ -64,15 +65,8 @@ public partial class RedisViewModel : ObservableObject
     private string? _zipFile;
 
     [ObservableProperty]
-    private Dictionary<string, object> _currStatus = new()
-    {
-        {"ad", 111},
-        {"ad2", 111},
-        {"ad3", 111},
-        {"ad4", 111},
-        {"ad5", 111},
-        {"ad6", 111}
-    };
+    private IList<Stats> _currStatus;
+
 
     private async Task WithBusy(Func<Task> action)
     {
@@ -211,7 +205,15 @@ public partial class RedisViewModel : ObservableObject
                     IsEnabledStart   = status == ServiceControllerStatus.Stopped;
                     IsEnabledRestart = IsEnabledStop = WinService?.ServiceController?.CanStop ?? false;
                 }
+
             });
+
+            if (WinService?.Status == ServiceControllerStatus.Running)
+            {
+                // 加载 Redis 运行监测
+                var cliPath = Path.Combine(_global.BasePath, RedisDefault.BaseDir, "redis-cli.exe");
+                CurrStatus = (await _statService.GetRedisStatsList(cliPath)).OrderBy(stats => stats.Order).ToList();
+            }
 
             // 为了界面丝滑，delay一下
             await Task.Delay(1000);

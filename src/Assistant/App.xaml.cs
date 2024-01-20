@@ -29,6 +29,7 @@ public partial class App
                .AddSingleton(config)
                .AddSingleton<WinSvcService>() // 服务
                .AddSingleton<FileService>() 
+               .AddSingleton<StatService>() 
                .AddTransient<MainView>()      // View
                .AddTransient<DashboardView>()
                .AddTransient<SettingsView>()
